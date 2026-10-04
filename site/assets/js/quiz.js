@@ -42,6 +42,7 @@
       ], `<p>1. New sph = sph + cyl = ${sgn(e.sph)} + (${sgn(e.cyl)}) = ${sgn(e.sph + e.cyl)}</p><p>2. Change the cyl sign → ${sgn(-e.cyl)}</p><p>3. Axis ± 90 → ${axS(e.axis + 90)}</p>`);
     }
     const ps = principal(e);
+    if (ps.some((o) => Math.abs(o.p) < 0.01)) return null; // one principal power is plano: really a single plano cylinder
     return mcq(`Write <b>${rxS(e)}</b> as two crossed cylinders.`, `${sgn(ps[0].p)} × ${axS(ps[1].m)} / ${sgn(ps[1].p)} × ${axS(ps[0].m)}`, [
       `${sgn(ps[0].p)} × ${axS(ps[0].m)} / ${sgn(ps[1].p)} × ${axS(ps[1].m)}`,
       `${sgn(e.sph)} × ${axS(ps[1].m)} / ${sgn(e.cyl)} × ${axS(ps[0].m)}`,
@@ -108,6 +109,7 @@
       if (Math.abs(F) < 0.75) return null;
       const P = step(0.5, 3, 0.5), base = vertical ? pick(['up', 'down']) : pick(['in', 'out']);
       const d = (P / Math.abs(F)) * 10;
+      if (d > 10) return null; // more than 10 mm isn't a realistic decentration
       const towards = F > 0;
       const opp = { up: 'down', down: 'up', in: 'out', out: 'in' };
       const dir = towards ? base : opp[base];
@@ -123,10 +125,11 @@
         `${num(Math.abs(dec), 1)} mm ${dec > 0 ? 'out' : 'in'}`, `${num(Math.abs(A + DBL - PD), 1)} mm ${dec > 0 ? 'in' : 'out'}`, `${num(Math.abs(A + DBL / 2 - PD), 1)} mm ${dec > 0 ? 'in' : 'out'}`,
       ], `<p>${f('BCD = A + DBL')} = ${A + DBL} mm → half = ${num((A + DBL) / 2, 1)}</p><p>Decentration = ${num((A + DBL) / 2, 1)} − ${PD} = ${num(dec, 1)} mm → ${dec > 0 ? 'inwards (the PD is smaller than half the BCD)' : 'outwards'}.</p>`);
     }
-    const msu = A + 2 * Math.abs(dec);
-    return mcq(`Round lens, horizontal size <b>${A} mm</b>, DBL <b>${DBL}</b>, mono PD <b>${PD} mm</b>, no vertical decentration. Minimum size uncut?`, `${num(msu, 1)} mm`, [
-      `${num(A + Math.abs(dec), 1)} mm`, `${num(A + 2 * Math.abs(A + DBL - PD), 1)} mm`, `${num(A - 2 * Math.abs(dec), 1)} mm`,
-    ], `<p>Decentration = (A + DBL)/2 − PD = ${num((A + DBL) / 2, 1)} − ${PD} = ${num(Math.abs(dec), 1)} mm</p><p>${f('MSU = lens size + 2 × decentration')} = ${A} + 2 × ${num(Math.abs(dec), 1)} = <b>${num(msu, 1)} mm</b></p>`);
+    const allow = Math.random() < 0.5 ? 2 : 0;
+    const msu = A + 2 * Math.abs(dec) + allow;
+    return mcq(`Round lens, horizontal size <b>${A} mm</b>, DBL <b>${DBL}</b>, mono PD <b>${PD} mm</b>, no vertical decentration, ${allow ? `<b>${allow} mm</b> glazing allowance` : '<b>no</b> allowance'}. Minimum size uncut?`, `${num(msu, 1)} mm`, [
+      allow ? `${num(msu - allow, 1)} mm` : null, `${num(A + Math.abs(dec) + allow, 1)} mm`, `${num(A + 2 * Math.abs(A + DBL - PD) + allow, 1)} mm`, `${num(A - 2 * Math.abs(dec) + allow, 1)} mm`,
+    ], `<p>Decentration = (A + DBL)/2 − PD = ${num((A + DBL) / 2, 1)} − ${PD} = ${num(Math.abs(dec), 1)} mm</p><p>${f(`MSU = lens size + 2 × decentration${allow ? ' + allowance' : ''}`)} = ${A} + 2 × ${num(Math.abs(dec), 1)}${allow ? ` + ${allow}` : ''} = <b>${num(msu, 1)} mm</b></p>`);
   };
 
   const gPrisms = () => {
@@ -173,8 +176,11 @@
   const gToric = () => {
     const e = { sph: qd(-5, 5, false), cyl: qd(-3, -0.5), axis: axis() };
     const minus = Math.random() < 0.6;
-    const B = minus ? -pick([4, 6, 8]) : pick([6, 8, 10]);
     const form = minus ? e : transpose(e);
+    // only base curves that give a meniscus: plus front sphere on a minus toric, minus back sphere on a plus toric
+    const bases = (minus ? [-4, -6, -8] : [6, 8, 10]).filter((b) => (minus ? form.sph - b > 0.12 : form.sph - b < -0.12));
+    if (!bases.length) return null;
+    const B = pick(bases);
     const sph = form.sph - B, cross = B + form.cyl, bax = axS(form.axis + 90), cax = axS(form.axis);
     const T = (s, b, ba, c, ca) => (minus ? `${sgn(s)} DS front · ${sgn(b)} × ${ba} / ${sgn(c)} × ${ca} back` : `${sgn(b)} × ${ba} / ${sgn(c)} × ${ca} front · ${sgn(s)} DS back`);
     return mcq(`Transpose <b>${rxS(e)}</b> into ${minus ? 'minus' : 'plus'} toric form on a <b>${sgn(B)}</b> base curve.`, T(sph, B, bax, cross, cax), [
@@ -217,11 +223,13 @@
     const diff = vR - vL;
     if (Math.abs(diff) < 0.2) return null;
     const t = (x, upR) => `${num(Math.abs(x))}Δ base ${upR ? 'up R (base down L)' : 'down R (base up L)'}`;
+    const zero = Math.abs(vR) < 0.005 || Math.abs(vL) < 0.005;
     const same = Math.sign(vR) === Math.sign(vL);
-    const wrongMag = same ? Math.abs(vR) + Math.abs(vL) : Math.abs(Math.abs(vR) - Math.abs(vL));
+    const wrongMag = zero ? 2 * Math.abs(diff) : same ? Math.abs(vR) + Math.abs(vL) : Math.abs(Math.abs(vR) - Math.abs(vL));
+    const pT = (v) => (Math.abs(v) < 0.005 ? 'no vertical prism' : `${num(Math.abs(v))}Δ base ${v > 0 ? 'up' : 'down'}`);
     return mcq(`R <b>${rxS(R)}</b>, L <b>${rxS(L)}</b>. Both eyes read <b>${c} mm below</b> the OCs. Vertical differential prism?`, t(diff, diff > 0), [
       t(diff, diff < 0), wrongMag > 0.01 ? t(wrongMag, diff > 0) : t(diff * 10, diff > 0), t(diff * 10, diff > 0) === t(diff, diff > 0) ? null : t(diff * 10, diff > 0),
-    ], `<p>R: ${num(c / 10, 1)} × ${sgn(powerAt(R, 90))} = ${num(Math.abs(vR))}Δ base ${vR > 0 ? 'up' : 'down'} · L: ${num(c / 10, 1)} × ${sgn(powerAt(L, 90))} = ${num(Math.abs(vL))}Δ base ${vL > 0 ? 'up' : 'down'}</p><p>${same ? 'Same direction → subtract' : 'Opposite directions → add'} → <b>${num(Math.abs(diff))}Δ</b></p>`);
+    ], `<p>R: ${num(c / 10, 1)} × ${sgn(powerAt(R, 90))} = ${pT(vR)} · L: ${num(c / 10, 1)} × ${sgn(powerAt(L, 90))} = ${pT(vL)}</p><p>${zero ? 'Only one eye has vertical prism → that is the differential' : same ? 'Same direction → subtract' : 'Opposite directions → add'} → <b>${num(Math.abs(diff))}Δ</b></p>`);
   };
 
   /* ================= UNIT 1 generators ================= */
@@ -235,7 +243,7 @@
     if (r < 0.75) {
       const d = pick([10, 20, 25, 33.3, 40, 50, 66.7, 100, 200]), conv = Math.random() < 0.35;
       const L = (conv ? 1 : -1) * (100 / d);
-      return mcq(`Light ${conv ? 'is converging towards a point' : 'diverges from a point source'} <b>${num(d, 1)} cm</b> away, in air. What is the vergence here?`, `${sgn(L)} D`, [`${sgn(-L)} D`, `${sgn((conv ? 1 : -1) * (d / 100))} D`, `${sgn((conv ? 1 : -1) * d)} D`],
+      return mcq(`Light ${conv ? 'is converging towards a point' : 'diverges from a point source'} <b>${num(d, 1)} cm</b> away, in air. What is the vergence here?`, `${sgn(L)} D`, [`${sgn(-L)} D`, `${sgn((conv ? 1 : -1) * (d / 100))} D`, `${sgn((conv ? 1 : -1) * d)} D`, `${sgn((conv ? 1 : -1) * (10 / d))} D`],
         `<p>${f('L = n / l')} with l in metres: 1 / ${num(d / 100, 3)} = ${num(Math.abs(L))} D. ${conv ? 'Converging light → positive' : 'Diverging light → negative'} → <b>${sgn(L)} D</b></p>`);
     }
     const n = pick([1.333, 1.5, 1.523, 1.6, 1.7]), v = 3e8 / n;
@@ -279,13 +287,13 @@
   const gPhoto = () => {
     const r = Math.random();
     if (r < 0.45) {
-      const I = pick([50, 100, 200, 300, 400, 600, 800]), d = pick([0.5, 1, 1.5, 2, 2.5, 3, 4]), E = I / (d * d);
+      const I = pick([50, 100, 200, 300, 400, 600, 800]), d = pick([0.5, 1.5, 2, 2.5, 3, 4]), E = I / (d * d); // at 1 m three of the options coincide
       return mcq(`A <b>${I} cd</b> lamp shines straight down on a desk <b>${num(d, 1)} m</b> away. Illuminance?`, `${num(E, 1)} lux`, [`${num(I / d, 1)} lux`, `${num(I * d * d, 1)} lux`, `${num(I / (2 * d), 1)} lux`],
         `<p>Inverse square law: ${f('E = I / d²')} = ${I} / ${num(d * d, 2)} = <b>${num(E, 1)} lux</b></p>`);
     }
     if (r < 0.8) {
       const I = pick([100, 200, 400, 500]), d = pick([1, 2, 2.5]), th = pick([30, 45, 60]), E = (I * Math.cos((th * Math.PI) / 180)) / (d * d);
-      return mcq(`A <b>${I} cd</b> source is <b>${num(d, 1)} m</b> from a surface; the light arrives at <b>${th}°</b> to the normal. Illuminance?`, `${num(E, 1)} lux`, [`${num(I / (d * d), 1)} lux`, `${num((I * sinD(th)) / (d * d), 1)} lux`, `${num((I * Math.cos((th * Math.PI) / 180)) / d, 1)} lux`],
+      return mcq(`A <b>${I} cd</b> source is <b>${num(d, 1)} m</b> from a surface; the light arrives at <b>${th}°</b> to the normal. Illuminance?`, `${num(E, 1)} lux`, [`${num(I / (d * d), 1)} lux`, `${num((I * sinD(th)) / (d * d), 1)} lux`, `${num((I * Math.cos((th * Math.PI) / 180)) / d, 1)} lux`, `${num(I / (d * d * Math.cos((th * Math.PI) / 180)), 1)} lux`],
         `<p>Cosine law: ${f('E = I cos θ / d²')} = ${I} × cos ${th}° / ${num(d * d, 2)} = <b>${num(E, 1)} lux</b></p>`);
     }
     const inc = pick([200, 400, 500, 800]), pct = pick([4, 8, 10, 20, 25, 40]), ref = (inc * pct) / 100;
@@ -377,7 +385,8 @@
     if (!topic) return home();
     const qs = [];
     roundUsed = new Set();
-    for (let i = 0; i < ROUND; i++) { const q = makeQ(topic); if (q) qs.push(q); }
+    for (let tries = 0; qs.length < ROUND && tries < ROUND * 4; tries++) { const q = makeQ(topic); if (q) qs.push(q); }
+    if (!qs.length) return home();
     run = { topic, qs, i: 0, picked: [] };
     question();
   }
@@ -417,12 +426,13 @@
     const { topic, qs, picked } = run;
     const score = qs.reduce((a, q, i) => a + (picked[i] === q.answer ? 1 : 0), 0);
     const st = load(), prev = st[topic.id];
-    st[topic.id] = { best: Math.max(score, prev?.best || 0), plays: (prev?.plays || 0) + 1 };
+    const full = qs.length === ROUND; // only a full round counts towards the best score out of ROUND
+    st[topic.id] = { best: full ? Math.max(score, prev?.best || 0) : prev?.best || 0, plays: (prev?.plays || 0) + 1 };
     save(st);
     const msg = score === qs.length ? 'Perfect round! 🎉' : score >= qs.length * 0.8 ? 'Great work.' : score >= qs.length * 0.5 ? 'Getting there — read the working on the ones you missed.' : 'Worth another go — the working below shows each method.';
     const missed = qs.map((q, i) => ({ q, i })).filter(({ q, i }) => picked[i] !== q.answer);
     root().innerHTML = `<article class="card q-res">${ring(score / qs.length)}<div class="q-score"><b>${score}<small>/${qs.length}</small></b><span>${topic.title}</span></div>
-        <p class="q-msg">${msg}${prev && score > prev.best ? ' New best!' : ''}</p>
+        <p class="q-msg">${msg}${full && prev && score > prev.best ? ' New best!' : ''}</p>
         <div class="q-actions"><button class="btn" data-act="again">Try again</button><button class="btn ghost" data-act="home">All topics</button></div></article>
       ${missed.length ? `<h2 class="q-unit">Review</h2>${missed.map(({ q }) => `<article class="card q-review"><span class="q-tag">${q.topic}</span><h3 class="q-text">${q.q}</h3><p class="q-correct">Answer: <b>${q.options[q.answer]}</b></p><div class="work-body">${q.explain}</div></article>`).join('')}` : ''}`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
