@@ -1,4 +1,3 @@
 /* TEAM */
-For: Marta (SDO)
 Built by: Jano, at home
 Site: https://sdo.martigor.org
