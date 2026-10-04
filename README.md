@@ -39,7 +39,8 @@ both eyes, and 180 rather than 0.
   Prentice's rule, decentration & MSU, prisms, differential prism, and sag & thickness.
 - **225 theory questions** (multiple choice) in [`site/assets/js/bank.js`](site/assets/js/bank.js),
   covering Units 1–4 of Year 1. Each question is tagged with its syllabus code (e.g. `Unit 2 · G13`)
-  and has a short explanation.
+  or, for some patient-care questions, the GOC outcome it maps to (e.g. `Unit 3 · GOC O4.4`), and has
+  a short explanation.
 - Mixed rounds across all topics; your best score per topic is remembered.
 
 ## Running it locally
