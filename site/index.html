@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SDO Toolkit — Year 1 dispensing optics</title>
+<meta name="description" content="Year 1 calculators and quizzes for student dispensing opticians, mapped to the ABDO 2023 syllabus.">
+<meta name="theme-color" content="#f3f5f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#05060a" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-title" content="SDO Toolkit">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/assets/fonts/montserrat-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/app.css?v=6">
+<script nonce="__CSP_NONCE__">try{var t=localStorage.getItem('sdo-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script nonce="__CSP_NONCE__" src="/assets/js/app.js?v=6" defer></script>
+<script nonce="__CSP_NONCE__" src="/assets/js/bank.js?v=6" defer></script>
+<script nonce="__CSP_NONCE__" src="/assets/js/quiz.js?v=6" defer></script>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 4 3 8l4 4"/><path d="M3 8h14"/><path d="m17 20 4-4-4-4"/><path d="M21 16H7"/></symbol>
+  <symbol id="i-prism" viewBox="0 0 24 24"><path d="M12 3 21 20H3Z"/><path d="M2 9l8 3"/><path d="m14 13 8 4"/></symbol>
+  <symbol id="i-frame" viewBox="0 0 24 24"><rect x="2" y="7" width="8.5" height="8" rx="3"/><rect x="13.5" y="7" width="8.5" height="8" rx="3"/><path d="M10.5 10c.9-.8 2.1-.8 3 0"/></symbol>
+  <symbol id="i-lens" viewBox="0 0 24 24"><path d="M9 3c-3 3-3 15 0 18h3c-2-3-2-15 0-18Z"/><path d="M15 12h6"/><path d="M3 12h3"/></symbol>
+  <symbol id="i-tools" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 7h8"/><path d="M8 11h2M12 11h2M16 11h0"/><path d="M8 15h2M12 15h2M8 18h2M12 18h4"/></symbol>
+  <symbol id="i-quiz" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.7"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="/" aria-label="SDO Toolkit — home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" class="bm-ring"/><path class="bm-lens" d="M24 14c-6 6-6 30 0 36h6c-4-6-4-30 0-36Z"/><path class="bm-ray" d="M6 26h18M6 38h18M30 26l28 9M30 38l28-3"/></svg>
+      </span>
+      <span class="brand-txt"><b>SDO</b> Toolkit<small>Year 1 · ABDO 2023</small></span>
+    </a>
+    <div class="top-right">
+      <div class="mode" role="tablist" aria-label="Mode">
+        <button role="tab" data-mode="tools" aria-selected="true"><svg class="ico"><use href="#i-tools"/></svg><span>Tools</span></button>
+        <button role="tab" data-mode="quiz" aria-selected="false"><svg class="ico"><use href="#i-quiz"/></svg><span>Quiz</span></button>
+      </div>
+      <button class="icon-btn" id="theme" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+        <svg class="ico ico-sun"><use href="#i-sun"/></svg><svg class="ico ico-moon"><use href="#i-moon"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+<!-- =================================== TOOLS =================================== -->
+<div id="mode-tools">
+  <section class="banner" aria-label="Welcome">
+    <div class="hero-txt">
+      <span class="hero-kicker">Year 1 · single vision</span>
+      <h1>Dispensing maths,<br>step by step.</h1>
+      <p>Type a prescription once and every tool uses it. Each answer shows its working, so you can check your own.</p>
+    </div>
+    <svg class="hero-art" viewBox="0 0 320 180" aria-hidden="true">
+      <defs>
+        <linearGradient id="hg-lens" x1="0" x2="1"><stop offset="0" stop-color="#16f9cb" stop-opacity=".95"/><stop offset="1" stop-color="#16f9cb" stop-opacity=".55"/></linearGradient>
+        <radialGradient id="hg-glow" cx=".72" cy=".5" r=".5"><stop offset="0" stop-color="#16f9cb" stop-opacity=".45"/><stop offset="1" stop-color="#16f9cb" stop-opacity="0"/></radialGradient>
+      </defs>
+      <circle cx="232" cy="90" r="80" fill="url(#hg-glow)"/>
+      <g class="ha-rays">
+        <path d="M0 50H140L232 90"/><path d="M0 70H140L232 90"/><path d="M0 90H232"/><path d="M0 110H140L232 90"/><path d="M0 130H140L232 90"/>
+      </g>
+      <path class="ha-lens" d="M140 22c-20 22-20 114 0 136 20-22 20-114 0-136Z" fill="url(#hg-lens)"/>
+      <line class="ha-axis" x1="0" y1="90" x2="320" y2="90"/>
+      <circle class="ha-focus" cx="232" cy="90" r="5"/>
+      <text class="ha-lbl" x="232" y="118" text-anchor="middle">F′</text>
+    </svg>
+  </section>
+
+  <button class="rx-mini" id="rx-mini" type="button" aria-label="Edit the prescription"></button>
+  <div class="layout">
+  <aside class="side">
+  <section class="card rx-card" aria-labelledby="rx-h">
+    <div class="rx-head">
+      <h2 id="rx-h">Prescription</h2>
+      <div class="rx-tools">
+        <select id="example" aria-label="Load an example prescription">
+          <option value="">Examples…</option>
+          <option value="myope">Myope</option>
+          <option value="hyper">Hypermetrope</option>
+          <option value="wtr">With-the-rule astigmat</option>
+          <option value="mixed">Mixed astigmatism</option>
+          <option value="aniso">Anisometrope</option>
+        </select>
+        <button class="btn ghost sq" id="copy-rl" type="button" title="Copy right eye to left eye" aria-label="Copy right eye to left eye"><svg class="ico"><use href="#i-copy"/></svg></button>
+        <button class="btn ghost sq" id="clear-rx" type="button" title="Clear the prescription" aria-label="Clear the prescription"><svg class="ico"><use href="#i-reset"/></svg></button>
+      </div>
+    </div>
+    <div class="rx-grid" role="group" aria-label="Prescription entry">
+      <span></span><span class="col-h">Sph</span><span class="col-h">Cyl</span><span class="col-h">Axis</span>
+      <span class="eye-tag r">R</span>
+      <div class="pw"><button type="button" class="sign" data-for="R-sph" tabindex="-1" aria-label="Flip sign">±</button><input id="R-sph" data-kind="pow" inputmode="decimal" autocomplete="off" aria-label="Right sphere"></div>
+      <div class="pw"><button type="button" class="sign" data-for="R-cyl" tabindex="-1" aria-label="Flip sign">±</button><input id="R-cyl" data-kind="pow" inputmode="decimal" autocomplete="off" aria-label="Right cylinder"></div>
+      <div class="pw ax"><input id="R-axis" data-kind="axis" inputmode="numeric" autocomplete="off" aria-label="Right axis"></div>
+      <span class="eye-tag l">L</span>
+      <div class="pw"><button type="button" class="sign" data-for="L-sph" tabindex="-1" aria-label="Flip sign">±</button><input id="L-sph" data-kind="pow" inputmode="decimal" autocomplete="off" aria-label="Left sphere"></div>
+      <div class="pw"><button type="button" class="sign" data-for="L-cyl" tabindex="-1" aria-label="Flip sign">±</button><input id="L-cyl" data-kind="pow" inputmode="decimal" autocomplete="off" aria-label="Left cylinder"></div>
+      <div class="pw ax"><input id="L-axis" data-kind="axis" inputmode="numeric" autocomplete="off" aria-label="Left axis"></div>
+    </div>
+    <p class="rx-msg" id="rx-msg" aria-live="polite"></p>
+  </section>
+
+  </aside>
+  <div class="workspace">
+  <nav class="tabs" aria-label="Tools">
+    <div class="tabs-in" role="tablist">
+      <button role="tab" data-tab="overview"><svg class="ico"><use href="#i-eye"/></svg>Rx</button>
+      <button role="tab" data-tab="transpose"><svg class="ico"><use href="#i-swap"/></svg>Transpose</button>
+      <button role="tab" data-tab="prism"><svg class="ico"><use href="#i-prism"/></svg>Prisms</button>
+      <button role="tab" data-tab="frame"><svg class="ico"><use href="#i-frame"/></svg>Centration</button>
+      <button role="tab" data-tab="thick"><svg class="ico"><use href="#i-lens"/></svg>Thickness</button>
+    </div>
+  </nav>
+
+  <!-- RX -->
+  <section class="panel" id="p-overview" role="tabpanel">
+    <div class="grid two" id="ov-eyes"></div>
+    <div id="ov-summary"></div>
+  </section>
+
+  <!-- TRANSPOSE -->
+  <section class="panel" id="p-transpose" role="tabpanel" hidden>
+    <div class="subnav" data-group="tr"><button data-sub="forms" class="on">Sph-cyl forms</button><button data-sub="toric">Toric lenses</button></div>
+    <div class="card" data-sub="forms" id="tr-forms"></div>
+    <div class="card" data-sub="toric" hidden>
+      <div class="card-head"><h3>Toric transposition <span class="ref">Unit 2 · D5–D6</span></h3>
+        <div class="seg" data-name="tor-eye"><button data-v="R" class="on">R</button><button data-v="L">L</button></div></div>
+      <div class="fields four">
+        <div class="field"><span>Given</span>
+          <div class="seg wide" data-name="tor-mode"><button data-v="base" class="on">Base curve</button><button data-v="sph">Sphere curve</button></div></div>
+        <label class="field"><span id="tor-val-lbl">Base curve</span><span class="unit-in"><input id="tor-val" inputmode="decimal" value="6.00"><i>D</i></span></label>
+        <div class="field span2"><span>Toric surface</span>
+          <div class="seg wide" data-name="tor-side"><button data-v="back" class="on">Minus toric (back)</button><button data-v="front">Plus toric (front)</button></div></div>
+      </div>
+      <div id="tr-toric"></div>
+    </div>
+  </section>
+
+  <!-- PRISMS -->
+  <section class="panel" id="p-prism" role="tabpanel" hidden>
+    <div class="subnav" data-group="pr">
+      <button data-sub="prentice" class="on">Prentice</button><button data-sub="decentre">Decentration</button><button data-sub="compound">Compound</button><button data-sub="resolve">Resolve</button><button data-sub="split">Split</button><button data-sub="diff">Differential</button><button data-sub="basics">Prism basics</button>
+    </div>
+    <div class="card" data-sub="prentice">
+      <div class="card-head"><h3>Prismatic effect at a point <span class="ref">Unit 2 · G11</span></h3>
+        <div class="seg" data-name="pe-eye"><button data-v="R" class="on">R</button><button data-v="L">L</button></div></div>
+      <p class="hint">Where is the eye looking, relative to the lens's optical centre?</p>
+      <div class="fields four">
+        <label class="field"><span>Horizontal</span><span class="unit-in"><input id="pe-h" inputmode="decimal" value="0"><i>mm</i></span></label>
+        <div class="field"><span>&nbsp;</span><div class="seg wide" data-name="pe-hdir"><button data-v="in" class="on">In (nasal)</button><button data-v="out">Out</button></div></div>
+        <label class="field"><span>Vertical</span><span class="unit-in"><input id="pe-v" inputmode="decimal" value="10"><i>mm</i></span></label>
+        <div class="field"><span>&nbsp;</span><div class="seg wide" data-name="pe-vdir"><button data-v="down" class="on">Down</button><button data-v="up">Up</button></div></div>
+      </div>
+      <div id="pe-out"></div>
+    </div>
+    <div class="card" data-sub="decentre" hidden>
+      <div class="card-head"><h3>Decentration to produce prism <span class="ref">Unit 2 · G12</span></h3>
+        <div class="seg" data-name="dc-eye"><button data-v="R" class="on">R</button><button data-v="L">L</button></div></div>
+      <p class="hint">Prescribed prism for this eye — how far must the optical centre move from the pupil?</p>
+      <div class="fields four">
+        <label class="field"><span>Horizontal prism</span><span class="unit-in"><input id="dc-h" inputmode="decimal" value="1"><i>Δ</i></span></label>
+        <div class="field"><span>&nbsp;</span><div class="seg wide" data-name="dc-hdir"><button data-v="in" class="on">Base in</button><button data-v="out">Base out</button></div></div>
+        <label class="field"><span>Vertical prism</span><span class="unit-in"><input id="dc-v" inputmode="decimal" value="0"><i>Δ</i></span></label>
+        <div class="field"><span>&nbsp;</span><div class="seg wide" data-name="dc-vdir"><button data-v="up" class="on">Base up</button><button data-v="down">Base down</button></div></div>
+      </div>
+      <div id="dc-out"></div>
+    </div>
+    <div class="card" data-sub="compound" hidden>
+      <div class="card-head"><h3>Compound two prisms <span class="ref">Unit 2 · G7</span></h3>
+        <div class="seg" data-name="cp-eye"><button data-v="R" class="on">R</button><button data-v="L">L</button></div></div>
+      <div class="fields four">
+        <label class="field"><span>Horizontal</span><span class="unit-in"><input id="cp-h" inputmode="decimal" value="3"><i>Δ</i></span></label>
+        <div class="field"><span>&nbsp;</span><div class="seg wide" data-name="cp-hdir"><button data-v="in" class="on">Base in</button><button data-v="out">Base out</button></div></div>
+        <label class="field"><span>Vertical</span><span class="unit-in"><input id="cp-v" inputmode="decimal" value="2"><i>Δ</i></span></label>
+        <div class="field"><span>&nbsp;</span><div class="seg wide" data-name="cp-vdir"><button data-v="up" class="on">Base up</button><button data-v="down">Base down</button></div></div>
+      </div>
+      <div id="cp-out"></div>
+    </div>
+    <div class="card" data-sub="resolve" hidden>
+      <div class="card-head"><h3>Resolve a prism <span class="ref">Unit 2 · G8</span></h3>
+        <div class="seg" data-name="rs-eye"><button data-v="R" class="on">R</button><button data-v="L">L</button></div></div>
+      <div class="fields four">
+        <label class="field"><span>Prism</span><span class="unit-in"><input id="rs-p" inputmode="decimal" value="4"><i>Δ</i></span></label>
+        <label class="field"><span>Base direction (360°)</span><span class="unit-in"><input id="rs-a" inputmode="numeric" value="45"><i>°</i></span></label>
+      </div>
+      <div id="rs-out"></div>
+    </div>
+    <div class="card" data-sub="split" hidden>
+      <div class="card-head"><h3>Split prism between the eyes <span class="ref">Unit 2 · G9</span></h3></div>
+      <div class="fields four">
+        <label class="field"><span>Total horizontal</span><span class="unit-in"><input id="sp-h" inputmode="decimal" value="4"><i>Δ</i></span></label>
+        <div class="field"><span>&nbsp;</span><div class="seg wide" data-name="sp-hdir"><button data-v="in" class="on">Base in</button><button data-v="out">Base out</button></div></div>
+        <label class="field"><span>Total vertical</span><span class="unit-in"><input id="sp-v" inputmode="decimal" value="0"><i>Δ</i></span></label>
+        <div class="field"><span>&nbsp;</span><div class="seg wide" data-name="sp-vdir"><button data-v="upR" class="on">Base up R</button><button data-v="downR">Base down R</button></div></div>
+      </div>
+      <div id="sp-out"></div>
+    </div>
+    <div class="card" data-sub="diff" hidden>
+      <div class="card-head"><h3>Differential prism <span class="ref">Unit 2 · G14–G15</span></h3></div>
+      <p class="hint">Both eyes look the same distance away from their optical centres — what's the prism difference between them?</p>
+      <div class="fields four">
+        <label class="field"><span>Below the OCs</span><span class="unit-in"><input id="bi-down" inputmode="decimal" value="10"><i>mm</i></span></label>
+        <label class="field"><span>…and in, per eye</span><span class="unit-in"><input id="bi-in" inputmode="decimal" value="0"><i>mm</i></span></label>
+      </div>
+      <div id="bi-out"></div>
+    </div>
+    <div data-sub="basics" hidden>
+      <div class="grid two">
+        <div class="card">
+          <div class="card-head"><h3>Small-angled prism <span class="ref">Unit 2 · G2–G4</span></h3></div>
+          <div class="fields two">
+            <label class="field"><span>Apical angle a</span><span class="unit-in"><input id="pb-a" inputmode="decimal" value="5"><i>°</i></span></label>
+            <label class="field"><span>Refractive index n</span><span class="unit-in"><input id="pb-n" inputmode="decimal" value="1.523"><i>n</i></span></label>
+          </div>
+          <div id="pb-out"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Prism thickness difference <span class="ref">Unit 2 · G6</span></h3></div>
+          <div class="fields two">
+            <label class="field"><span>Prism power P</span><span class="unit-in"><input id="pg-p" inputmode="decimal" value="3"><i>Δ</i></span></label>
+            <label class="field"><span>Lens diameter d</span><span class="unit-in"><input id="pg-d" inputmode="decimal" value="50"><i>mm</i></span></label>
+            <label class="field"><span>Refractive index n</span><span class="unit-in"><input id="pg-n" inputmode="decimal" value="1.498"><i>n</i></span></label>
+          </div>
+          <div id="pg-out"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CENTRATION -->
+  <section class="panel" id="p-frame" role="tabpanel" hidden>
+    <div class="card">
+      <div class="card-head"><h3>Centration &amp; minimum size uncut <span class="ref">Unit 4 · B1 · Unit 2 · G13</span></h3></div>
+      <div class="fields four">
+        <label class="field"><span>A — horizontal size</span><span class="unit-in"><input id="fr-a" inputmode="decimal" value="50"><i>mm</i></span></label>
+        <label class="field"><span>B — vertical size</span><span class="unit-in"><input id="fr-b" inputmode="decimal" value="40"><i>mm</i></span></label>
+        <label class="field"><span>DBL</span><span class="unit-in"><input id="fr-dbl" inputmode="decimal" value="20"><i>mm</i></span></label>
+        <label class="field"><span>Allowance <em>(if used)</em></span><span class="unit-in"><input id="fr-allow" inputmode="decimal" value="0"><i>mm</i></span></label>
+        <label class="field"><span>Mono PD — R</span><span class="unit-in"><input id="fr-pdr" inputmode="decimal" value="32"><i>mm</i></span></label>
+        <label class="field"><span>Mono PD — L</span><span class="unit-in"><input id="fr-pdl" inputmode="decimal" value="32"><i>mm</i></span></label>
+        <label class="field"><span>OC height — R</span><span class="unit-in"><input id="fr-hr" inputmode="decimal" value="22"><i>mm</i></span></label>
+        <label class="field"><span>OC height — L</span><span class="unit-in"><input id="fr-hl" inputmode="decimal" value="22"><i>mm</i></span></label>
+      </div>
+      <p class="hint">Heights from the lower box line. Year 1 method (round/oval lenses): MSU = horizontal size + 2 × resultant decentration.</p>
+    </div>
+    <div id="fr-out"></div>
+  </section>
+
+  <!-- THICKNESS -->
+  <section class="panel" id="p-thick" role="tabpanel" hidden>
+    <div class="subnav" data-group="th"><button data-sub="thick" class="on">Lens thickness</button><button data-sub="measure">Lens measure</button><button data-sub="materials">Materials</button></div>
+    <div data-sub="thick">
+      <div class="card">
+        <div class="card-head"><h3>Centre &amp; edge thickness <span class="ref">Unit 2 · F3–F4</span></h3>
+          <div class="seg" data-name="th-eye"><button data-v="R" class="on">R</button><button data-v="L">L</button></div></div>
+        <div class="fields four">
+          <label class="field"><span>Refractive index n</span><span class="unit-in"><input id="th-n" inputmode="decimal" value="1.498"><i>n</i></span></label>
+          <label class="field"><span>Lens diameter</span><span class="unit-in"><input id="th-dia" inputmode="decimal" value="50"><i>mm</i></span></label>
+          <label class="field"><span>Front surface F₁</span><span class="unit-in"><input id="th-f1" inputmode="decimal" value="6.00"><i>D</i></span></label>
+          <div class="field"><span>&nbsp;</span><button class="btn ghost full" id="th-from-frame" type="button" title="Diameter = horizontal size + 2 × resultant decentration, from Centration">Use frame size</button></div>
+          <label class="field"><span>Min centre (minus)</span><span class="unit-in"><input id="th-ct" inputmode="decimal" value="2.0"><i>mm</i></span></label>
+          <label class="field"><span>Min edge (plus)</span><span class="unit-in"><input id="th-et" inputmode="decimal" value="1.0"><i>mm</i></span></label>
+        </div>
+        <p class="hint">CR39 1.498 · crown glass 1.523 · polycarbonate 1.586 · 1.6 resin 1.60</p>
+      </div>
+      <div id="th-out"></div>
+    </div>
+    <div class="card" data-sub="measure" hidden>
+      <div class="card-head"><h3>Lens measure correction <span class="ref">Unit 2 · F1–F2</span></h3></div>
+      <div class="fields four">
+        <label class="field"><span>Reading</span><span class="unit-in"><input id="lm-r" inputmode="decimal" value="6.00"><i>D</i></span></label>
+        <label class="field"><span>Calibrated for</span><span class="unit-in"><input id="lm-nc" inputmode="decimal" value="1.523"><i>n</i></span></label>
+        <label class="field"><span>Lens material</span><span class="unit-in"><input id="lm-n" inputmode="decimal" value="1.498"><i>n</i></span></label>
+      </div>
+      <div id="lm-out"></div>
+    </div>
+    <div class="card" data-sub="materials" hidden>
+      <div class="card-head"><h3>Lens materials <span class="ref">Unit 2 · A1–A3</span></h3></div>
+      <div id="mt-table"></div>
+    </div>
+  </section>
+  </div>
+  </div>
+</div>
+
+<!-- =================================== QUIZ =================================== -->
+<div id="mode-quiz" hidden>
+  <div id="quiz-root"></div>
+</div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <footer class="foot">
+    <p><b>Learning aid.</b> Year 1 only, mapped to the ABDO Level 6 Diploma 2023 syllabus. Check every result against your own working and your course notes.</p>
+    <p class="made">Made at home for Marta · <span class="mg">martigor</span></p>
+  </footer>
+</main>
+</body>
+</html>
