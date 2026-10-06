@@ -724,3 +724,23 @@
   window.SDO = { toast, sgn, num, rxS, normAx, axS, deg, se, principal, transpose, toMinus, toPlus, hasCyl, powerAt, prismAt, prismParts, hTxt, vTxt, resTxt, classify, farPoint, sagAcc, sagApp, f, store, mm, pr };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
+
+// v7 · ATLAS house style: time-of-day sky, entrance only once, pointer-lit cards
+(function () {
+  const root = document.documentElement;
+  const tod = () => { const h = new Date().getHours(); root.dataset.tod = h >= 5 && h < 8 ? 'dawn' : h >= 8 && h < 17 ? 'day' : h >= 17 && h < 21 ? 'dusk' : 'night'; };
+  tod(); setInterval(tod, 60000);
+  setTimeout(() => root.classList.add('ready'), matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1900);
+  let raf = 0, mx = 0, my = 0;
+  addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse') return; mx = e.clientX; my = e.clientY; if (raf) return;
+    raf = requestAnimationFrame(() => {
+      raf = 0;
+      for (const c of document.querySelectorAll('.card')) {
+        const r = c.getBoundingClientRect();
+        if (r.bottom < -400 || r.top > innerHeight + 400) continue;
+        c.style.setProperty('--mx', (mx - r.left) + 'px'); c.style.setProperty('--my', (my - r.top) + 'px');
+      }
+    });
+  }, { passive: true });
+})();
