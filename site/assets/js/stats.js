@@ -5,6 +5,6 @@
   var s = document.createElement('script');
   s.defer = true;
   s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
-  s.setAttribute('data-cf-beacon', '{"token":"ec1886d5bbd04cf69e6b0555aa73a05c"}');
+  s.setAttribute('data-cf-beacon', '{"token":"82a3a96ad98c4aaeb051dc49409f219b"}');
   document.head.appendChild(s);
 })();
