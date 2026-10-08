@@ -682,3 +682,74 @@ html:not(.ready) .side .card, html:not(.ready) .workspace > .tabs { animation: s
 .ref { border: 1px solid rgb(22 249 203 / .3); }
 
 @media (prefers-reduced-motion: reduce) { .sky, .sky i { animation: none !important; } }
+
+/* ===================== v8: Weeks (the Year 1 timetable as the way in) ===================== */
+.wk-hero { grid-template-columns: minmax(0, 1.4fr) minmax(0, .8fr); align-items: center; }
+.wk-hero h1 em { font-style: normal; color: var(--accent); }
+.wk-cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.wk-side { display: grid; gap: 8px; }
+.wk-ms { display: grid; gap: 2px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: rgb(255 255 255 / .04); }
+.wk-ms b { color: var(--accent); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+.wk-ms span { color: var(--ink); font-weight: 650; }
+.wk-ms small { color: var(--muted); font-size: 12px; }
+@media (max-width: 719px) { .wk-hero { grid-template-columns: 1fr; } .wk-side { grid-template-columns: 1fr 1fr; } }
+.wk-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
+.wk { display: grid; align-content: start; gap: 5px; text-align: left; padding: 14px 15px 12px; min-height: 118px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow); font: inherit; color: var(--text); position: relative; overflow: hidden; transition: transform .15s var(--ease), border-color .15s; }
+.wk::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--k, var(--line-2)); opacity: .9; }
+.wk:hover { transform: translateY(-2px); border-color: var(--accent); }
+.wk-n { font-size: 11px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.wk-t { color: var(--ink); font-weight: 650; font-size: 14px; line-height: 1.3; }
+.wk-f { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: auto; font-size: 12px; color: var(--muted); }
+.wk-f i { font-style: normal; font-weight: 700; color: var(--accent); }
+.wk.past { opacity: .72; }
+.wk.now { border-color: rgb(22 249 203 / .6); box-shadow: inset 0 0 0 1px rgb(22 249 203 / .5), 0 18px 40px -24px rgb(22 249 203 / .7); }
+.wk.now .wk-f span { color: var(--accent); font-weight: 700; }
+.wk.locked { opacity: .5; }
+.wk.locked .wk-t { color: var(--text); }
+.k-maths { --k: #fbbf24; } .k-study { --k: #a78bfa; } .k-care { --k: #a78bfa; } .k-optics { --k: #7aa7ff; } .k-lenses { --k: #16f9cb; } .k-ca { --k: #e0474c; }
+.wk-foot { color: var(--muted); font-size: 13px; margin: 18px 2px 0; }
+.wk-head { margin: 6px 2px 18px; padding-left: 16px; border-left: 4px solid var(--k, var(--line-2)); }
+.wk-head h1 { font-size: clamp(22px, 4.5vw, 30px); font-weight: 750; letter-spacing: -.015em; line-height: 1.15; margin: 4px 0 8px; }
+.wk-head p { color: var(--text); }
+.wk-head .ref { margin-right: 4px; }
+.wk-note { color: var(--accent); font-weight: 650; margin-top: 6px; }
+.wk-st { font-weight: 750; }
+.wk-st.now { color: var(--accent); }
+.wk-sec .card-head h3 { display: inline-flex; align-items: center; gap: 8px; }
+.wk-sec .card-head h3 .ico { stroke: var(--accent); }
+.wk-key p, .theory p { margin: 0 0 10px; line-height: 1.6; }
+.wk-key ul, .theory ul, .theory ol { padding-left: 20px; margin: 0 0 10px; display: grid; gap: 7px; line-height: 1.55; }
+.wk-key li b, .theory b, .theory strong { color: var(--ink); }
+.wk-key i { font-style: normal; font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-size: 13px; background: var(--surface-2); border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; color: var(--ink); }
+.wk-tools { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.wk-tool { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: rgb(255 255 255 / .04); color: var(--ink); font: inherit; font-weight: 600; font-size: 14px; text-align: left; transition: border-color .15s, background .2s; }
+.wk-tool .ico { flex: none; stroke: var(--accent); }
+.wk-tool span { flex: 1; min-width: 0; }
+.wk-tool b { color: var(--accent); }
+.wk-tool:hover { border-color: var(--accent); background: var(--accent-soft); }
+.wk-nav { display: flex; justify-content: space-between; gap: 10px; margin: 8px 0 24px; }
+/* college notes (private copy only): the chapters as they were written, with their diagrams in place */
+.theory { color: var(--text); }
+.theory details { border: 1px solid var(--line); border-radius: 14px; margin: 0 0 10px; background: rgb(255 255 255 / .03); }
+.theory details[open] { background: rgb(255 255 255 / .045); }
+.theory summary { cursor: pointer; list-style: none; padding: 12px 14px; font-weight: 700; color: var(--ink); display: flex; gap: 10px; align-items: center; }
+.theory summary::-webkit-details-marker { display: none; }
+.theory summary::before { content: "+"; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 7px; background: var(--accent-soft); color: var(--ink); font-size: 14px; flex: none; }
+.theory details[open] summary::before { content: "−"; }
+.theory .ch-body { padding: 2px 16px 14px; }
+.theory h1, .theory h2, .theory h3, .theory h4 { font-size: 16px; margin: 14px 0 6px; }
+.theory h2 { font-size: 18px; }
+.theory img { display: block; max-width: 100%; height: auto; margin: 12px auto; border-radius: 10px; background: #fff; padding: 6px; }
+.theory table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 14px; display: block; overflow-x: auto; }
+.theory th, .theory td { border: 1px solid var(--line); padding: 7px 9px; text-align: left; vertical-align: top; }
+.theory th { color: var(--ink); background: var(--surface-2); }
+.theory a { color: var(--accent); }
+.theory blockquote { border-left: 3px solid var(--accent); margin: 10px 0; padding: 4px 12px; color: var(--ink); }
+.theory sub, .theory sup { font-size: .75em; }
+.theory .mjx-container, .theory math { overflow-x: auto; }
+@media (max-width: 719px) { .wk-head { padding-left: 12px; } .wk-nav { margin-bottom: 96px; } }
+/* three modes on a narrow phone: only the selected one keeps its label */
+@media (max-width: 480px) { .mode button span { display: none; } .mode button[aria-selected="true"] span { display: inline; } .mode button { padding: 0 10px; } .mode button[aria-selected="true"] { padding: 0 12px; } }
+.theory .box { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin: 10px 0; background: rgb(255 255 255 / .035); }
+.theory .embed-note { color: var(--muted); font-size: 13px; font-style: italic; border: 1px dashed var(--line-2); border-radius: 10px; padding: 8px 12px; }
+.college-notes > .embed-note { border: 0; padding: 0 0 8px; }

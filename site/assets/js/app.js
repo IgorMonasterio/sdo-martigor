@@ -607,18 +607,22 @@
   const RENDER = { overview: renderOverview, transpose: renderTranspose, prism: () => { renderPrism(); renderBino(); }, frame: renderFrame, thick: () => { renderThick(); renderMaterials(); } };
   let active = 'overview';
   function renderActive() { try { RENDER[active](); } catch (err) { console.error(err); } }
+  const MODES = ['tools', 'quiz', 'weeks'];
   function setMode(m, push = true) {
-    const quiz = m === 'quiz';
-    $('#mode-tools').hidden = quiz; $('#mode-quiz').hidden = !quiz;
+    if (!MODES.includes(m)) m = 'tools';
+    MODES.forEach((k) => { const el = $(`#mode-${k}`); if (el) el.hidden = k !== m; });
     $$('.mode button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.mode === m)));
-    if (quiz) { if (push) history.replaceState(null, '', '#quiz'); window.SDOQuiz?.show(); }
+    if (m === 'quiz') { if (push) history.replaceState(null, '', '#quiz'); window.SDOQuiz?.show(); }
+    else if (m === 'weeks') { if (push) history.replaceState(null, '', '#weeks'); window.SDOWeeks?.show(); }
     else if (push) history.replaceState(null, '', active === 'overview' ? location.pathname : `#${active}`);
     store.set('sdo-mode', m);
     window.scrollTo({ top: 0 });
   }
   function show(tab, push = true) {
     if (tab === 'quiz') { setMode('quiz', push); return; }
-    if (!$('#mode-quiz').hidden) setMode('tools', false);
+    const wk = /^weeks?(?:-(\d+))?$/.exec(tab);
+    if (wk) { setMode('weeks', false); window.SDOWeeks?.open(wk[1] ? Number(wk[1]) : null, push); return; }
+    if ($('#mode-tools').hidden) setMode('tools', false);
     if (tab === 'bino') tab = 'prism';
     if (!RENDER[tab]) tab = 'overview';
     active = tab;
@@ -718,10 +722,15 @@
       const next = cur === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next); store.set('sdo-theme', next);
     });
-    show(location.hash.slice(1) || store.get('sdo-tab') || 'overview', false);
-    if (location.hash === '#quiz') setMode('quiz', false);
+    const h = location.hash.slice(1);
+    if (h) show(h, false);
+    else { const m = store.get('sdo-mode') || 'weeks'; if (m === 'tools') show(store.get('sdo-tab') || 'overview', false); else setMode(m, false); }
   }
-  window.SDO = { toast, sgn, num, rxS, normAx, axS, deg, se, principal, transpose, toMinus, toPlus, hasCyl, powerAt, prismAt, prismParts, hTxt, vTxt, resTxt, classify, farPoint, sagAcc, sagApp, f, store, mm, pr };
+  function go(tab, sub) {
+    show(tab);
+    if (sub) { const b = $(`.subnav button[data-sub="${sub}"]`, $(`#p-${tab}`)); if (b && !b.classList.contains('on')) b.click(); }
+  }
+  window.SDO = { toast, go, setMode, sgn, num, rxS, normAx, axS, deg, se, principal, transpose, toMinus, toPlus, hasCyl, powerAt, prismAt, prismParts, hTxt, vTxt, resTxt, classify, farPoint, sagAcc, sagApp, f, store, mm, pr };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 

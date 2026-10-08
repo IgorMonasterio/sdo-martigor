@@ -472,6 +472,6 @@
     else if (ev.key === 'Enter' && $('.q-next')) $('.q-next').click();
   });
 
-  window.SDOQuiz = { show() { if (!run) home(); }, _topics: TOPICS, _make: makeQ };
+  window.SDOQuiz = { show() { if (!run) home(); }, start, best: (id) => load()[id] || null, _topics: TOPICS, _make: makeQ };
   if (!$('#mode-quiz').hidden) home(); // app.js may have switched to quiz mode before this file loaded
 })();
