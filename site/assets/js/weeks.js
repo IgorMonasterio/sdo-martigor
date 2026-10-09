@@ -8,6 +8,8 @@
   if (!S) return;
   const $ = (s, r = document) => r.querySelector(s);
   const root = () => $('#weeks-root');
+  // only a private copy (iris.martigor.org) or a local preview ever asks for college material; the public site does not even try
+  const PRIVATE = /^(iris\.martigor\.org|127\.0\.0\.1|localhost)$/.test(location.hostname);
 
   /* ---------- the timetable (Year 1 Diploma 2026-27; each week's work is due on the Tuesday at 13:59) ---------- */
   // tools: [tab, sub, label] → opens that calculator. quiz: topic ids from quiz.js.
@@ -195,8 +197,6 @@
 
   /* ---------- private college notes (served only on a private copy; never on the public site) ---------- */
   const notes = new Map();
-  // only a private copy (iris.martigor.org) or a local preview ever asks for them; the public site does not even try
-  const PRIVATE = /^(iris\.martigor\.org|127\.0\.0\.1|localhost)$/.test(location.hostname);
   async function loadNotes(n) {
     if (!PRIVATE) return null;
     if (notes.has(n)) return notes.get(n);
@@ -228,9 +228,39 @@
         <div class="wk-side">${soonM.map(([d, a, b]) => `<div class="wk-ms"><b>${fmt(d)}</b><span>${a}</span><small>${b}</small></div>`).join('')}</div></section>
       <h2 class="q-unit">Autumn · Weeks 1–15</h2><div class="wk-grid">${WEEKS.slice(0, 15).map(tile).join('')}</div>
       <h2 class="q-unit">Spring · Weeks 16–32</h2><div class="wk-grid">${WEEKS.slice(15).map(tile).join('')}</div>
+      <div id="wk-books"></div>
       <p class="wk-foot" id="wk-locked">Weeks open on the college timetable, roughly two weeks before they are due. Dates are the published 2026-27 timetable; your college's page is the one that counts.</p>`;
     if (push) history.replaceState(null, '', '#weeks');
     window.scrollTo({ top: 0 });
+    shelf().then((books) => {
+      const el = $('#wk-books'); if (!el || !books.length || current) return;
+      el.innerHTML = `<h2 class="q-unit">Your books · private copy</h2><div class="wk-grid">${books.map((b) => `<button class="wk bk u${b.unit}" data-book="${b.slug}">
+        <span class="wk-n">Unit ${b.unit}</span><span class="wk-t">${b.title}</span><span class="wk-f"><span>${b.author}</span><i>${b.chapters} ch.</i></span></button>`).join('')}</div>`;
+    });
+  }
+
+  /* ---------- e-books (private copy only: the college's licensed books, never on the public site) ---------- */
+  let books = null;
+  async function shelf() {
+    if (!PRIVATE) return [];
+    if (books) return books;
+    try { const r = await fetch('/assets/books/index.json', { cache: 'no-cache' }); books = r.ok ? await r.json() : []; } catch { books = []; }
+    return books;
+  }
+  async function openBook(slug, push = true) {
+    const b = (await shelf()).find((x) => x.slug === slug);
+    if (!b) return home(push);
+    current = `book:${slug}`;
+    root().innerHTML = `<div class="q-top"><button class="btn ghost sq" data-act="home" aria-label="All weeks"><svg class="ico"><use href="#i-back"/></svg></button>
+        <div class="q-meta"><span>Your books</span><b>${b.chapters} chapters</b></div></div>
+      <header class="wk-head k-${b.unit === 2 ? 'lenses' : b.unit === 1 ? 'optics' : 'care'}"><span class="hero-kicker">Unit ${b.unit} · e-book from your college</span><h1>${b.title}</h1><p>${b.author}</p></header>
+      <section class="card wk-sec"><div class="theory" id="bk-body"><p class="embed-note">Loading…</p></div></section>`;
+    if (push) history.replaceState(null, '', `#book-${slug}`);
+    window.scrollTo({ top: 0 });
+    let html = '';
+    try { const r = await fetch(`/assets/books/${slug}/index.html`, { cache: 'no-cache' }); if (r.ok) html = await r.text(); } catch { html = ''; }
+    if (current !== `book:${slug}`) return;
+    $('#bk-body').innerHTML = html.includes('data-sdo-book') ? html : '<p class="embed-note">This book is not available here.</p>';
   }
   async function open(n, push = true) {
     const w = WEEKS.find((x) => x.n === n);
@@ -262,14 +292,15 @@
 
   document.addEventListener('click', (ev) => {
     if (!root() || root().closest('[hidden]')) return;
-    const t = ev.target.closest('[data-week], [data-act], [data-go], [data-quiz]');
+    const t = ev.target.closest('[data-week], [data-act], [data-go], [data-quiz], [data-book]');
     if (!t || !root().contains(t)) return;
-    if (t.dataset.week) open(Number(t.dataset.week));
+    if (t.dataset.book) openBook(t.dataset.book);
+    else if (t.dataset.week) open(Number(t.dataset.week));
     else if (t.dataset.act === 'home') home();
     else if (t.dataset.go) { const [tab, sub] = t.dataset.go.split(':'); S.go(tab, sub); }
     else if (t.dataset.quiz) { window.SDOQuiz?.start(t.dataset.quiz); S.setMode('quiz'); }
   });
 
-  window.SDOWeeks = { show() { if (current) open(current, false); else home(false); }, open(n, push = true) { n ? open(n, push) : home(push); }, _weeks: WEEKS };
-  if (!$('#mode-weeks').hidden) { const m = /^#week-(\d+)$/.exec(location.hash); m ? open(Number(m[1]), false) : home(false); }
+  window.SDOWeeks = { show() { if (typeof current === 'string') openBook(current.slice(5), false); else if (current) open(current, false); else home(false); }, open(n, push = true) { n ? open(n, push) : home(push); }, book: openBook, _weeks: WEEKS };
+  if (!$('#mode-weeks').hidden) { const m = /^#week-(\d+)$/.exec(location.hash), k = /^#book-([a-z0-9-]+)$/.exec(location.hash); k ? openBook(k[1], false) : m ? open(Number(m[1]), false) : home(false); }
 })();

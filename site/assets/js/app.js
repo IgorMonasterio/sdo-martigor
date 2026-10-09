@@ -622,6 +622,8 @@
     if (tab === 'quiz') { setMode('quiz', push); return; }
     const wk = /^weeks?(?:-(\d+))?$/.exec(tab);
     if (wk) { setMode('weeks', false); window.SDOWeeks?.open(wk[1] ? Number(wk[1]) : null, push); return; }
+    const bk = /^book-([a-z0-9-]+)$/.exec(tab);
+    if (bk) { setMode('weeks', false); window.SDOWeeks?.book(bk[1], push); return; }
     if ($('#mode-tools').hidden) setMode('tools', false);
     if (tab === 'bino') tab = 'prism';
     if (!RENDER[tab]) tab = 'overview';

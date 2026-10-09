@@ -756,3 +756,8 @@ html:not(.ready) .side .card, html:not(.ready) .workspace > .tabs { animation: s
 .theory .cols { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 14px; align-items: start; margin: 10px 0; }
 .theory .cols > div > img:only-child { margin-top: 0; }
 @media (max-width: 719px) { .theory .cols { grid-auto-flow: row; } }
+/* v10: e-books on the private copy */
+.theory img.inl { display: inline-block; vertical-align: middle; margin: 0 2px; padding: 1px 3px; border-radius: 4px; max-height: 2.2em; width: auto; }
+.book .ch-body p { margin: 0 0 9px; }
+.book .ch-body table { font-size: 13.5px; }
+.wk.bk::before { background: var(--accent); }
