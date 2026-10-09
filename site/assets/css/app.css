@@ -753,3 +753,6 @@ html:not(.ready) .side .card, html:not(.ready) .workspace > .tabs { animation: s
 .theory .box { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin: 10px 0; background: rgb(255 255 255 / .035); }
 .theory .embed-note { color: var(--muted); font-size: 13px; font-style: italic; border: 1px dashed var(--line-2); border-radius: 10px; padding: 8px 12px; }
 .college-notes > .embed-note { border: 0; padding: 0 0 8px; }
+.theory .cols { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 14px; align-items: start; margin: 10px 0; }
+.theory .cols > div > img:only-child { margin-top: 0; }
+@media (max-width: 719px) { .theory .cols { grid-auto-flow: row; } }
