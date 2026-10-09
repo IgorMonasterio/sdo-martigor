@@ -70,7 +70,7 @@
       const right = classify(e).type;
       const wrong = shuffle(TYPES.filter((x) => x !== right)).slice(0, 3);
       const ps = principal(e);
-      return mcq(`What type of ametropia does <b>${rxS(e)}</b> correct?`, right, wrong, `<p>Look at the two principal meridians: ${sgn(ps[0].p)} and ${sgn(ps[1].p)}.</p><p>Both minus → compound myopic; both plus → compound hypermetropic; one plano → simple; one plus and one minus → mixed.</p>`);
+      return mcq(`What type of ametropia does <b>${rxS(e)}</b> correct?`, right, wrong, `<p>Look at the two principal meridians: ${sgn(ps[0].p)} and ${sgn(ps[1].p)}.</p><p>Both the same → no astigmatism: myopia if minus, hypermetropia if plus. Otherwise: both minus → compound myopic; both plus → compound hypermetropic; one plano → simple; one plus and one minus → mixed.</p>`);
     }
     const F = Math.random() < 0.65 ? qd(-8, -0.5) : qd(0.5, 6);
     const d = 100 / Math.abs(F), dTxt = (x) => (x >= 100 ? `${num(x / 100, 2)} m` : `${num(x, 1)} cm`);
@@ -284,6 +284,84 @@
       `<p>${f("F = (n′ − n) / r")} with r in metres = (${n2} − 1) / ${num(rcm / 100, 2)} = <b>${sgn(F)} D</b></p>`);
   };
 
+  // Week 4: surface power, thin lens power and form, radius, focal length
+  const gSurf = () => {
+    const r = Math.random();
+    if (r < 0.3) {
+      const F1 = qd(-4, 10), F2 = qd(-10, 4, false), F = F1 + F2;
+      if (Math.abs(F) < 0.25) return null;
+      const form = (a, b) => {
+        if (Math.abs(b) < 0.01) return a > 0 ? 'plano-convex' : 'plano-concave';
+        if (a > 0 && b > 0) return Math.abs(a - b) < 0.01 ? 'equi-convex' : 'bi-convex';
+        if (a < 0 && b < 0) return Math.abs(a - b) < 0.01 ? 'equi-concave' : 'bi-concave';
+        return `${a + b > 0 ? 'positive' : 'negative'} meniscus`;
+      };
+      const right = form(F1, F2), others = ['positive meniscus', 'negative meniscus', 'bi-convex', 'bi-concave', 'plano-convex', 'plano-concave'].filter((x) => x !== right);
+      return mcq(`A thin lens has a front surface of <b>${sgn(F1)} D</b> and a back surface of <b>${sgn(F2)} D</b>. Its power and form?`, `${sgn(F)} D, ${right}`, [
+        `${sgn(F1 - F2)} D, ${right}`, `${sgn(F)} D, ${pick(others)}`, `${sgn(-F)} D, ${right}`,
+      ], `<p>${f('F = F₁ + F₂')} = ${sgn(F1)} + (${sgn(F2)}) = <b>${sgn(F)} D</b></p><p>${Math.abs(F2) < 0.01 ? 'One surface is flat → plano.' : Math.sign(F1) === Math.sign(F2) ? 'Both surfaces have the same sign → bi-convex or bi-concave.' : 'One convex and one concave surface → meniscus; the total power gives its sign.'}</p>`);
+    }
+    if (r < 0.55) {
+      const F = step(2, 12, 0.5) * pick([1, -1]), n = pick([1.498, 1.523, 1.586, 1.6, 1.7]), rad = ((n - 1) * 1000) / F;
+      const mm = (x) => `${num(Math.abs(x), 1)} mm, ${x > 0 ? 'convex' : 'concave'}`;
+      return mcq(`A <b>${sgn(F)} D</b> surface in a material of n = <b>${n}</b> (in air). Radius of curvature?`, mm(rad), [
+        mm((n * 1000) / F), mm(1000 / F), mm(-rad),
+      ], `<p>${f('F = (n′ − n) / r')} → ${f('r = (n − 1) / F')} = ${num(n - 1, 3)} / ${num(Math.abs(F))} = ${num(Math.abs(rad) / 1000, 4)} m = <b>${num(Math.abs(rad), 1)} mm</b></p><p>${F > 0 ? 'Positive surface → convex to the incident light' : 'Negative surface → concave to the incident light'}.</p>`);
+    }
+    if (r < 0.8) {
+      const F = pick([1, 1.5, 2, 2.5, 4, 5, 8, 10]) * pick([1, -1]), fcm = 100 / F;
+      const t = (x) => `${num(Math.abs(x), 1)} cm ${x > 0 ? 'behind the lens (real focus)' : 'in front of the lens (virtual focus)'}`;
+      return mcq(`Parallel light enters a <b>${sgn(F)} D</b> thin lens in air. Where is its second principal focus?`, t(fcm), [t(-fcm), t(F * 10), t(fcm * 10)],
+        `<p>${f("f′ = 1 / F")} = 1 / ${sgn(F)} = ${num(1 / F, 3)} m = <b>${num(Math.abs(fcm), 1)} cm</b></p><p>${F > 0 ? 'Plus lens: the light converges to a real focus behind the lens.' : 'Minus lens: the light diverges as if from a virtual focus in front of the lens.'}</p>`);
+    }
+    const n = pick([1.498, 1.523, 1.6]), r1 = step(8, 30, 1), r2 = step(5, 40, 1) * pick([1, -1]);
+    const F1 = (n - 1) / (r1 / 100), F2 = (1 - n) / (r2 / 100), F = F1 + F2;
+    if (Math.abs(F) < 0.25) return null;
+    return mcq(`A thin lens (n = <b>${n}</b>) has a front radius of <b>+${r1} cm</b> and a back radius of <b>${sgn(r2, 0)} cm</b>. Its power?`, `${sgn(F)} D`, [
+      `${sgn(F1 - F2)} D`, `${sgn((n - 1) * (r1 + r2) / 100)} D`, `${sgn(-F)} D`,
+    ], `<p>Front: ${f('F₁ = (n − 1) / r₁')} = ${num(n - 1, 3)} / ${num(r1 / 100, 2)} = ${sgn(F1)}</p><p>Back (glass to air): ${f('F₂ = (1 − n) / r₂')} = ${num(1 - n, 3)} / ${num(r2 / 100, 2)} = ${sgn(F2)}</p><p>${f('F = F₁ + F₂')} = <b>${sgn(F)} D</b></p>`);
+  };
+
+  // Week 7: the pinhole camera and plane mirrors
+  const gMirrors = () => {
+    const r = Math.random();
+    if (r < 0.3) {
+      const h = pick([1.5, 1.8, 2, 3, 5, 8, 10, 12]), u = pick([4, 5, 6, 8, 10, 15, 20, 25]), v = pick([10, 12, 15, 20, 25, 30]);
+      const img = (h * 1000 * v) / (u * 1000); // mm
+      if (Math.random() < 0.6) {
+        return mcq(`A <b>${num(h, 1)} m</b> tall object stands <b>${u} m</b> from a pinhole camera whose screen is <b>${v} cm</b> behind the hole. Height of the image?`, `${num(img * 10, 1)} mm, inverted`, [
+          `${num(img * 10, 1)} mm, erect`, `${num((h * 1000 * u) / (v * 10), 1)} mm, inverted`, `${num(img, 2)} mm, inverted`,
+        ], `<p>Similar triangles: ${f('h′ / h = v / u')} → h′ = ${num(h * 1000, 0)} mm × ${v * 10} / ${u * 1000} = <b>${num(img * 10, 1)} mm</b></p><p>The rays cross at the hole, so the image is <b>inverted</b>.</p>`);
+      }
+      const hi = pick([5, 8, 10, 12, 15, 20, 24]);
+      const d = (h * v * 10) / hi; // m: h (m) × v (mm) / h′ (mm)
+      return mcq(`A <b>${num(h, 1)} m</b> tall object gives a <b>${hi} mm</b> image in a pinhole camera <b>${v} cm</b> long. How far away is the object?`, `${num(d, 1)} m`, [
+        `${num(d / 10, 1)} m`, `${num(d * 10, 1)} m`, `${num((hi * v * 10) / (h * 1000), 2)} m`,
+      ], `<p>${f('u / v = h / h′')} → u = v × h / h′ = ${v * 10} mm × ${num(h * 1000, 0)} / ${hi} = ${num(d * 1000, 0)} mm = <b>${num(d, 1)} m</b></p>`);
+    }
+    if (r < 0.5) {
+      const y = ri(20, 300), x = y + ri(20, 200); // the chart is behind the viewer, so further from the mirror
+      if (Math.random() < 0.5) return mcq(`An object is <b>${x} cm</b> in front of a plane mirror. How far is its image from the object?`, `${2 * x} cm`, [`${x} cm`, `${num(x / 2, 1)} cm`, `${4 * x} cm`],
+        '<p>The image is as far <b>behind</b> the mirror as the object is in front, so object to image = 2 × the distance to the mirror.</p>');
+      return mcq(`You stand <b>${y} cm</b> in front of a plane mirror, looking at a chart <b>${x} cm</b> in front of the same mirror, directly behind you. How far away does the chart's image appear?`, `${x + y} cm`, [`${Math.abs(x - y) || x * 2} cm`, `${x} cm`, `${2 * (x + y)} cm`],
+        `<p>The chart's image is ${x} cm behind the mirror; you are ${y} cm in front of it → ${y} + ${x} = <b>${x + y} cm</b>. (Test charts in small rooms use exactly this to get 6 m.)</p>`);
+    }
+    if (r < 0.65) {
+      const th = pick([2, 5, 8, 10, 12, 15, 20, 25]);
+      return mcq(`A plane mirror is turned through <b>${th}°</b> while the incident ray stays fixed. Through what angle does the reflected ray turn?`, `${2 * th}°`, [`${th}°`, `${num(th / 2, 1)}°`, `${4 * th}°`],
+        `<p>Turning the mirror by θ changes both the angle of incidence and the angle of reflection by θ, so the reflected ray turns by <b>2θ = ${2 * th}°</b>.</p>`);
+    }
+    if (r < 0.82) {
+      const th = pick([90, 72, 60, 45, 40, 36, 30, 20]), N = 360 / th - 1;
+      return mcq(`Two plane mirrors are set at <b>${th}°</b> to each other. How many images of an object between them?`, `${N}`, [`${N + 1}`, `${N + 2}`, `${180 / th}`],
+        `<p>${f('N = 360 / θ − 1')} = ${360 / th} − 1 = <b>${N}</b></p>`);
+    }
+    const H = ri(150, 195), d = pick([1, 2, 3, 5]);
+    return mcq(`A person <b>${H} cm</b> tall stands <b>${d} m</b> from a wall mirror. Shortest mirror in which they can see their whole height?`, `${num(H / 2, 1)} cm`, [
+      `${H} cm`, `${num(H / 4, 1)} cm`, `${num(H / 2 + d * 10, 1)} cm`,
+    ], '<p>Rays from the top of the head and from the feet reach the eye after reflecting halfway up each gap, so the mirror only needs to be <b>half the person\'s height</b>, whatever the distance.</p>');
+  };
+
   const gPhoto = () => {
     const r = Math.random();
     if (r < 0.45) {
@@ -322,8 +400,14 @@
   }
   const count = (k) => (BANK[k] || []).length;
 
+  // Consolidation Assignment 1 covers Weeks 4–7 only: surfaces and lens form, propagation and vergence, ametropia and far points, pinhole and plane mirrors
+  const gCA1 = () => pick([gSurf, gWaves, gAmetropia, gMirrors])();
+
   const TOPICS = [
+    { id: 'ca1', unit: 1, ca: 'Consolidation Assignment 1 · due Tue 20 Oct', title: 'CA1 practice', blurb: 'Weeks 4–7 mixed: surfaces, vergence, far points, pinhole & mirrors', gen: gCA1 },
+    { id: 'u1-surf', unit: 1, title: 'Surface power & lens form', blurb: 'F = F₁ + F₂, radius, focal length, lens form', gen: gSurf },
     { id: 'u1-waves', unit: 1, title: 'Light & vergence', blurb: 'v = fλ, vergence, speed in a medium', gen: gWaves },
+    { id: 'u1-mirror', unit: 1, title: 'Pinhole & plane mirrors', blurb: 'Similar triangles, image position, rotation, mirror length', gen: gMirrors },
     { id: 'u1-refr', unit: 1, title: 'Refraction', blurb: "Snell's law, critical angle, apparent depth", gen: gRefraction },
     { id: 'u1-lens', unit: 1, title: 'Surfaces & thin lenses', blurb: 'F = (n′ − n)/r, conjugate foci', gen: gLenses },
     { id: 'u1-photo', unit: 1, title: 'Photometry', blurb: 'Inverse square, cosine law, reflectance', gen: gPhoto },
@@ -350,7 +434,7 @@
 
   function makeQ(topic) {
     for (let k = 0; k < 40; k++) {
-      const t = topic.id === 'mixed' ? pick(TOPICS) : topic;
+      const t = topic.id === 'mixed' ? pick(TOPICS.filter((x) => !x.ca)) : topic;
       const q = t.gen();
       if (q && q.options.length >= 3 && q.answer >= 0) return { ...q, topic: t.title };
     }
@@ -375,7 +459,8 @@
     const mixed = st.mixed;
     root().innerHTML = `<section class="banner quiz-hero"><div class="hero-txt"><span class="hero-kicker">Year 1 quiz</span><h1>Practise until<br>it's automatic.</h1><p>${ROUND} questions a round, fresh numbers every time, and the full working after each answer.</p></div>
         <button class="mixed" data-topic="mixed"><span>Mixed round</span><small>All Year 1 topics${mixed ? ` · best ${mixed.best}/${ROUND}` : ''}</small><b>Start →</b></button></section>
-      <h2 class="q-unit">Unit 1 · Theory of General Optics</h2><div class="qt-grid">${TOPICS.filter((t) => t.unit === 1).map(tile).join('')}</div>
+      ${TOPICS.filter((t) => t.ca).map((t) => `<h2 class="q-unit">${t.ca}</h2><div class="qt-grid">${tile(t)}</div>`).join('')}
+      <h2 class="q-unit">Unit 1 · Theory of General Optics</h2><div class="qt-grid">${TOPICS.filter((t) => t.unit === 1 && !t.ca).map(tile).join('')}</div>
       <h2 class="q-unit">Unit 2 · Theory of Ophthalmic Lenses</h2><div class="qt-grid">${TOPICS.filter((t) => t.unit === 2).map(tile).join('')}</div>
       <h2 class="q-unit">Units 3 &amp; 4 · Patient care and dispensing practice</h2><div class="qt-grid">${TOPICS.filter((t) => t.unit === 3).map(tile).join('')}</div>`;
     root().querySelectorAll('.qt-bar i').forEach((i) => { i.style.width = `${Math.round(Number(i.dataset.p) * 100)}%`; });

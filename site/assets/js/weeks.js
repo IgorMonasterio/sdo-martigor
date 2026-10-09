@@ -62,7 +62,7 @@
         <li><b>Health literacy</b>: many adults struggle with medical wording and numbers. Use plain words, one idea at a time, show rather than tell, and ask them to repeat the key points ("teach-back").</li>
         <li><b>Informed decisions</b>: for a decision to be informed the patient needs the options, the benefits and drawbacks of each, the cost, and the consequences of doing nothing, in a form they can understand. Consent rests on that.</li>
       </ul>` }),
-    W(4, 'Lens surface power, lens form, spherical surfaces', '2026-09-22', 'lenses', { unit: 2, codes: ['Unit 2 · A1–A3 materials', 'Unit 2 · B lens form', 'Unit 1 · curved surfaces'], tools: ['materials', 'thick'], quiz: ['u1-lens', 'u2-thick', 't-u2'], key: `
+    W(4, 'Lens surface power, lens form, spherical surfaces', '2026-09-22', 'lenses', { unit: 2, codes: ['Unit 2 · A1–A3 materials', 'Unit 2 · B lens form', 'Unit 1 · curved surfaces'], tools: ['materials', 'thick'], quiz: ['u1-surf', 'u1-lens', 'u2-thick', 't-u2'], key: `
       <ul>
         <li><b>A spectacle lens</b> is a transparent medium bounded by two polished surfaces, at least one of them curved. Its job is to change the <b>vergence</b> of light reaching the eye.</li>
         <li><b>Surface power</b>: <i>F = (n′ − n) / r</i>, with r in metres. A surface is positive when its centre of curvature is on the side the light is going to (convex to the incident light), negative when concave.</li>
@@ -92,7 +92,7 @@
         <li><b>Symbols</b>: F for power (D), f for focal length (m), n for index, L and L′ for incident and emergent vergence, the eye's far point M<sub>R</sub>.</li>
         <li><b>Colour and radiation</b>: white light is a mixture of wavelengths; a prism or a lens edge separates them (dispersion) because n is higher for blue than for red. UV (below 380 nm) is absorbed by the cornea and lens and is the reason for UV-blocking materials and coatings; IR is heat.</li>
       </ul>` }),
-    W(7, 'Pinhole camera and reflection at plane surfaces', '2026-10-13', 'optics', { unit: 1, codes: ['Unit 1 · B reflection and mirrors'], quiz: ['t-u1'], key: `
+    W(7, 'Pinhole camera and reflection at plane surfaces', '2026-10-13', 'optics', { unit: 1, codes: ['Unit 1 · B reflection and mirrors'], quiz: ['u1-mirror', 't-u1'], key: `
       <ul>
         <li><b>Pinhole camera</b>: every point of the object sends one narrow pencil through the hole, so the image is inverted, always in focus, and dim. By similar triangles <i>image size / object size = image distance / object distance</i>. A bigger hole is brighter but blurred; a smaller one is sharper until diffraction takes over.</li>
         <li><b>Laws of reflection</b>: the angle of incidence equals the angle of reflection, measured from the normal, and the incident ray, reflected ray and normal lie in the same plane.</li>
@@ -101,7 +101,7 @@
         <li><b>Minimum mirror length</b> to see your whole self is half your height, whatever the distance.</li>
         <li><b>Two mirrors</b> at an angle θ give 360/θ − 1 images (two at 90° give 3).</li>
       </ul>` }),
-    W(8, 'Consolidation Assignment 1 (formative)', '2026-10-20', 'ca', { unit: 0, codes: ['Weeks 4–7'], tools: ['materials', 'rx'], quiz: ['u1-waves', 'u1-lens', 'u2-amet', 't-u1', 't-u2'], key: `
+    W(8, 'Consolidation Assignment 1 (formative)', '2026-10-20', 'ca', { unit: 0, codes: ['Weeks 4–7'], tools: ['materials', 'rx'], quiz: ['ca1', 'u1-surf', 'u1-waves', 'u2-amet', 'u1-mirror', 't-u1', 't-u2'], key: `
       <p>Formative: it does not count towards the exams, but it is the first time the college sees how you set out a calculation. It pulls together <b>Weeks 4 to 7</b>: surface power and lens form, propagation of light and vergence, errors of refraction, and the pinhole camera and plane mirrors.</p>
       <ul>
         <li>Write the formula first, then the substitution with units, then the answer with its unit and sign. Marks come from the working, not just the number.</li>
@@ -247,12 +247,13 @@
     try { const r = await fetch('/assets/books/index.json', { cache: 'no-cache' }); books = r.ok ? await r.json() : []; } catch { books = []; }
     return books;
   }
-  async function openBook(slug, push = true) {
+  async function openBook(slug, push = true, ch = '', from = 0) {
     const b = (await shelf()).find((x) => x.slug === slug);
     if (!b) return home(push);
     current = `book:${slug}`;
-    root().innerHTML = `<div class="q-top"><button class="btn ghost sq" data-act="home" aria-label="All weeks"><svg class="ico"><use href="#i-back"/></svg></button>
-        <div class="q-meta"><span>Your books</span><b>${b.chapters} chapters</b></div></div>
+    const back = from ? `data-week="${from}" aria-label="Back to week ${from}"` : 'data-act="home" aria-label="All weeks"';
+    root().innerHTML = `<div class="q-top"><button class="btn ghost sq" ${back}><svg class="ico"><use href="#i-back"/></svg></button>
+        <div class="q-meta"><span>${from ? `Week ${from} · reading` : 'Your books'}</span><b>${b.chapters} chapters</b></div></div>
       <header class="wk-head k-${b.unit === 2 ? 'lenses' : b.unit === 1 ? 'optics' : 'care'}"><span class="hero-kicker">Unit ${b.unit} · e-book from your college</span><h1>${b.title}</h1><p>${b.author}</p></header>
       <section class="card wk-sec"><div class="theory" id="bk-body"><p class="embed-note">Loading…</p></div></section>`;
     if (push) history.replaceState(null, '', `#book-${slug}`);
@@ -261,6 +262,14 @@
     try { const r = await fetch(`/assets/books/${slug}/index.html`, { cache: 'no-cache' }); if (r.ok) html = await r.text(); } catch { html = ''; }
     if (current !== `book:${slug}`) return;
     $('#bk-body').innerHTML = html.includes('data-sdo-book') ? html : '<p class="embed-note">This book is not available here.</p>';
+    const d = ch && [...root().querySelectorAll('#bk-body details.ch')].find((x) => x.querySelector('summary')?.textContent.trim() === ch);
+    if (d) { d.open = true; d.scrollIntoView({ block: 'start' }); }
+  }
+  // the chapters to read for week n, textbooks before the worked-problem books (iris only: the list lives in the private books/index.json)
+  async function reading(n) {
+    const out = [];
+    for (const b of [...await shelf()].sort((x, y) => x.slug.startsWith('worked-') - y.slug.startsWith('worked-'))) for (const ch of b.weeks?.[n] || []) out.push({ slug: b.slug, book: b.title, ch });
+    return out;
   }
   async function open(n, push = true) {
     const w = WEEKS.find((x) => x.n === n);
@@ -278,6 +287,7 @@
       <header class="wk-head k-${w.kind}"><span class="hero-kicker">${KIND[w.kind]}${unit ? ` · Unit ${unit}` : ''}</span><h1>${w.title}</h1>
         <p>Due <b>${fmtLong(w.due)}</b>, 13:59.${w.codes.length ? ` Syllabus: ${w.codes.map((c) => `<span class="ref">${c}</span>`).join(' ')}` : ''}</p>${w.note ? `<p class="wk-note">${w.note}</p>` : ''}</header>
       <section class="card wk-sec"><div class="card-head"><h3><svg class="ico"><use href="#i-book"/></svg> Key points</h3></div><div class="wk-key">${w.key || '<p>Key points for this week are on the way.</p>'}</div></section>
+      <section class="card wk-sec" id="wk-read" hidden><div class="card-head"><h3><svg class="ico"><use href="#i-book"/></svg> Read in your books</h3><span class="ref">private copy</span></div><div class="wk-tools" id="wk-read-list"></div></section>
       <section class="card wk-sec wk-notes" id="wk-notes" hidden><div class="card-head"><h3><svg class="ico"><use href="#i-book"/></svg> Your college notes</h3><span class="ref">private copy</span></div><div class="theory" id="wk-theory"></div></section>
       ${w.tools.length ? `<section class="card wk-sec"><div class="card-head"><h3><svg class="ico"><use href="#i-tools"/></svg> Tools for this week</h3></div><div class="wk-tools">${w.tools.map(tool).join('')}</div></section>` : ''}
       ${w.quiz.length ? `<section class="wk-sec"><h2 class="q-unit">Practise</h2><div class="qt-grid">${w.quiz.map(qtile).join('')}</div></section>` : ''}
@@ -285,6 +295,11 @@
     root().querySelectorAll('.qt-bar i').forEach((i) => { i.style.width = `${Math.round(Number(i.dataset.p) * 100)}%`; });
     if (push) history.replaceState(null, '', `#week-${n}`);
     window.scrollTo({ top: 0 });
+    reading(n).then((list) => {
+      if (current !== n || !list.length) return;
+      $('#wk-read-list').innerHTML = list.map((r) => `<button class="wk-tool" data-book="${r.slug}" data-ch="${r.ch.replace(/"/g, '&quot;')}" data-from="${n}"><svg class="ico"><use href="#i-book"/></svg><span>${r.ch}<small class="wk-rd">${r.book}</small></span><b>→</b></button>`).join('');
+      $('#wk-read').hidden = false;
+    });
     const html = await loadNotes(n);
     if (current !== n) return;
     if (html) { $('#wk-theory').innerHTML = html; $('#wk-notes').hidden = false; }
@@ -294,7 +309,7 @@
     if (!root() || root().closest('[hidden]')) return;
     const t = ev.target.closest('[data-week], [data-act], [data-go], [data-quiz], [data-book]');
     if (!t || !root().contains(t)) return;
-    if (t.dataset.book) openBook(t.dataset.book);
+    if (t.dataset.book) openBook(t.dataset.book, true, t.dataset.ch || '', Number(t.dataset.from) || 0);
     else if (t.dataset.week) open(Number(t.dataset.week));
     else if (t.dataset.act === 'home') home();
     else if (t.dataset.go) { const [tab, sub] = t.dataset.go.split(':'); S.go(tab, sub); }
