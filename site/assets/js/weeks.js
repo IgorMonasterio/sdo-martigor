@@ -305,8 +305,16 @@
     if (html) { $('#wk-theory').innerHTML = html; $('#wk-notes').hidden = false; }
   }
 
+  // a cross-reference inside a book (e.g. "see chapter 5") opens that chapter of the same book
+  function goChapter(n) {
+    const d = [...root().querySelectorAll('#bk-body details.ch')].find((x) => new RegExp(`^(Chapter )?${n}\\b`).test(x.querySelector('summary')?.textContent.trim() || ''));
+    if (d) { d.open = true; d.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+  }
+  document.addEventListener('keydown', (ev) => { const x = ev.target.closest?.('[data-goch]'); if (x && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); goChapter(x.dataset.goch); } });
   document.addEventListener('click', (ev) => {
     if (!root() || root().closest('[hidden]')) return;
+    const x = ev.target.closest('[data-goch]');
+    if (x && root().contains(x)) { goChapter(x.dataset.goch); return; }
     const t = ev.target.closest('[data-week], [data-act], [data-go], [data-quiz], [data-book]');
     if (!t || !root().contains(t)) return;
     if (t.dataset.book) openBook(t.dataset.book, true, t.dataset.ch || '', Number(t.dataset.from) || 0);

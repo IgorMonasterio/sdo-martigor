@@ -762,3 +762,4 @@ html:not(.ready) .side .card, html:not(.ready) .workspace > .tabs { animation: s
 .book .ch-body table { font-size: 13.5px; }
 .wk.bk::before { background: var(--accent); }
 .wk-rd { display: block; font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.theory .xref { color: var(--accent); text-decoration: underline; cursor: pointer; }
