@@ -783,3 +783,15 @@
   addEventListener('focus', () => { if (Date.now() - last > 60000) check(); });
   setInterval(check, 15 * 60000);
 })();
+
+// which copy and which build this is, in the footer: a home-screen icon doesn't show its address
+(function () {
+  const put = () => {
+    const made = document.querySelector('.foot .made');
+    if (!made || made.querySelector('.build')) return;
+    const v = (document.querySelector('script[src*="app.js?v="]')?.getAttribute('src') || '').split('v=')[1] || '?';
+    const priv = /^iris\.martigor\.org$/.test(location.hostname);
+    made.insertAdjacentHTML('beforeend', ` · <span class="build">v${v} · ${priv ? 'private copy' : 'public copy'} · ${location.hostname}</span>`);
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', put); else put();
+})();
