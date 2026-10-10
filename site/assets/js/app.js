@@ -607,19 +607,22 @@
   const RENDER = { overview: renderOverview, transpose: renderTranspose, prism: () => { renderPrism(); renderBino(); }, frame: renderFrame, thick: () => { renderThick(); renderMaterials(); } };
   let active = 'overview';
   function renderActive() { try { RENDER[active](); } catch (err) { console.error(err); } }
-  const MODES = ['tools', 'quiz', 'weeks'];
+  const MODES = ['tools', 'quiz', 'weeks', 'steps'];
   function setMode(m, push = true) {
     if (!MODES.includes(m)) m = 'tools';
     MODES.forEach((k) => { const el = $(`#mode-${k}`); if (el) el.hidden = k !== m; });
     $$('.mode button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.mode === m)));
     if (m === 'quiz') { if (push) history.replaceState(null, '', '#quiz'); window.SDOQuiz?.show(); }
     else if (m === 'weeks') { if (push) history.replaceState(null, '', '#weeks'); window.SDOWeeks?.show(); }
+    else if (m === 'steps') { if (push) history.replaceState(null, '', '#steps'); window.SDOSteps?.show(); }
     else if (push) history.replaceState(null, '', active === 'overview' ? location.pathname : `#${active}`);
     store.set('sdo-mode', m);
     window.scrollTo({ top: 0 });
   }
   function show(tab, push = true) {
     if (tab === 'quiz') { setMode('quiz', push); return; }
+    const st = /^steps(?:-([a-z0-9-]+))?$/.exec(tab);
+    if (st) { setMode('steps', false); if (st[1]) window.SDOSteps?.open(st[1], push); else window.SDOSteps?.home(push); return; }
     const wk = /^weeks?(?:-(\d+))?$/.exec(tab);
     if (wk) { setMode('weeks', false); window.SDOWeeks?.open(wk[1] ? Number(wk[1]) : null, push); return; }
     const bk = /^book-([a-z0-9-]+)$/.exec(tab);

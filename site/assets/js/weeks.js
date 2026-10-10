@@ -290,6 +290,7 @@
       <section class="card wk-sec" id="wk-read" hidden><div class="card-head"><h3><svg class="ico"><use href="#i-book"/></svg> Read in your books</h3><span class="ref">private copy</span></div><div class="wk-tools" id="wk-read-list"></div></section>
       <section class="card wk-sec wk-notes" id="wk-notes" hidden><div class="card-head"><h3><svg class="ico"><use href="#i-book"/></svg> Your college notes</h3><span class="ref">private copy</span></div><div class="theory" id="wk-theory"></div></section>
       ${w.tools.length ? `<section class="card wk-sec"><div class="card-head"><h3><svg class="ico"><use href="#i-tools"/></svg> Tools for this week</h3></div><div class="wk-tools">${w.tools.map(tool).join('')}</div></section>` : ''}
+      ${window.SDOSteps?.tiles(n) ? `<section class="wk-sec"><h2 class="q-unit">Learn the maths step by step</h2><div class="qt-grid">${window.SDOSteps.tiles(n)}</div></section>` : ''}
       ${w.quiz.length ? `<section class="wk-sec"><h2 class="q-unit">Practise</h2><div class="qt-grid">${w.quiz.map(qtile).join('')}</div></section>` : ''}
       <nav class="wk-nav">${prev ? `<button class="btn ghost" data-week="${prev.n}">← Week ${prev.n}</button>` : '<span></span>'}${nxt ? `<button class="btn ghost" data-week="${nxt.n}">Week ${nxt.n} →</button>` : ''}</nav>`;
     root().querySelectorAll('.qt-bar i').forEach((i) => { i.style.width = `${Math.round(Number(i.dataset.p) * 100)}%`; });
@@ -315,6 +316,8 @@
     if (!root() || root().closest('[hidden]')) return;
     const x = ev.target.closest('[data-goch]');
     if (x && root().contains(x)) { goChapter(x.dataset.goch); return; }
+    const sx = ev.target.closest('[data-steps]');
+    if (sx && root().contains(sx)) { S.go(`steps-${sx.dataset.steps}`); return; }
     const t = ev.target.closest('[data-week], [data-act], [data-go], [data-quiz], [data-book]');
     if (!t || !root().contains(t)) return;
     if (t.dataset.book) openBook(t.dataset.book, true, t.dataset.ch || '', Number(t.dataset.from) || 0);

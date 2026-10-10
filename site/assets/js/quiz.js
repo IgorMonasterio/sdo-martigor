@@ -436,7 +436,7 @@
     for (let k = 0; k < 40; k++) {
       const t = topic.id === 'mixed' ? pick(TOPICS.filter((x) => !x.ca)) : topic;
       const q = t.gen();
-      if (q && q.options.length >= 3 && q.answer >= 0) return { ...q, topic: t.title };
+      if (q && q.options.length >= 3 && q.answer >= 0) return { ...q, topic: t.title, tid: t.id };
     }
     return null;
   }
@@ -502,7 +502,8 @@
     for (let j = run.i; j >= 0 && run.picked[j] === run.qs[j].answer; j--) streak++;
     const sEl = $('#q-streak'); if (sEl) sEl.textContent = streak >= 2 ? `\u{1F525} ${streak}` : '';
     const head = ok ? (streak >= 3 ? `Correct — ${streak} in a row!` : 'Correct!') : 'Not quite.';
-    $('#q-fb').innerHTML = `<div class="q-fb ${ok ? 'ok' : 'no'}"><b>${head}</b>${q.explain}</div>
+    const sx = window.SDOSteps?.forQuiz(q.tid);
+    $('#q-fb').innerHTML = `<div class="q-fb ${ok ? 'ok' : 'no'}"><b>${head}</b>${q.explain}${sx ? `<p><a class="st-link" href="#steps-${sx.id}">Learn this kind of question step by step →</a></p>` : ''}</div>
       <button class="btn q-next" data-act="next">${last ? 'See results' : 'Next question'} →</button>`;
     $('.q-next').focus({ preventScroll: true });
     $('.q-fb').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
