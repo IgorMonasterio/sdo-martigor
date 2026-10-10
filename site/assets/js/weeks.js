@@ -62,7 +62,7 @@
         <li><b>Health literacy</b>: many adults struggle with medical wording and numbers. Use plain words, one idea at a time, show rather than tell, and ask them to repeat the key points ("teach-back").</li>
         <li><b>Informed decisions</b>: for a decision to be informed the patient needs the options, the benefits and drawbacks of each, the cost, and the consequences of doing nothing, in a form they can understand. Consent rests on that.</li>
       </ul>` }),
-    W(4, 'Lens surface power, lens form, spherical surfaces', '2026-09-22', 'lenses', { unit: 2, codes: ['Unit 2 · A1–A3 materials', 'Unit 2 · B lens form', 'Unit 1 · curved surfaces'], tools: ['materials', 'thick'], quiz: ['u1-surf', 'u1-lens', 'u2-thick', 't-u2'], key: `
+    W(4, 'Lens surface power, lens form, spherical surfaces', '2026-09-22', 'lenses', { unit: 2, codes: ['Unit 2 · A1–A3 materials', 'Unit 2 · B lens form', 'Unit 1 · curved surfaces'], tools: ['materials', 'thick'], quiz: ['u1-surf', 'u1-lens', 'u2-thick', 't-u2', 't-w4'], key: `
       <ul>
         <li><b>A spectacle lens</b> is a transparent medium bounded by two polished surfaces, at least one of them curved. Its job is to change the <b>vergence</b> of light reaching the eye.</li>
         <li><b>Surface power</b>: <i>F = (n′ − n) / r</i>, with r in metres. A surface is positive when its centre of curvature is on the side the light is going to (convex to the incident light), negative when concave.</li>
@@ -73,7 +73,7 @@
         <li><b>Radius of curvature</b>: rearrange the surface power formula, <i>r = (n′ − n)/F</i>. For crown glass (n = 1.523) a +6.00 D surface has r = 0.523/6 = 87.2 mm.</li>
         <li><b>Materials</b>: refractive index (how strongly it bends light; higher n means flatter, thinner lenses), Abbe number (colour dispersion; lower means more colour fringing), density (weight) and impact resistance. CR39 1.498 · crown 1.523 · polycarbonate 1.586 · 1.6 and 1.67 resins.</li>
       </ul>` }),
-    W(5, 'Propagation of light', '2026-09-29', 'optics', { unit: 1, codes: ['Unit 1 · A waves and vergence'], quiz: ['u1-waves', 't-u1'], key: `
+    W(5, 'Propagation of light', '2026-09-29', 'optics', { unit: 1, codes: ['Unit 1 · A waves and vergence'], quiz: ['u1-waves', 't-u1', 't-w5'], key: `
       <ul>
         <li><b>Light</b> is electromagnetic radiation. The visible band runs from about <b>380 nm (violet) to 780 nm (red)</b>; ultraviolet is shorter, infrared is longer.</li>
         <li><b>Wave quantities</b>: <i>v = fλ</i>. In a medium of index n the speed drops to <i>c/n</i> and the wavelength shortens to <i>λ/n</i>; the frequency (and the colour) does not change.</li>
@@ -83,7 +83,7 @@
         <li><b>Sign convention</b>: light travels left to right; distances measured in the direction of the light are positive, against it negative.</li>
         <li><b>Standard form</b> keeps the numbers readable: 555 nm = 5.55 × 10<sup>−7</sup> m.</li>
       </ul>` }),
-    W(6, 'Errors of refraction and their correction · colour and radiation', '2026-10-06', 'lenses', { unit: 2, codes: ['Unit 2 · K ametropia and far points', 'Unit 1 · photometry and colour'], tools: ['rx'], quiz: ['u2-amet', 't-u2', 't-u1'], key: `
+    W(6, 'Errors of refraction and their correction · colour and radiation', '2026-10-06', 'lenses', { unit: 2, codes: ['Unit 2 · K ametropia and far points', 'Unit 1 · photometry and colour'], tools: ['rx'], quiz: ['u2-amet', 't-u2', 't-u1', 't-w6'], key: `
       <ul>
         <li><b>Emmetropia</b>: with accommodation relaxed, parallel light focuses on the retina. The far point is at infinity.</li>
         <li><b>Myopia</b>: the eye is too powerful or too long; parallel light focuses in front of the retina. The <b>far point</b> is a real point in front of the eye, at <i>1/F</i> from it (a −2.00 D myope's far point is 0.5 m away). Corrected with a minus lens whose second focal point sits on the far point.</li>
@@ -92,7 +92,7 @@
         <li><b>Symbols</b>: F for power (D), f for focal length (m), n for index, L and L′ for incident and emergent vergence, the eye's far point M<sub>R</sub>.</li>
         <li><b>Colour and radiation</b>: white light is a mixture of wavelengths; a prism or a lens edge separates them (dispersion) because n is higher for blue than for red. UV (below 380 nm) is absorbed by the cornea and lens and is the reason for UV-blocking materials and coatings; IR is heat.</li>
       </ul>` }),
-    W(7, 'Pinhole camera and reflection at plane surfaces', '2026-10-13', 'optics', { unit: 1, codes: ['Unit 1 · B reflection and mirrors'], quiz: ['u1-mirror', 't-u1'], key: `
+    W(7, 'Pinhole camera and reflection at plane surfaces', '2026-10-13', 'optics', { unit: 1, codes: ['Unit 1 · B reflection and mirrors'], quiz: ['u1-mirror', 't-u1', 't-w7'], key: `
       <ul>
         <li><b>Pinhole camera</b>: every point of the object sends one narrow pencil through the hole, so the image is inverted, always in focus, and dim. By similar triangles <i>image size / object size = image distance / object distance</i>. A bigger hole is brighter but blurred; a smaller one is sharper until diffraction takes over.</li>
         <li><b>Laws of reflection</b>: the angle of incidence equals the angle of reflection, measured from the normal, and the incident ray, reflected ray and normal lie in the same plane.</li>
@@ -101,7 +101,7 @@
         <li><b>Minimum mirror length</b> to see your whole self is half your height, whatever the distance.</li>
         <li><b>Two mirrors</b> at an angle θ give 360/θ − 1 images (two at 90° give 3).</li>
       </ul>` }),
-    W(8, 'Consolidation Assignment 1 (formative)', '2026-10-20', 'ca', { unit: 0, codes: ['Weeks 4–7'], tools: ['materials', 'rx'], quiz: ['ca1', 'u1-surf', 'u1-waves', 'u2-amet', 'u1-mirror', 't-u1', 't-u2'], key: `
+    W(8, 'Consolidation Assignment 1 (formative)', '2026-10-20', 'ca', { unit: 0, codes: ['Weeks 4–7'], tools: ['materials', 'rx'], quiz: ['ca1', 'u1-surf', 'u1-waves', 'u2-amet', 'u1-mirror', 't-u1', 't-u2', 't-ca1', 't-w4', 't-w5', 't-w6', 't-w7'], key: `
       <p>Formative: it does not count towards the exams, but it is the first time the college sees how you set out a calculation. It pulls together <b>Weeks 4 to 7</b>: surface power and lens form, propagation of light and vergence, errors of refraction, and the pinhole camera and plane mirrors.</p>
       <ul>
         <li>Write the formula first, then the substitution with units, then the answer with its unit and sign. Marks come from the working, not just the number.</li>
@@ -109,14 +109,14 @@
         <li>Draw a ray diagram for every mirror or pinhole question, even a rough one.</li>
         <li>Practise with the quiz topics below until the method is automatic, then do the assignment in one sitting.</li>
       </ul>`, note: 'Due Tuesday 20 October 2026, 13:59. Submit through the college submission box.' }),
-    W(9, 'Sph-cyl lenses, transposition 1', '2026-11-03', 'lenses', { unit: 2, codes: ['Unit 2 · C sph-cyl, D transposition'], tools: ['forms', 'rx'], quiz: ['u2-trans', 't-u2'], key: `
+    W(9, 'Sph-cyl lenses, transposition 1', '2026-11-03', 'lenses', { unit: 2, codes: ['Unit 2 · C sph-cyl, D transposition'], tools: ['forms', 'rx'], quiz: ['u2-trans', 't-u2', 't-cyl'], key: `
       <ul>
         <li>A <b>cylinder</b> has power along one meridian and none along the axis. Written as cyl × axis, with the axis in standard notation (1–180, anticlockwise from the horizontal as seen from in front of the patient).</li>
         <li>A <b>sph-cyl</b> lens is a sphere plus a cylinder. The power along the axis is the sphere; 90° away it is sphere + cyl.</li>
         <li><b>Transposition</b> between plus-cyl and minus-cyl form: new sphere = old sphere + old cyl; new cyl = −old cyl; axis rotated by 90°.</li>
         <li><b>Crossed-cylinder form</b>: two cylinders with axes 90° apart, each equal to one of the principal powers.</li>
       </ul>` }),
-    W(10, 'Apparent depth, refractive index and refraction', '2026-11-10', 'optics', { unit: 1, codes: ['Unit 1 · C refraction, Snell, apparent depth'], quiz: ['u1-refr', 't-u1'], key: `
+    W(10, 'Apparent depth, refractive index and refraction', '2026-11-10', 'optics', { unit: 1, codes: ['Unit 1 · C refraction, Snell, apparent depth'], quiz: ['u1-refr', 't-u1', 't-refr'], key: `
       <ul>
         <li><b>Snell's law</b>: <i>n sin i = n′ sin i′</i>. Light bends towards the normal entering a denser medium and away from it leaving.</li>
         <li><b>Refractive index</b> <i>n = c / v</i>; absolute (relative to vacuum) and relative between two media.</li>
@@ -124,46 +124,46 @@
         <li><b>Critical angle</b> and total internal reflection: sin c = n′/n; beyond c nothing is refracted out.</li>
         <li><b>Parallel-sided block</b>: the ray emerges parallel to its original direction but laterally displaced.</li>
       </ul>` }),
-    W(11, 'Sph-cyl lenses, transposition 2, sph-cyl neutralisation', '2026-11-17', 'lenses', { unit: 2, codes: ['Unit 2 · D transposition', 'Unit 4 · hand neutralisation'], tools: ['forms', 'rx'], quiz: ['u2-trans', 't-u2', 't-u4'], key: `
+    W(11, 'Sph-cyl lenses, transposition 2, sph-cyl neutralisation', '2026-11-17', 'lenses', { unit: 2, codes: ['Unit 2 · D transposition', 'Unit 4 · hand neutralisation'], tools: ['forms', 'rx'], quiz: ['u2-trans', 't-u2', 't-u4', 't-cyl'], key: `
       <ul>
         <li>Transposition the other way round: from crossed-cyl to sph-cyl and back, and reading the power along any meridian.</li>
         <li><b>Hand neutralisation</b>: move the lens and watch the image; <b>against</b> movement means plus, <b>with</b> movement means minus. Add trial lenses of the opposite sign until the movement stops. For a cylinder find the two meridians with no scissors movement and neutralise each.</li>
       </ul>` }),
-    W(12, 'Toric lenses, toric transposition', '2026-11-24', 'lenses', { unit: 2, codes: ['Unit 2 · D5–D6 toric transposition'], tools: ['toric', 'forms'], quiz: ['u2-toric', 't-u2'], key: `
+    W(12, 'Toric lenses, toric transposition', '2026-11-24', 'lenses', { unit: 2, codes: ['Unit 2 · D5–D6 toric transposition'], tools: ['toric', 'forms'], quiz: ['u2-toric', 't-u2', 't-cyl'], key: `
       <ul>
         <li>A <b>toric surface</b> has two different curvatures at right angles (a slice of a doughnut). The lower-powered meridian of the toric surface is the <b>base curve</b>, the other the <b>cross curve</b>.</li>
         <li><b>Toric transposition</b>: given the Rx and the base curve (or the sphere curve), write the lens as sphere curve / base curve × axis / cross curve × axis. Minus toric form has the toric surface at the back (the modern form), plus toric at the front.</li>
       </ul>` }),
-    W(13, 'Prisms and dispersion 1', '2026-12-01', 'optics', { unit: 2, codes: ['Unit 2 · G1–G6 prisms'], tools: ['basics'], quiz: ['u2-prisms', 'u1-refr'], key: `
+    W(13, 'Prisms and dispersion 1', '2026-12-01', 'optics', { unit: 2, codes: ['Unit 2 · G1–G6 prisms'], tools: ['basics'], quiz: ['u2-prisms', 'u1-refr', 't-prism', 't-refr'], key: `
       <ul>
         <li>A <b>prism</b> deviates light towards its <b>base</b>; the image appears displaced towards the <b>apex</b>.</li>
         <li>For a thin (small-angle) prism in air, <i>d = (n − 1) a</i>, with d and a in degrees.</li>
         <li><b>Prism dioptre</b>: 1 Δ deviates light by 1 cm at 1 m. P (Δ) = 100 tan d.</li>
         <li><b>Dispersion</b>: blue is deviated more than red, so a prism spreads white light into a spectrum.</li>
       </ul>` }),
-    W(14, 'Prisms and dispersion 2', '2026-12-08', 'optics', { unit: 2, codes: ['Unit 2 · G prisms', 'Unit 2 · A Abbe number'], tools: ['basics', 'materials'], quiz: ['u2-prisms', 't-u2'], key: `
+    W(14, 'Prisms and dispersion 2', '2026-12-08', 'optics', { unit: 2, codes: ['Unit 2 · G prisms', 'Unit 2 · A Abbe number'], tools: ['basics', 'materials'], quiz: ['u2-prisms', 't-u2', 't-prism', 't-refr'], key: `
       <ul>
         <li>Thickness difference across a prism: <i>g = P d / (100 (n − 1))</i>, the reason prism makes a lens heavier on one side.</li>
         <li><b>Abbe number</b> <i>V = (n<sub>d</sub> − 1)/(n<sub>F</sub> − n<sub>C</sub>)</i>: high V, low dispersion. Chromatic effects are worse in high-index materials and away from the optical centre.</li>
       </ul>` }),
-    W(15, 'Consolidation Assignment 2 (summative)', '2026-12-15', 'ca', { codes: ['Weeks 9–14'], tools: ['forms', 'toric', 'basics'], quiz: ['u2-trans', 'u2-toric', 'u2-prisms', 'u1-refr'], key: `<p>Summative: this one counts. It covers Weeks 9 to 14: sph-cyl lenses and transposition, refraction and apparent depth, toric lenses, and prisms and dispersion.</p>` }),
+    W(15, 'Consolidation Assignment 2 (summative)', '2026-12-15', 'ca', { codes: ['Weeks 9–14'], tools: ['forms', 'toric', 'basics'], quiz: ['u2-trans', 'u2-toric', 'u2-prisms', 'u1-refr', 't-cyl', 't-refr', 't-prism'], key: `<p>Summative: this one counts. It covers Weeks 9 to 14: sph-cyl lenses and transposition, refraction and apparent depth, toric lenses, and prisms and dispersion.</p>` }),
     W(16, "Dealing with patients' fears and concerns", '2027-01-05', 'care', { unit: 3, codes: ['Unit 3 · patient-centred care'], quiz: ['t-u3'], key: `<ul><li>Acknowledge the worry before the facts; name what you are going to do; give the patient control over the pace; avoid jargon; know when to refer or to involve the optometrist.</li></ul>` }),
-    W(17, 'Refraction at curved surfaces', '2027-01-12', 'optics', { unit: 1, codes: ['Unit 1 · D curved surfaces'], quiz: ['u1-lens', 'u1-refr'], key: `<ul><li>The single refracting surface: <i>L′ = L + F</i> with <i>F = (n′ − n)/r</i>, vergences measured in the medium each side (<i>L = n/l</i>, <i>L′ = n′/l′</i>). Everything else in the year is this formula applied twice.</li></ul>` }),
+    W(17, 'Refraction at curved surfaces', '2027-01-12', 'optics', { unit: 1, codes: ['Unit 1 · D curved surfaces'], quiz: ['u1-lens', 'u1-refr', 't-refr'], key: `<ul><li>The single refracting surface: <i>L′ = L + F</i> with <i>F = (n′ − n)/r</i>, vergences measured in the medium each side (<i>L = n/l</i>, <i>L′ = n′/l′</i>). Everything else in the year is this formula applied twice.</li></ul>` }),
     W(18, 'Curvature and lens thickness', '2027-01-19', 'lenses', { unit: 2, codes: ['Unit 2 · F3–F4 sag and thickness'], tools: ['thick', 'frame'], quiz: ['u2-thick'], key: `<ul><li><b>Sag</b> of a surface: exact <i>s = r − √(r² − y²)</i>, approximate <i>s = y² F / (2 (n − 1))</i>. Centre thickness of a plus lens = sag of the front − sag of the back + edge thickness; for minus lenses work from the centre outwards.</li></ul>` }),
     W(19, 'Introduction to thin lenses', '2027-01-26', 'optics', { unit: 1, codes: ['Unit 1 · E thin lenses'], quiz: ['u1-lens'], key: `<ul><li><i>L′ = L + F</i> for the thin lens in air; focal points, focal lengths, the two principal foci and ray diagrams for real and virtual images.</li></ul>` }),
     W(20, 'Curvature and lens measure', '2027-02-02', 'lenses', { unit: 2, codes: ['Unit 2 · F1–F2 lens measure'], tools: ['measure', 'thick'], quiz: ['u2-thick'], key: `<ul><li>The <b>lens measure</b> reads the sag of a surface over a fixed chord and converts it to power assuming n = 1.523. For another material multiply by <i>(n − 1)/0.523</i>.</li></ul>` }),
     W(21, 'Consolidation Assignment 3 (summative)', '2027-02-09', 'ca', { codes: ['Weeks 16–20'], tools: ['thick', 'measure'], quiz: ['u1-lens', 'u1-refr', 'u2-thick'], key: `<p>Summative. Covers Weeks 16 to 20: patient fears and concerns, refraction at curved surfaces, lens thickness, thin lenses and the lens measure.</p>` }),
     W(22, 'Thin lenses and conjugate foci', '2027-02-16', 'optics', { unit: 1, codes: ['Unit 1 · E conjugate foci, magnification'], quiz: ['u1-lens'], key: `<ul><li>Object and image are <b>conjugate</b>: <i>L′ = L + F</i> again, magnification <i>m = L/L′ = h′/h</i>. Real images are inverted and on the far side; virtual images erect and on the same side as the object.</li></ul>` }),
-    W(23, 'Ophthalmic prisms and tangent scale', '2027-02-23', 'lenses', { unit: 2, codes: ['Unit 2 · G prisms'], tools: ['basics', 'resolve'], quiz: ['u2-prisms'], key: `<ul><li>Prism power measured on a <b>tangent scale</b>: the displacement in cm of a target seen at 1 m. Base notation (in, out, up, down) and the 360° notation.</li></ul>` }),
+    W(23, 'Ophthalmic prisms and tangent scale', '2027-02-23', 'lenses', { unit: 2, codes: ['Unit 2 · G prisms'], tools: ['basics', 'resolve'], quiz: ['u2-prisms', 't-prism'], key: `<ul><li>Prism power measured on a <b>tangent scale</b>: the displacement in cm of a target seen at 1 m. Base notation (in, out, up, down) and the 360° notation.</li></ul>` }),
     W(24, 'Photometry', '2027-03-02', 'optics', { unit: 1, codes: ['Unit 1 · F photometry'], quiz: ['u1-photo', 't-u1'], key: `<ul><li>Luminous intensity (cd), flux (lm), illuminance (lx = lm/m²). <b>Inverse square law</b> <i>E = I / d²</i> and the <b>cosine law</b> <i>E = I cos θ / d²</i>. Reflectance = reflected / incident.</li></ul>` }),
-    W(25, 'Prism base setting, compounding and resolving, oblique meridians, rotary prism', '2027-03-09', 'lenses', { unit: 2, codes: ['Unit 2 · G7–G9'], tools: ['compound', 'resolve', 'split'], quiz: ['u2-prisms'], key: `<ul><li>Two prisms add like vectors: <b>compound</b> H and V into a single prism (<i>P = √(H² + V²)</i>, base at tan<sup>−1</sup>(V/H)); <b>resolve</b> an oblique prism into H and V (<i>P cos θ</i>, <i>P sin θ</i>). Prism power along an oblique meridian; the rotary (Risley) prism.</li></ul>` }),
+    W(25, 'Prism base setting, compounding and resolving, oblique meridians, rotary prism', '2027-03-09', 'lenses', { unit: 2, codes: ['Unit 2 · G7–G9'], tools: ['compound', 'resolve', 'split'], quiz: ['u2-prisms', 't-prism'], key: `<ul><li>Two prisms add like vectors: <b>compound</b> H and V into a single prism (<i>P = √(H² + V²)</i>, base at tan<sup>−1</sup>(V/H)); <b>resolve</b> an oblique prism into H and V (<i>P cos θ</i>, <i>P sin θ</i>). Prism power along an oblique meridian; the rotary (Risley) prism.</li></ul>` }),
     W(26, 'Effectivity and thin lens systems', '2027-03-16', 'optics', { unit: 1, codes: ['Unit 1 · E lens systems'], quiz: ['u1-lens'], key: `<ul><li>Two thin lenses in contact add their powers; separated, trace vergences through the gap (<i>L′ at the second lens = 1 / (1/L′<sub>1</sub> − d)</i>). Effectivity: the same lens has a different effect at a different distance from the eye (the Year 2 vertex distance calculation starts here).</li></ul>` }),
     W(27, 'Consolidation Assignment 4 (summative)', '2027-03-30', 'ca', { codes: ['Weeks 22–26'], tools: ['compound', 'resolve'], quiz: ['u1-lens', 'u1-photo', 'u2-prisms'], key: `<p>Summative. Covers Weeks 22 to 26: conjugate foci, ophthalmic prisms, photometry, compounding and resolving, lens systems.</p>` }),
-    W(28, 'Prismatic effect of decentration', '2027-04-06', 'lenses', { unit: 2, codes: ['Unit 2 · G11 Prentice'], tools: ['prentice', 'frame'], quiz: ['u2-prentice'], key: `<ul><li><b>Prentice's rule</b>: <i>P = c F</i>, with c in cm from the optical centre. Plus lenses: base towards the optical centre; minus: base away from it. Year 1 keeps the axes at 90 and 180.</li></ul>` }),
+    W(28, 'Prismatic effect of decentration', '2027-04-06', 'lenses', { unit: 2, codes: ['Unit 2 · G11 Prentice'], tools: ['prentice', 'frame'], quiz: ['u2-prentice', 't-prism'], key: `<ul><li><b>Prentice's rule</b>: <i>P = c F</i>, with c in cm from the optical centre. Plus lenses: base towards the optical centre; minus: base away from it. Year 1 keeps the axes at 90 and 180.</li></ul>` }),
     W(29, 'Curved mirrors', '2027-04-13', 'optics', { unit: 1, codes: ['Unit 1 · B curved mirrors'], quiz: ['t-u1'], key: `<ul><li>Mirror power <i>F = −2n/r</i>, <i>f = r/2</i>; <i>L′ = L + F</i> with the sign of the reflected light reversed. Concave mirrors form real inverted images beyond the focus; convex mirrors always virtual, erect, diminished.</li></ul>` }),
-    W(30, 'Decentration to produce prism · differential prismatic effect', '2027-04-20', 'lenses', { unit: 2, codes: ['Unit 2 · G12–G15'], tools: ['decentre', 'diff', 'frame'], quiz: ['u2-decentre', 'u2-diff'], key: `<ul><li>Decentration needed: <i>c = P / F</i> (cm). Minimum size uncut = horizontal size + 2 × decentration. <b>Differential prism</b>: the difference between the two eyes' vertical prism at the reading point, the limit being about 1 Δ before it causes trouble.</li></ul>` }),
-    W(31, 'Line foci from astigmatic lenses', '2027-04-27', 'lenses', { unit: 2, codes: ['Unit 2 · E line foci, disc of least confusion'], quiz: ['u2-trans', 't-u2'], key: `<ul><li>An astigmatic pencil has two <b>line foci</b> at right angles, each formed by one principal meridian; between them the <b>disc of least confusion</b> at the dioptric midpoint (the spherical equivalent).</li></ul>` }),
-    W(32, 'Consolidation Assignment 5 (summative)', '2027-05-05', 'ca', { codes: ['Weeks 28–31'], tools: ['prentice', 'decentre', 'diff'], quiz: ['u2-prentice', 'u2-decentre', 'u2-diff', 'u2-trans'], key: `<p>Summative, and the last one before the exams. Covers Weeks 28 to 31: Prentice's rule, curved mirrors, decentration and differential prism, line foci.</p>` }),
+    W(30, 'Decentration to produce prism · differential prismatic effect', '2027-04-20', 'lenses', { unit: 2, codes: ['Unit 2 · G12–G15'], tools: ['decentre', 'diff', 'frame'], quiz: ['u2-decentre', 'u2-diff', 't-prism'], key: `<ul><li>Decentration needed: <i>c = P / F</i> (cm). Minimum size uncut = horizontal size + 2 × decentration. <b>Differential prism</b>: the difference between the two eyes' vertical prism at the reading point, the limit being about 1 Δ before it causes trouble.</li></ul>` }),
+    W(31, 'Line foci from astigmatic lenses', '2027-04-27', 'lenses', { unit: 2, codes: ['Unit 2 · E line foci, disc of least confusion'], quiz: ['u2-trans', 't-u2', 't-cyl'], key: `<ul><li>An astigmatic pencil has two <b>line foci</b> at right angles, each formed by one principal meridian; between them the <b>disc of least confusion</b> at the dioptric midpoint (the spherical equivalent).</li></ul>` }),
+    W(32, 'Consolidation Assignment 5 (summative)', '2027-05-05', 'ca', { codes: ['Weeks 28–31'], tools: ['prentice', 'decentre', 'diff'], quiz: ['u2-prentice', 'u2-decentre', 'u2-diff', 'u2-trans', 't-prism', 't-cyl'], key: `<p>Summative, and the last one before the exams. Covers Weeks 28 to 31: Prentice's rule, curved mirrors, decentration and differential prism, line foci.</p>` }),
   ];
   const MILESTONES = [
     ['2026-09-15', 'PTT1 planning release', 'Review the practical training task with your PEL'],

@@ -352,7 +352,7 @@
         `<p>Turning the mirror by θ changes both the angle of incidence and the angle of reflection by θ, so the reflected ray turns by <b>2θ = ${2 * th}°</b>.</p>`);
     }
     if (r < 0.82) {
-      const th = pick([90, 72, 60, 45, 40, 36, 30, 20]), N = 360 / th - 1;
+      const th = pick([90, 60, 45, 36, 30, 20]), N = 360 / th - 1;
       return mcq(`Two plane mirrors are set at <b>${th}°</b> to each other. How many images of an object between them?`, `${N}`, [`${N + 1}`, `${N + 2}`, `${180 / th}`],
         `<p>${f('N = 360 / θ − 1')} = ${360 / th} − 1 = <b>${N}</b></p>`);
     }
@@ -400,26 +400,66 @@
   }
   const count = (k) => (BANK[k] || []).length;
 
+  /* ---------- v15: every Step-by-step problem (steps.js) as a quiz question ----------
+     The wrong options are the slips the step-by-step checker knows (cm instead of m, wrong sign, n instead of n − 1…),
+     then a swapped choice, then the usual ×10 / ÷10 / ×2 slips. The explanation is the worked solution itself. */
+  const PRE = { Base: 'base ', 'Move the OC': 'OC ' };
+  const fmtA = (a, x) => (a.choices ? `${PRE[a.label] || ''}${x}` : `${a.signed ? sgn(x, a.dp) : num(x, a.dp)}${a.unit ? (/^[Δ°]/.test(a.unit) ? a.unit : ` ${a.unit}`) : ''}`);
+  function fromSteps(id) {
+    return () => {
+      const t = window.SDOSteps?._topics.find((x) => x.id === id);
+      const p = t && t.gen();
+      if (!p) return null;
+      const A = p.answer, right = A.map((a) => a.v), fmt = (vals) => A.map((a, i) => fmtA(a, vals[i])).join(', ');
+      const alt = (i, x) => { const w = [...right]; w[i] = x; return fmt(w); };
+      const wrong = [];
+      for (const tr of p.traps || []) { const i = tr.k ?? 0; wrong.push(alt(i, A[i].signed ? tr.v : Math.abs(tr.v))); }
+      A.forEach((a, i) => { if (!a.choices && a.signed && Math.abs(a.v) > 1e-9) wrong.push(alt(i, -a.v)); });
+      A.forEach((a, i) => { if (a.choices) for (const c of shuffle(a.choices.filter((c) => c !== a.v)).slice(0, 2)) wrong.push(alt(i, c)); });
+      A.forEach((a, i) => { if (!a.choices && Math.abs(a.v) > 1e-9) for (const k of shuffle([10, 0.1, 2, 0.5])) { const x = a.v * k; if (Math.abs(x) >= 10 ** -a.dp && Math.abs(x) < 1e5) wrong.push(alt(i, x)); } });
+      const explain = p.steps.map((st, i) => `<p><b>${i + 1}. ${st.h}.</b> ${st.say || ''}</p>${st.e || ''}`).join('') + `<p><b>Answer:</b> ${p.steps[p.steps.length - 1].res || fmt(right)}</p>`;
+      return mcq(p.q, fmt(right), wrong, explain);
+    };
+  }
+  const mix = (...gens) => () => pick(gens)();
+  const S1 = (...ids) => ids.map(fromSteps);
+  const gSurfAll = mix(gSurf, ...S1('surf-power', 'surf-radius', 'thin-lens', 'lensmaker', 'units'));
+  const gWavesAll = mix(gWaves, ...S1('freq', 'speed', 'vergence', 'lambda-n'));
+  const gMirrorsAll = mix(gMirrors, ...S1('pinhole', 'mirror-turn', 'mirror-images', 'mirror-length'));
+  const gAmetAll = mix(gAmetropia, ...S1('far-point', 'correct-lens'));
+  const gRefrAll = mix(gRefraction, ...S1('snell', 'critical', 'depth'));
+  const gTransAll = mix(gTranspose, ...S1('transpose'));
+  const gPrenticeAll = mix(gPrentice, ...S1('prentice'));
+  const gDecentreAll = mix(gDecentre, ...S1('decentre'));
+
   // Consolidation Assignment 1 covers Weeks 4–7 only: surfaces and lens form, propagation and vergence, ametropia and far points, pinhole and plane mirrors
-  const gCA1 = () => pick([gSurf, gWaves, gAmetropia, gMirrors])();
+  const gCA1 = () => pick([gSurfAll, gWavesAll, gAmetAll, gMirrorsAll])();
 
   const TOPICS = [
     { id: 'ca1', unit: 1, ca: 'Consolidation Assignment 1 · due Tue 20 Oct', title: 'CA1 practice', blurb: 'Weeks 4–7 mixed: surfaces, vergence, far points, pinhole & mirrors', gen: gCA1 },
-    { id: 'u1-surf', unit: 1, title: 'Surface power & lens form', blurb: 'F = F₁ + F₂, radius, focal length, lens form', gen: gSurf },
-    { id: 'u1-waves', unit: 1, title: 'Light & vergence', blurb: 'v = fλ, vergence, speed in a medium', gen: gWaves },
-    { id: 'u1-mirror', unit: 1, title: 'Pinhole & plane mirrors', blurb: 'Similar triangles, image position, rotation, mirror length', gen: gMirrors },
-    { id: 'u1-refr', unit: 1, title: 'Refraction', blurb: "Snell's law, critical angle, apparent depth", gen: gRefraction },
+    { id: 't-ca1', unit: 1, ca: 'Consolidation Assignment 1 · due Tue 20 Oct', title: 'CA1 theory', blurb: 'Weeks 4–7 theory mixed: materials, light, ametropia, colour, mirrors', gen: () => pick([bankGen('w4'), bankGen('w5'), bankGen('w6'), bankGen('w7')])() },
+    { id: 'u1-surf', unit: 1, title: 'Surface power & lens form', blurb: 'F = F₁ + F₂, radius, focal length, lens form', gen: gSurfAll },
+    { id: 'u1-waves', unit: 1, title: 'Light & vergence', blurb: 'v = fλ, vergence, speed in a medium', gen: gWavesAll },
+    { id: 'u1-mirror', unit: 1, title: 'Pinhole & plane mirrors', blurb: 'Similar triangles, image position, rotation, mirror length', gen: gMirrorsAll },
+    { id: 'u1-refr', unit: 1, title: 'Refraction', blurb: "Snell's law, critical angle, apparent depth", gen: gRefrAll },
     { id: 'u1-lens', unit: 1, title: 'Surfaces & thin lenses', blurb: 'F = (n′ − n)/r, conjugate foci', gen: gLenses },
     { id: 'u1-photo', unit: 1, title: 'Photometry', blurb: 'Inverse square, cosine law, reflectance', gen: gPhoto },
+    { id: 't-w5', unit: 1, title: 'Light & propagation · theory', blurb: `${count('w5')} questions: spectrum, waves, shadows, wavefronts, vergence`, gen: bankGen('w5') },
+    { id: 't-w7', unit: 1, title: 'Pinhole & plane mirrors · theory', blurb: `${count('w7')} questions: pinhole camera, reflection, mirror images`, gen: bankGen('w7') },
+    { id: 't-refr', unit: 1, title: 'Refraction · theory', blurb: `${count('refr')} questions: Snell, TIR, apparent depth, dispersion`, gen: bankGen('refr') },
     { id: 't-u1', unit: 1, title: 'Unit 1 theory', blurb: `${count('u1')} questions: waves, mirrors, refraction, lenses, light, colour`, gen: bankGen('u1') },
-    { id: 'u2-trans', unit: 2, title: 'Transposition', blurb: 'Plus/minus cyl, crossed cylinders', gen: gTranspose },
-    { id: 'u2-amet', unit: 2, title: 'Ametropia', blurb: 'Type of Rx, far points', gen: gAmetropia },
+    { id: 'u2-trans', unit: 2, title: 'Transposition', blurb: 'Plus/minus cyl, crossed cylinders', gen: gTransAll },
+    { id: 'u2-amet', unit: 2, title: 'Ametropia', blurb: 'Type of Rx, far points', gen: gAmetAll },
     { id: 'u2-toric', unit: 2, title: 'Toric lenses', blurb: 'Base and cross curves', gen: gToric },
-    { id: 'u2-prentice', unit: 2, title: "Prentice's rule", blurb: 'Prismatic effect at a point', gen: gPrentice },
-    { id: 'u2-decentre', unit: 2, title: 'Decentration & MSU', blurb: 'Decentring for prism, minimum size uncut', gen: gDecentre },
+    { id: 'u2-prentice', unit: 2, title: "Prentice's rule", blurb: 'Prismatic effect at a point', gen: gPrenticeAll },
+    { id: 'u2-decentre', unit: 2, title: 'Decentration & MSU', blurb: 'Decentring for prism, minimum size uncut', gen: gDecentreAll },
     { id: 'u2-prisms', unit: 2, title: 'Prisms', blurb: 'd = (n − 1)a, compound, resolve, split', gen: gPrisms },
     { id: 'u2-diff', unit: 2, title: 'Differential prism', blurb: 'Vertical imbalance between the eyes', gen: gDiff },
     { id: 'u2-thick', unit: 2, title: 'Sag & thickness', blurb: 'Sag formulae, edge thickness, lens measure', gen: gThick },
+    { id: 't-w4', unit: 2, title: 'Lens materials & surfaces · theory', blurb: `${count('w4')} questions: index, Abbe, lens form, surfacing, lens measure`, gen: bankGen('w4') },
+    { id: 't-w6', unit: 2, title: 'Ametropia, colour & radiation · theory', blurb: `${count('w6')} questions: myopia to presbyopia, UV, tints, colour vision`, gen: bankGen('w6') },
+    { id: 't-cyl', unit: 2, title: 'Cylinders & torics · theory', blurb: `${count('cyl')} questions: axes, line foci, transposition, neutralisation, torics`, gen: bankGen('cyl') },
+    { id: 't-prism', unit: 2, title: 'Prisms · theory', blurb: `${count('prism')} questions: prism dioptre, base, Prentice, decentration`, gen: bankGen('prism') },
     { id: 't-u2', unit: 2, title: 'Unit 2 theory', blurb: `${count('u2')} questions: materials, lens form, cylinders, torics, prisms, ametropia`, gen: bankGen('u2') },
     { id: 't-u3', unit: 3, title: 'Patient-centred care', blurb: `${count('u3')} questions: communication, consent, complaints, referral`, gen: bankGen('u3') },
     { id: 't-u4', unit: 3, title: 'Dispensing practice (PQE)', blurb: `${count('u4')} questions: focimetry, neutralisation, frames, tools, coatings, PEP`, gen: bankGen('u4') },
@@ -459,7 +499,7 @@
     const mixed = st.mixed;
     root().innerHTML = `<section class="banner quiz-hero"><div class="hero-txt"><span class="hero-kicker">Year 1 quiz</span><h1>Practise until<br>it's automatic.</h1><p>${ROUND} questions a round, fresh numbers every time, and the full working after each answer.</p></div>
         <button class="mixed" data-topic="mixed"><span>Mixed round</span><small>All Year 1 topics${mixed ? ` · best ${mixed.best}/${ROUND}` : ''}</small><b>Start →</b></button></section>
-      ${TOPICS.filter((t) => t.ca).map((t) => `<h2 class="q-unit">${t.ca}</h2><div class="qt-grid">${tile(t)}</div>`).join('')}
+      ${[...new Set(TOPICS.filter((t) => t.ca).map((t) => t.ca))].map((ca) => `<h2 class="q-unit">${ca}</h2><div class="qt-grid">${TOPICS.filter((t) => t.ca === ca).map(tile).join('')}</div>`).join('')}
       <h2 class="q-unit">Unit 1 · Theory of General Optics</h2><div class="qt-grid">${TOPICS.filter((t) => t.unit === 1 && !t.ca).map(tile).join('')}</div>
       <h2 class="q-unit">Unit 2 · Theory of Ophthalmic Lenses</h2><div class="qt-grid">${TOPICS.filter((t) => t.unit === 2).map(tile).join('')}</div>
       <h2 class="q-unit">Units 3 &amp; 4 · Patient care and dispensing practice</h2><div class="qt-grid">${TOPICS.filter((t) => t.unit === 3).map(tile).join('')}</div>`;

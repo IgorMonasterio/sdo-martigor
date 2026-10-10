@@ -379,13 +379,13 @@
   topic({ id: 'mirror-images', group: 7, title: 'Two mirrors at an angle', blurb: 'N = 360 / θ − 1', weeks: [7, 8], quiz: ['u1-mirror', 'ca1'],
     formulas: [[`${v('N')} = ${fr('360', 'θ')} − 1`, [['N', 'number of images', ''], ['θ', 'angle between the mirrors', '°']]]],
     gen() {
-      const th = pick([90, 72, 60, 45, 40, 36, 30, 20]), N = 360 / th - 1;
+      const th = pick([90, 60, 45, 36, 30, 20]), N = 360 / th - 1;
       return {
         q: `Two plane mirrors are set at <b>${th}°</b> to each other, with an object between them. How many images are seen?`,
         know: [['θ', `${th}°`, 'between the mirrors']], find: 'the number of images N',
         steps: [
           { h: 'How many times θ fits in a circle', e: eq(`${fr('360', String(th))} = ${360 / th}`), calc: `360 ÷ ${th} =` },
-          { h: 'Take one away', say: 'One of those "slots" is the object itself, not an image.', e: eq(`${v('N')} = ${360 / th} − 1 = ${N}`), res: `${N} images` },
+          { h: 'Take one away', say: 'One of those "slots" is the object itself, not an image. (This works cleanly when 360 / θ is an even number, as here; when it is odd, the count depends on where the object sits.)', e: eq(`${v('N')} = ${360 / th} − 1 = ${N}`), res: `${N} images` },
         ],
         answer: [{ label: 'Images', unit: '', v: N, dp: 0, tol: 0.1 }],
         traps: [{ v: N + 1, msg: 'Take one away: one of those is the object itself.' }],
