@@ -763,3 +763,81 @@ html:not(.ready) .side .card, html:not(.ready) .workspace > .tabs { animation: s
 .wk.bk::before { background: var(--accent); }
 .wk-rd { display: block; font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 2px; }
 .theory .xref { color: var(--accent); text-decoration: underline; cursor: pointer; }
+
+/* ===================== v13: "abdo" theme — iris only (Marta's copy; Igor 2026-10-10 05:59) =====================
+   Light, in the colours of her college's site: white pages, a cream header band, purple-grey text and buttons,
+   lime and red as accents. Set by the inline script in index.html on iris.martigor.org; sdo stays dark. */
+:root[data-theme="abdo"] {
+  --bg: #ffffff; --surface: #ffffff; --surface-2: #f7f8ef; --ink: #3a3450; --text: #4d4667; --muted: #7c7790;
+  --line: #e4e6d6; --line-2: #cfd2bb; --accent: #4d4667; --accent-soft: rgb(210 215 0 / .28);
+  --lime: #d2d700; --cream: #f0f3e1; --red: #c80b0f;
+  --r: #c80b0f; --r-soft: rgb(200 11 15 / .07); --l: #2f6fe4; --l-soft: rgb(47 111 228 / .08);
+  --warn: #8a5a00; --warn-soft: #fff6dc; --bad: #c80b0f; --ok: #3f7d20; --ok-soft: rgb(63 125 32 / .1);
+  --shadow: 0 1px 2px rgb(77 70 103 / .06), 0 10px 26px -18px rgb(77 70 103 / .35);
+  color-scheme: light;
+}
+:root[data-theme="abdo"], :root[data-theme="abdo"] body { background: #ffffff; }
+:root[data-theme="abdo"] .sky { display: none; }
+
+/* header: the cream band right across the top, like the college's navbar */
+:root[data-theme="abdo"] .top { background: var(--cream); margin-bottom: 18px; padding: 12px 0; }
+:root[data-theme="abdo"] .brand-mark { background: var(--lime); box-shadow: inset 0 -7px 0 var(--red); border-radius: 6px; }
+:root[data-theme="abdo"] .bm-ring { stroke: rgb(77 70 103 / .25); }
+:root[data-theme="abdo"] .bm-lens { fill: #4d4667; }
+:root[data-theme="abdo"] .bm-ray { stroke: #4d4667; }
+:root[data-theme="abdo"] .brand-txt { color: #4d4667; }
+:root[data-theme="abdo"] .mode, :root[data-theme="abdo"] .icon-btn { background: #ffffff; border-color: var(--line-2); -webkit-backdrop-filter: none; backdrop-filter: none; }
+:root[data-theme="abdo"] .mode button[aria-selected="true"], :root[data-theme="abdo"] .tabs button[aria-selected="true"] { background: #4d4667; color: var(--cream); border-color: #4d4667; box-shadow: none; }
+:root[data-theme="abdo"] .mode button[aria-selected="true"] .ico, :root[data-theme="abdo"] .tabs button[aria-selected="true"] .ico { stroke: var(--lime); }
+
+/* banners: cream panel with a lime edge instead of the dark glass */
+:root[data-theme="abdo"] .banner { background: var(--cream); color: var(--text); border: 0; border-left: 6px solid var(--lime); box-shadow: none; }
+:root[data-theme="abdo"] .banner h1 { color: var(--ink); }
+:root[data-theme="abdo"] .banner p { color: var(--text); }
+:root[data-theme="abdo"] .hero-kicker { color: var(--red); }
+:root[data-theme="abdo"] .wk-hero h1 em { color: #4d4667; box-shadow: inset 0 -.32em 0 rgb(210 215 0 / .55); }
+:root[data-theme="abdo"] .ha-rays path { stroke: #4d4667; stroke-opacity: .6; }
+:root[data-theme="abdo"] .ha-axis { stroke: #4d4667; stroke-opacity: .25; }
+:root[data-theme="abdo"] .ha-lens { stroke: #4d4667; fill: rgb(210 215 0 / .45); }
+:root[data-theme="abdo"] .ha-focus, :root[data-theme="abdo"] .ha-lbl { fill: var(--red); }
+:root[data-theme="abdo"] .mixed { background: #ffffff; border-color: var(--line-2); color: var(--ink); }
+:root[data-theme="abdo"] .mixed small { color: var(--muted); }
+:root[data-theme="abdo"] .mixed b { color: var(--red); }
+:root[data-theme="abdo"] .mixed:hover { background: var(--surface-2); border-color: #4d4667; }
+:root[data-theme="abdo"] .wk-ms { background: #ffffff; border-color: var(--line-2); }
+:root[data-theme="abdo"] .wk-ms b { color: var(--red); }
+
+/* cards, tiles, tabs, inputs: flat white with fine lines */
+:root[data-theme="abdo"] .card { background: #ffffff; border-color: var(--line); -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: var(--shadow); }
+:root[data-theme="abdo"] .card::before, :root[data-theme="abdo"] .card::after { display: none; }
+:root[data-theme="abdo"] .card:hover { background: #ffffff; box-shadow: var(--shadow); }
+:root[data-theme="abdo"] .tabs button { background: #ffffff; border-color: var(--line-2); color: var(--text); }
+:root[data-theme="abdo"] .tabs { background: rgb(255 255 255 / .92); border-top-color: var(--line); }
+:root[data-theme="abdo"] .tabs .tabs-in button[aria-selected="true"] { background: #4d4667; color: var(--cream); box-shadow: none; }
+:root[data-theme="abdo"] .subnav button.on { background: var(--cream); color: var(--ink); }
+:root[data-theme="abdo"] .rx-mini { background: rgb(255 255 255 / .96); border-color: var(--line-2); box-shadow: var(--shadow); }
+:root[data-theme="abdo"] .rx-mini b { color: #ffffff; }
+:root[data-theme="abdo"] .pw, :root[data-theme="abdo"] .mini-field, :root[data-theme="abdo"] .rx-tools select, :root[data-theme="abdo"] .field select { background: #ffffff; }
+:root[data-theme="abdo"] .pw:focus-within { background: #ffffff; box-shadow: 0 0 0 3px rgb(210 215 0 / .55); }
+:root[data-theme="abdo"] .btn:not(.ghost) { background: #4d4667; color: var(--cream); box-shadow: none; }
+:root[data-theme="abdo"] .btn:not(.ghost):hover { background: #3a3450; }
+:root[data-theme="abdo"] .btn.ghost { background: #ffffff; border-color: var(--line-2); color: var(--text); }
+:root[data-theme="abdo"] .res.hero { box-shadow: var(--shadow); }
+:root[data-theme="abdo"] .ref { color: #4d4667; background: var(--cream); border-color: var(--line-2); }
+:root[data-theme="abdo"] .eye-tag { color: #ffffff; }
+:root[data-theme="abdo"] .seg::before { background: #ffffff; }
+:root[data-theme="abdo"] .wk, :root[data-theme="abdo"] .qt { background: #ffffff; border-color: var(--line); }
+:root[data-theme="abdo"] .wk:hover, :root[data-theme="abdo"] .qt:hover { border-color: #4d4667; }
+:root[data-theme="abdo"] .wk.now { border-color: #4d4667; box-shadow: inset 0 0 0 1px #4d4667, var(--shadow); background: var(--cream); }
+:root[data-theme="abdo"] .k-lenses { --k: #4d4667; } :root[data-theme="abdo"] .k-ca { --k: var(--red); } :root[data-theme="abdo"] .k-maths { --k: var(--lime); }
+:root[data-theme="abdo"] .wk-tool { background: #ffffff; border-color: var(--line-2); }
+:root[data-theme="abdo"] .wk-tool .ico { stroke: #4d4667; }
+:root[data-theme="abdo"] .wk-tool b { color: var(--red); }
+:root[data-theme="abdo"] .wk-tool:hover { background: var(--cream); border-color: #4d4667; }
+:root[data-theme="abdo"] .theory details { background: #ffffff; border-color: var(--line); }
+:root[data-theme="abdo"] .theory details[open] { background: #ffffff; }
+:root[data-theme="abdo"] .theory .box { background: var(--surface-2); }
+:root[data-theme="abdo"] .theory a, :root[data-theme="abdo"] .theory .xref { color: #4d4667; text-decoration-color: var(--lime); text-decoration-thickness: 2px; }
+:root[data-theme="abdo"] .q-bar span { background: #4d4667; }
+:root[data-theme="abdo"] .foot { border-top: 4px solid var(--lime); }
+:root[data-theme="abdo"] .hero-art > circle:not(.ha-focus) { display: none; }
