@@ -755,3 +755,31 @@
     });
   }, { passive: true });
 })();
+
+// v11 · self-update. A home-screen app (iOS above all) resumes the page it already had in memory instead of loading it
+// again, so new versions never show up. When the app comes back to the front (and every 15 min while it stays open) ask
+// the server for index.html and compare its versioned files (?v=N) with the ones this page loaded; if they differ, reload.
+(function () {
+  const sig = (list) => [...new Set(list)].sort().join(' ');
+  const mine = () => sig([...document.querySelectorAll('script[src*="?v="], link[href*="?v="]')].map((e) => e.getAttribute('src') || e.getAttribute('href')));
+  let last = Date.now(), busy = false;
+  async function check() {
+    if (busy || document.visibilityState !== 'visible') return;
+    busy = true; last = Date.now();
+    try {
+      const r = await fetch(`/?t=${Date.now()}`, { cache: 'no-store', redirect: 'error' });
+      if (!r.ok) return;
+      const theirs = sig([...(await r.text()).matchAll(/(?:src|href)="(\/assets\/[^"]+\?v=\d+)"/g)].map((m) => m[1]));
+      if (!theirs || theirs === mine()) return;
+      // never loop: at most one automatic reload every 5 minutes
+      let prev = 0; try { prev = Number(sessionStorage.getItem('sdo-reloaded')) || 0; } catch { prev = 0; }
+      if (Date.now() - prev < 300000) return;
+      try { sessionStorage.setItem('sdo-reloaded', String(Date.now())); } catch { /* private mode */ }
+      location.reload();
+    } catch { /* offline, or the login has expired: leave the page as it is */ } finally { busy = false; }
+  }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') check(); });
+  addEventListener('pageshow', (e) => { if (e.persisted) check(); });
+  addEventListener('focus', () => { if (Date.now() - last > 60000) check(); });
+  setInterval(check, 15 * 60000);
+})();
