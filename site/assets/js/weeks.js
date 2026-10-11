@@ -115,8 +115,8 @@
       <ul>
         <li>A <b>cylinder</b> has power along one meridian and none along the axis. Written as cyl × axis, with the axis in standard notation (1–180, anticlockwise from the horizontal as seen from in front of the patient).</li>
         <li>A <b>sph-cyl</b> lens is a sphere plus a cylinder. The power along the axis is the sphere; 90° away it is sphere + cyl.</li>
-        <li><b>Transposition</b> between plus-cyl and minus-cyl form: new sphere = old sphere + old cyl; new cyl = −old cyl; axis rotated by 90°.</li>
-        <li><b>Crossed-cylinder form</b>: two cylinders with axes 90° apart, each equal to one of the principal powers.</li>
+        <li><b>Transposition</b> between plus cyl and minus cyl form: <b>Sum it</b> (new sph = sph + cyl), <b>Swap it</b> (change the cyl sign), <b>Swing it</b> (axis ± 90). Written as +2.00DS/−1.00DC x 180.</li>
+        <li><b>Cross cyl form</b>: two cylinders with axes 90° apart. Sph/cyl → cross cyl: 1st = the sphere with the axis turned 90°, 2nd = sph + cyl at the original axis (+2.00DS/−1.00DC x 180 = +2.00DC x 90 / +1.00DC x 180). Cross cyl → sph/cyl: take either power as the sphere, cyl = the other − that sphere, axis = the axis of the cyl you did not choose. Two thin astigmatic lenses in contact combine through their cross cyls.</li>
       </ul>` }),
     W(10, 'Apparent depth, refractive index and refraction', '2026-11-10', 'optics', { unit: 1, codes: ['Unit 1 · C refraction, Snell, apparent depth'], quiz: ['u1-refr', 't-u1', 't-refr'], key: `
       <ul>
@@ -129,12 +129,13 @@
     W(11, 'Sph-cyl lenses, transposition 2, sph-cyl neutralisation', '2026-11-17', 'lenses', { unit: 2, codes: ['Unit 2 · D transposition', 'Unit 4 · hand neutralisation'], tools: ['forms', 'rx'], quiz: ['u2-trans', 't-u2', 't-u4', 't-cyl'], key: `
       <ul>
         <li>Transposition the other way round: from crossed-cyl to sph-cyl and back, and reading the power along any meridian.</li>
-        <li><b>Hand neutralisation</b>: move the lens and watch the image; <b>against</b> movement means plus, <b>with</b> movement means minus. Add trial lenses of the opposite sign until the movement stops. For a cylinder find the two meridians with no scissors movement and neutralise each.</li>
+        <li><b>Hand neutralisation</b>: move the lens and watch the image; <b>against</b> movement means plus, <b>with</b> movement means minus. Add trial lenses of the opposite sign until the movement stops. For a cylinder: rotate the spectacles until the principal meridians line up with the cross chart and mark them; <b>with</b> scissors movement marks the minus cyl axis, <b>against</b> the plus cyl axis. Neutralise each meridian and write the power as the trial lens with the <b>opposite sign</b>. The axis is read in <b>reverse standard notation (clockwise)</b>, because you are looking at the lens from the back. Method One: spheres only (cross cyl form); Method Two: a sphere, then a cyl (plus cyl form).</li>
       </ul>` }),
     W(12, 'Toric lenses, toric transposition', '2026-11-24', 'lenses', { unit: 2, codes: ['Unit 2 · D5–D6 toric transposition'], tools: ['toric', 'forms'], quiz: ['u2-toric', 't-u2', 't-cyl'], key: `
       <ul>
         <li>A <b>toric surface</b> has two different curvatures at right angles (a slice of a doughnut). The lower-powered meridian of the toric surface is the <b>base curve</b>, the other the <b>cross curve</b>.</li>
-        <li><b>Toric transposition</b>: given the Rx and the base curve (or the sphere curve), first transpose the Rx so the cyl has the same sign as the base curve; the base curve goes at 90° to the Rx axis; cross curve = base curve + cyl, at the Rx axis; sphere curve = sphere − base curve. A <b>minus base toric</b> has the toric surface on the concave back, a <b>plus base toric</b> on the convex front (minus base is what is usually made today).</li>
+        <li><b>Toric transposition</b> (base curve given): first transpose the Rx so the cyl has the same sign as the base curve; the base curve goes at 90° to the Rx axis; cross curve = base curve + cyl, at the Rx axis; sphere curve = sphere − base curve. A <b>minus base toric</b> has the toric surface on the concave back, a <b>plus base toric</b> on the convex front (minus base is what is usually made today).</li>
+        <li><b>Sphere curve given</b>: write the Rx in the <b>opposite</b> sign form to the sphere curve; base curve = sph − sphere curve (axis = Rx axis ± 90); cross curve = base curve + cyl (Rx axis). Written front surface over back, e.g. +8.50DS over −5.00DC x 40/−6.50DC x 130. Back to sph/cyl: sph = SC + BC, cyl = CC − BC, axis = the cross curve axis.</li>
       </ul>` }),
     W(13, 'Prisms and dispersion 1', '2026-12-01', 'optics', { unit: 2, codes: ['Unit 2 · G1–G6 prisms'], tools: ['basics'], quiz: ['u2-prisms', 'u1-refr', 't-prism', 't-refr'], key: `
       <ul>

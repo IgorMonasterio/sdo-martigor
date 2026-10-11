@@ -26,9 +26,10 @@
   function normAx(a) { let v = (((Math.round(a * 10) / 10) % 180) + 180) % 180; if (v === 0) v = 180; return v; }
   const axS = (a) => String(Math.round(normAx(a)));
   const deg = (a) => `${Math.round(normAx(a))}°`;
+  // written the way the course writes a prescription (Block One handouts, 2026-10-11): +2.00DS/−1.00DC x 180
   function rxS(e) {
-    if (Math.abs(e.cyl) < 0.005) return `${sphS(e.sph)} DS`;
-    return `${sphS(e.sph)} / ${sgn(e.cyl)} × ${axS(e.axis)}`;
+    if (Math.abs(e.cyl) < 0.005) return Math.abs(e.sph) < 0.005 ? 'Plano' : `${sgn(e.sph)}DS`;
+    return `${Math.abs(e.sph) < 0.005 ? '0.00' : sgn(e.sph)}DS/${sgn(e.cyl)}DC x ${axS(e.axis)}`;
   }
   const mm = (x, dp = 1) => `${num(x, dp)} mm`;
   const pr = (x, dp = 2) => `${num(Math.abs(x), dp)}Δ`;
@@ -278,16 +279,16 @@
     let rows = '';
     for (const eye of EYES) {
       const e = RX[eye], ps = principal(e);
-      const crossed = hasCyl(e) ? `${sgn(ps[0].p)} × ${axS(ps[1].m)} / ${sgn(ps[1].p)} × ${axS(ps[0].m)}` : `${sgn(e.sph)} DS`;
+      const crossed = hasCyl(e) ? `${sgn(ps[0].p)}DC x ${axS(ps[1].m)} / ${sgn(ps[1].p)}DC x ${axS(ps[0].m)}` : rxS(e);
       rows += `<tr><td class="${eyeCls(eye)}">${eye}</td><td>${rxS(toMinus(e))}</td><td>${rxS(toPlus(e))}</td><td>${crossed}</td></tr>`;
     }
     const e0 = RX.R, ps0 = principal(e0);
     setHTML('tr-forms', `<div class="card-head"><h3>Sph-cyl and crossed cylinder forms <span class="ref">Unit 2 · C4–C5</span></h3></div>
       <div class="tbl-wrap"><table class="tbl"><thead><tr><th></th><th>Minus cyl</th><th>Plus cyl</th><th>Crossed cylinders</th></tr></thead><tbody>${rows}</tbody></table></div>
-      ${work('tr-rules', `<p><b>Transposition (sph-cyl ↔ sph-cyl):</b> (1) new sph = sph + cyl; (2) change the sign of the cyl; (3) change the axis by 90°.</p>
-        ${hasCyl(e0) ? `<p>R: ${rxS(e0)} → sph ${sgn(e0.sph)} + (${sgn(e0.cyl)}) = ${sgn(e0.sph + e0.cyl)} · cyl ${sgn(-e0.cyl)} · axis ${axS(e0.axis)} ± 90 = ${axS(e0.axis + 90)} → <b>${rxS(transpose(e0))}</b></p>` : ''}
-        <p><b>Crossed cylinders:</b> each principal power becomes a plano-cylinder with its axis at 90° to the meridian it acts in.${hasCyl(e0) ? ` R: ${sgn(ps0[0].p)} acts along ${deg(ps0[0].m)} → ${sgn(ps0[0].p)} × ${axS(ps0[1].m)}; ${sgn(ps0[1].p)} acts along ${deg(ps0[1].m)} → ${sgn(ps0[1].p)} × ${axS(ps0[0].m)}.` : ''}</p>
-        <p><b>Crossed cylinders → sph-cyl:</b> take either cylinder's power as the sphere; cyl = the other power − that sphere; axis = the axis of the other cylinder.</p>`)}`);
+      ${work('tr-rules', `<p><b>Transposition: Sum it, Swap it, Swing it.</b> Sum it: new sph = sph + cyl. Swap it: change the sign of the cyl. Swing it: change the axis by 90°.</p>
+        ${hasCyl(e0) ? `<p>R: ${rxS(e0)} → Sum it: ${sgn(e0.sph)} + (${sgn(e0.cyl)}) = ${sgn(e0.sph + e0.cyl)} · Swap it: ${sgn(-e0.cyl)} · Swing it: ${axS(e0.axis)} ${normAx(e0.axis) <= 90 ? '+' : '−'} 90 = ${axS(e0.axis + 90)} → <b>${rxS(transpose(e0))}</b></p>` : ''}
+        <p><b>Sph/cyl → cross cyl:</b> 1st cross cyl = the sphere, with the axis turned through 90°; 2nd cross cyl = sphere + cyl, at the original axis.${hasCyl(e0) ? ` R: 1st ${sgn(ps0[0].p)}DC x ${axS(ps0[1].m)}; 2nd ${sgn(e0.sph)} + (${sgn(e0.cyl)}) = ${sgn(ps0[1].p)}DC x ${axS(ps0[0].m)}.` : ''}</p>
+        <p><b>Cross cyl → sph/cyl:</b> take either power as the sphere; cyl = the other power − that sphere; axis = the axis of the cyl you did not choose.</p>`)}`);
 
     // toric
     const te = seg('tor-eye') || 'R', t = RX[te];
@@ -295,7 +296,7 @@
     $('#tor-val-lbl').textContent = mode === 'base' ? 'Base curve' : `Sphere curve (${minusT ? 'front' : 'back'})`;
     const v = Math.abs(val('tor-val', 6, { min: 0.25, max: 25 }));
     let out;
-    const curveS = (T, m) => `${sgn(T)} × ${axS(m + 90)}`; // a curve acting along meridian m has its axis at m + 90
+    const curveS = (T, m) => `${sgn(T)}DC x ${axS(m + 90)}`; // a curve acting along meridian m has its axis at m + 90
     if (!hasCyl(t)) {
       out = `<p class="empty">${EYE_NAME[te]} eye has no cylinder, so no toric surface is needed.</p>`;
     } else {
@@ -309,20 +310,20 @@
         const form = minusT ? toMinus(t) : toPlus(t);
         steps = `<p>1. ${minusT ? 'Minus' : 'Plus'} base curve, so write the Rx in ${minusT ? 'minus' : 'plus'} cyl form: <b>${rxS(form)}</b></p>
           <p>2. Sphere curve = sph − base curve = ${sgn(form.sph)} − (${sgn(B)}) = <b>${sgn(sph)}</b></p>
-          <p>3. Base curve axis = cyl axis ± 90 = ${axS(form.axis + 90)} → base curve <b>${sgn(B)} × ${axS(form.axis + 90)}</b></p>
-          <p>4. Cross curve = base curve + cyl = ${sgn(B)} + (${sgn(form.cyl)}) = <b>${sgn(B + form.cyl)}</b>, axis = cyl axis = ${axS(form.axis)}</p>`;
+          <p>3. Base curve axis = Rx axis ± 90 = ${axS(form.axis + 90)} → base curve <b>${sgn(B)}DC x ${axS(form.axis + 90)}</b></p>
+          <p>4. Cross curve = base curve + cyl = ${sgn(B)} + (${sgn(form.cyl)}) = <b>${sgn(B + form.cyl)}DC x ${axS(form.axis)}</b> (the Rx axis)</p>`;
       } else {
+        // the handout's method: write the Rx in the OPPOSITE sign form to the sphere curve; BC = sph − SC; CC = BC + cyl
         sph = minusT ? v : -v;
-        const T = ps.map((o) => ({ m: o.m, T: o.p - sph }));
-        const sorted = [...T].sort((a, b) => a.T - b.T);
-        base = minusT ? sorted[1] : sorted[0]; cross = minusT ? sorted[0] : sorted[1];
-        steps = `<p>1. The sphere curve ${sgn(sph)} goes on the ${minusT ? 'front' : 'back'}; the toric surface is the other one.</p>
-          <p>2. Each principal power minus the sphere curve gives the toric curve in that meridian: ${ps.map((o) => `${deg(o.m)}: ${sgn(o.p)} − (${sgn(sph)}) = ${sgn(o.p - sph)}`).join(' ; ')}</p>
-          <p>3. The base curve is the flatter (weaker) of the two: <b>${sgn(base.T)}</b> along ${deg(base.m)} → written ${curveS(base.T, base.m)}; cross curve ${curveS(cross.T, cross.m)}.</p>`;
+        const form = minusT ? toMinus(t) : toPlus(t), BC = form.sph - sph;
+        base = { m: normAx(form.axis), T: BC }; cross = { m: normAx(form.axis + 90), T: BC + form.cyl };
+        steps = `<p>1. Sphere curve ${sgn(sph)}DS is ${sph > 0 ? 'plus' : 'minus'}, so write the Rx in the opposite (${minusT ? 'minus' : 'plus'}) cyl form: <b>${rxS(form)}</b>. The sphere curve goes on the ${minusT ? 'front' : 'back'}, the toric surface on the ${minusT ? 'back (minus base toric)' : 'front (plus base toric)'}.</p>
+          <p>2. Base curve = sph − sphere curve = ${sgn(form.sph)} − (${sgn(sph)}) = <b>${sgn(BC)}DC x ${axS(form.axis + 90)}</b> (Rx axis ± 90)</p>
+          <p>3. Cross curve = base curve + cyl = ${sgn(BC)} + (${sgn(form.cyl)}) = <b>${sgn(BC + form.cyl)}DC x ${axS(form.axis)}</b> (the Rx axis)</p>`;
       }
       const wrongSign = minusT ? (base.T > 0.005 || cross.T > 0.005) : (base.T < -0.005 || cross.T < -0.005);
       const toricTxt = `${curveS(base.T, base.m)} / ${curveS(cross.T, cross.m)}`;
-      const top = minusT ? `${sgn(sph)} DS` : toricTxt, bot = minusT ? toricTxt : `${sgn(sph)} DS`;
+      const top = minusT ? `${sgn(sph)}DS` : toricTxt, bot = minusT ? toricTxt : `${sgn(sph)}DS`;
       out = `<div class="tor-box"><div class="fraction"><span>${top}</span><span class="bar"></span><span class="den">${bot}</span></div>
         <div class="sub">Front: ${minusT ? `sphere ${sgn(sph)}` : `base ${curveS(base.T, base.m)}, cross ${curveS(cross.T, cross.m)}`}<br>Back: ${minusT ? `base ${curveS(base.T, base.m)}, cross ${curveS(cross.T, cross.m)}` : `sphere ${sgn(sph)}`}</div></div>
         ${wrongSign ? callout('warn', `With this ${mode === 'base' ? 'base' : 'sphere'} curve the toric surface isn't fully ${minusT ? 'minus' : 'plus'}, so it isn't a sensible ${minusT ? 'minus' : 'plus'} toric. Try a ${mode === 'sph' ? 'steeper sphere curve' : 'different curve'}.`) : ''}
@@ -518,9 +519,9 @@
     }
     setHTML('fr-out', `<div class="card"><div class="card-head"><h3>Frame layout</h3><span class="sub">Viewed from the front</span></div>${svg}
         <div class="legend"><span><i></i>Box centre +</span><span><i class="r"></i>R optical centre &amp; uncut</span><span><i class="l"></i>L optical centre &amp; uncut</span></div>
-        ${work('fr', `<p>${f('BCD (frame PD) = A + DBL')} = ${num(F.A, 1)} + ${num(F.DBL, 1)} = <b>${num(F.BCD, 1)} mm</b></p>
-          <p>${f('Horizontal decentration = BCD/2 − mono PD')} → R: ${num(F.BCD / 2, 1)} − ${num(F.pd.R, 1)} = ${num(E.R.hd, 1)} ; L: ${num(F.BCD / 2, 1)} − ${num(F.pd.L, 1)} = ${num(E.L.hd, 1)} (positive = inwards)</p>
-          <p>${f('Vertical decentration = OC height − B/2')} → R: ${num(F.ht.R, 1)} − ${num(F.B / 2, 1)} = ${num(E.R.vd, 1)} ; L: ${num(E.L.vd, 1)} (positive = up)</p>
+        ${work('fr', `<p>${f('Boxed centre distance = horizontal lens size + DBL')} = ${num(F.A, 1)} + ${num(F.DBL, 1)} = <b>${num(F.BCD, 1)} mm</b></p>
+          <p>${f('Horizontal decentration = boxed centre distance / 2 − mono PD')} → R: ${num(F.BCD / 2, 1)} − ${num(F.pd.R, 1)} = ${num(E.R.hd, 1)} ; L: ${num(F.BCD / 2, 1)} − ${num(F.pd.L, 1)} = ${num(E.L.hd, 1)} (positive = inwards)</p>
+          <p>${f('Vertical decentration = OC height − B/2')} (= the OC height measured from the horizontal centre line, HCL) → R: ${num(F.ht.R, 1)} − ${num(F.B / 2, 1)} = ${num(E.R.vd, 1)} ; L: ${num(E.L.vd, 1)} (positive = up)</p>
           <p>${f('Resultant = √(h² + v²)')} → R ${num(E.R.rd, 2)} mm, L ${num(E.L.rd, 2)} mm</p>
           <p>${f('MSU = horizontal lens size + 2 × resultant decentration')}${F.allow ? ' + allowance' : ''} → R: ${num(F.A, 1)} + 2 × ${num(E.R.rd, 2)}${F.allow ? ` + ${num(F.allow, 1)}` : ''} = <b>${num(E.R.msu, 1)} mm</b> ; L: <b>${num(E.L.msu, 1)} mm</b></p>`)}</div>
       <div class="grid two">${cards}</div>`);

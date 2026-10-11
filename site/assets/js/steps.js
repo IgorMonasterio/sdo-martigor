@@ -42,7 +42,7 @@
   const X100 = (u) => (u === 'mm' ? '× 1000' : u === 'm' ? '' : '× 100');
   topic({ id: 'units', group: 'tool', title: 'Reciprocals: cm, mm and dioptres', blurb: 'F = 1/f′ and f′ = 1/F, keeping cm (× 100) or mm (× 1000)', weeks: [1, 4, 5, 6, 8], quiz: [],
     formulas: [[`${v('F')} = ${fr('1', v('f′'))} &nbsp;and&nbsp; ${v('f′')} = ${fr('1', v('F'))}`, [['F', 'total power of the lens', 'D'], ['f′', 'second principal focal length', 'm, or cm × 100, or mm × 1000']]],
-      ['Small letter = a distance (f′, l, r). Big letter = a power in dioptres (F, L).', []]],
+      ['Small letter = a distance (f′, l, r). Big letter = a power in dioptres (F, L).', []], [`In general f′ = n′/F and f = −n/F; in air f′ = 1/F and f = −1/F (f = first focal length).`, []]],
     gen() {
       if (Math.random() < 0.55) {
         const mm = Math.random() < 0.4, plus = Math.random() < 0.6;
@@ -123,9 +123,9 @@
     } });
 
   /* ===== Week 4: surface power, lens form ===== */
-  const SIGN = 'Cartesian sign convention: light travels from left to right, and the radius is measured from the surface to its centre of curvature. In the direction of the light = positive, against it = negative.';
+  const SIGN = 'Cartesian sign convention: light travels from left to right, and the radius is measured from the surface to its centre of curvature. In the direction of the light (behind or above the surface) = positive, against it (in front or below) = negative.';
   topic({ id: 'surf-power', group: 4, title: 'Power of a surface', blurb: 'F₁ = (n − 1)/r₁ and F₂ = (1 − n)/r₂, from the radius', weeks: [4, 8], quiz: ['u1-surf', 'u1-lens', 'ca1'],
-    formulas: [[`${v('F')}<sub>1</sub> = ${fr(`${v('n′')} − ${v('n')}`, `${v('r')}<sub>1</sub>`)} &nbsp; ${v('F')}<sub>2</sub> = ${fr(`${v('n')} − ${v('n′')}`, `${v('r')}<sub>2</sub>`)}`, [['F₁', 'first (front) surface power', 'DS'], ['F₂', 'second (back) surface power', 'DS'], ['n', 'refractive index of air', 'always 1 in this unit'], ['n′', 'refractive index of the lens material', ''], ['r₁, r₂', 'radius of curvature of the front / back surface', 'with its sign; cm × 100, mm × 1000']]],
+    formulas: [[`${v('F')}<sub>1</sub> = ${fr(`${v('n′')} − ${v('n')}`, `${v('r')}<sub>1</sub>`)} &nbsp; ${v('F')}<sub>2</sub> = ${fr(`${v('n')} − ${v('n′')}`, `${v('r')}<sub>2</sub>`)}`, [['F₁', 'first (front) surface power', 'DS'], ['F₂', 'second (back) surface power', 'DS'], ['n', 'refractive index of air (the medium the light is in)', 'always 1 in this unit'], ['n′', 'refractive index of the lens material (the medium the light enters)', ''], ['r₁, r₂', 'radius of curvature of the front / back surface', 'with its sign; cm × 100, mm × 1000']]],
       [`In air: ${v('F')}<sub>1</sub> = ${fr(`${v('n')} − 1`, `${v('r')}<sub>1</sub>`)} &nbsp; ${v('F')}<sub>2</sub> = ${fr(`1 − ${v('n')}`, `${v('r')}<sub>2</sub>`)}`, [['n', 'here n is the refractive index of the lens', '']]]],
     gen() {
       const n = pick([1.498, 1.523, 1.586, 1.6, 1.65, 1.7]), back = Math.random() < 0.4;
@@ -548,22 +548,144 @@
       };
     } });
 
-  /* ===== Unit 2 ===== */
-  topic({ id: 'transpose', group: 9, title: 'Transposition', blurb: 'Plus cyl ↔ minus cyl in three steps', weeks: [9, 11, 12, 15], quiz: ['u2-trans'],
-    formulas: [['1. sph + cyl &nbsp; 2. change the cyl sign &nbsp; 3. axis ± 90°', []]],
+  /* ===== Unit 2: sph-cyl lenses, cross cyls and torics, as the Block One handouts set them out (2026-10-11) ===== */
+  const AX = (a) => Math.round(S.normAx(a));
+  const DC = (p, a) => `${G(p)}DC x ${AX(a)}`;
+  const rxE = () => ({ sph: Math.round(rnd(-6, 6) * 4) / 4, cyl: qd(-3, 3), axis: ri(1, 36) * 5 });
+  topic({ id: 'transpose', group: 9, title: 'Transposition', blurb: 'Sum it, Swap it, Swing it', weeks: [9, 11, 12, 15], quiz: ['u2-trans'],
+    formulas: [['Sum it (sph + cyl) · Swap it (change the cyl sign) · Swing it (axis ± 90)', []], ['Written as +2.00DS/−1.00DC x 180', []]],
     gen() {
-      const e = { sph: Math.round(rnd(-6, 6) * 4) / 4, cyl: qd(-3, 3), axis: ri(1, 36) * 5 }, t = S.transpose(e);
-      const ax2 = t.axis;
+      const e = rxE(), t = S.transpose(e), ax2 = t.axis;
       return {
-        q: `Transpose <b>${S.rxS(e)}</b> into ${e.cyl < 0 ? 'plus' : 'minus'}-cyl form.`,
-        know: [['sph', G(e.sph), ''], ['cyl', G(e.cyl), ''], ['axis', String(e.axis), '']], find: 'the same lens written the other way',
+        q: `Transpose <b>${S.rxS(e)}</b> into ${e.cyl < 0 ? 'plus' : 'minus'} cyl form.`,
+        know: [['sph', `${G(e.sph)}DS`, ''], ['cyl', `${G(e.cyl)}DC`, ''], ['axis', String(e.axis), '']], find: 'the same lens written the other way',
         steps: [
-          { h: 'New sphere = sphere + cylinder', say: 'Add them, keeping the signs.', e: eq(`${G(e.sph)} + ${P(e.cyl, 2)} = ${G(t.sph)}`), calc: `${Z(e.sph, 2)} + ${P(e.cyl, 2)} =` },
-          { h: 'Change the sign of the cylinder', e: eq(`${G(e.cyl)} → ${G(t.cyl)}`) },
-          { h: 'Turn the axis through 90°', say: 'Add 90 if the axis is 90 or less; take away 90 if it is more. The answer must stay between 1 and 180.', e: eq(`${e.axis} ${e.axis <= 90 ? '+' : MINUS} 90 = ${ax2}`), res: S.rxS(t) },
+          { h: 'Sum it', say: 'New sphere = sphere + cylinder, keeping the signs.', e: eq(`${G(e.sph)} + ${P(e.cyl, 2)} = ${G(t.sph)}DS`), calc: `${Z(e.sph, 2)} + ${P(e.cyl, 2)} =` },
+          { h: 'Swap it', say: 'Change the sign of the cylinder.', e: eq(`${G(e.cyl)} → ${G(t.cyl)}DC`) },
+          { h: 'Swing it', say: 'Turn the axis through 90°: add 90 if it is 90 or less, take away 90 if it is more. It must stay between 1 and 180.', e: eq(`${e.axis} ${e.axis <= 90 ? '+' : MINUS} 90 = ${ax2}`), res: S.rxS(t) },
         ],
-        answer: [{ label: 'Sph', unit: 'D', v: t.sph, dp: 2, signed: true, tol: 0.001 }, { label: 'Cyl', unit: 'D', v: t.cyl, dp: 2, signed: true, tol: 0.001 }, { label: 'Axis', unit: '°', v: ax2, dp: 0, tol: 0.1 }],
+        answer: [{ label: 'Sph', unit: 'DS', v: t.sph, dp: 2, signed: true, tol: 0.001 }, { label: 'Cyl', unit: 'DC', v: t.cyl, dp: 2, signed: true, tol: 0.001 }, { label: 'Axis', unit: '', v: ax2, dp: 0, tol: 0.1 }],
         traps: [],
+      };
+    } });
+
+  topic({ id: 'crosscyl', group: 9, title: 'Cross cylinders', blurb: 'Sph/cyl ↔ cross cyl, the handout way', weeks: [9, 11, 12, 15], quiz: ['u2-trans'],
+    formulas: [['Sph/cyl → cross cyl: 1st = the sphere, axis turned 90° · 2nd = sph + cyl, at the original axis', []], ['Cross cyl → sph/cyl: take either power as the sphere · cyl = the other power − that sphere · axis = the axis of the cyl you did not choose', []]],
+    gen() {
+      if (Math.random() < 0.5) {
+        const e = rxE(), c1 = e.sph, a1 = e.axis + 90, c2 = e.sph + e.cyl, a2 = e.axis;
+        if (Math.abs(c1) < 0.01 || Math.abs(c2) < 0.01) return null;
+        return {
+          q: `Write <b>${S.rxS(e)}</b> in cross cylinder form.`,
+          know: [['sph', `${G(e.sph)}DS`, ''], ['cyl', `${G(e.cyl)}DC`, ''], ['axis', String(e.axis), '']], find: 'the two cylinders',
+          steps: [
+            { h: '1st cross cyl: the sphere, axis turned through 90°', e: eq(`${G(c1)}DC x (${e.axis} ${e.axis <= 90 ? '+' : MINUS} 90) = ${DC(c1, a1)}`) },
+            { h: '2nd cross cyl: sphere + cyl, at the original axis', e: eq(`${G(e.sph)} + ${P(e.cyl, 2)} = ${DC(c2, a2)}`), calc: `${Z(e.sph, 2)} + ${P(e.cyl, 2)} =` },
+            { h: 'Check on a power cross', say: `Each power sits on the arm of the meridian it acts in: ${G(c1)} along ${AX(a2)}, ${G(c2)} along ${AX(a1)}.`, res: `${DC(c1, a1)} / ${DC(c2, a2)}` },
+          ],
+          answer: [{ label: '1st cyl', unit: 'DC', v: c1, dp: 2, signed: true, tol: 0.001 }, { label: 'axis', unit: '', v: AX(a1), dp: 0, tol: 0.1 }, { label: '2nd cyl', unit: 'DC', v: c2, dp: 2, signed: true, tol: 0.001 }, { label: 'axis', unit: '', v: AX(a2), dp: 0, tol: 0.1 }],
+          traps: [],
+        };
+      }
+      const a1 = ri(1, 36) * 5, a2 = AX(a1 + 90); let c1, c2; do { c1 = qd(-6, 6); c2 = qd(-6, 6); } while (Math.abs(c1 - c2) < 0.25);
+      return {
+        q: `Write the cross cylinders <b>${DC(c1, a1)} / ${DC(c2, a2)}</b> as a sph/cyl, taking the <b>first</b> cylinder's power as the sphere.`,
+        know: [['1st', DC(c1, a1), 'taken as the sphere'], ['2nd', DC(c2, a2), '']], find: 'sph, cyl and axis',
+        steps: [
+          { h: 'The sphere', say: 'Take the first power as the sphere.', e: eq(`sph = ${G(c1)}DS`) },
+          { h: 'The cylinder: the other power minus the sphere', e: eq(`cyl = ${G(c2)} − ${P(c1, 2)} = ${G(c2 - c1)}DC`), calc: `${Z(c2, 2)} − ${P(c1, 2)} =` },
+          { h: 'The axis: from the cyl you did not choose', e: eq(`axis = ${AX(a2)}`), res: `${G(c1)}DS/${G(c2 - c1)}DC x ${AX(a2)}` },
+        ],
+        answer: [{ label: 'Sph', unit: 'DS', v: c1, dp: 2, signed: true, tol: 0.001 }, { label: 'Cyl', unit: 'DC', v: c2 - c1, dp: 2, signed: true, tol: 0.001 }, { label: 'Axis', unit: '', v: AX(a2), dp: 0, tol: 0.1 }],
+        traps: [{ v: c1 - c2, k: 1, msg: 'Other way round: cyl = the other power − the sphere.' }],
+      };
+    } });
+
+  topic({ id: 'combine', group: 9, title: 'Combining astigmatic lenses', blurb: 'Two thin lenses in contact: via cross cylinders', weeks: [9, 11, 12, 15], quiz: ['u2-trans'],
+    formulas: [['1. Write each lens as cross cylinders · 2. Add the powers with the same axis · 3. Transpose the result back to sph/cyl', []]],
+    gen() {
+      const mk = () => ({ sph: Math.round(rnd(-4, 4) * 4) / 4, cyl: qd(-2, 2), axis: pick([90, 180]) });
+      const cross = (e) => { const o = { 90: 0, 180: 0 }; o[AX(e.axis + 90)] += e.sph; o[AX(e.axis)] += e.sph + e.cyl; return o; };
+      let e1, e2, T; do { e1 = mk(); e2 = mk(); const x1 = cross(e1), x2 = cross(e2); T = { 90: x1[90] + x2[90], 180: x1[180] + x2[180], x1, x2 }; } while (Math.abs(T[90] - T[180]) < 0.25);
+      const hi = T[90] >= T[180] ? 90 : 180, lo = hi === 90 ? 180 : 90, sph = T[hi], cyl = T[lo] - T[hi], axis = lo;
+      return {
+        q: `Two thin lenses are placed in contact: <b>${S.rxS(e1)}</b> and <b>${S.rxS(e2)}</b>. What single lens replaces them? Give it in minus cyl form.`,
+        know: [['lens 1', S.rxS(e1), ''], ['lens 2', S.rxS(e2), '']], find: 'the combined Rx, minus cyl form',
+        steps: [
+          { h: 'Lens 1 as cross cylinders', e: eq(`${DC(T.x1[90], 90)} / ${DC(T.x1[180], 180)}`) },
+          { h: 'Lens 2 as cross cylinders', e: eq(`${DC(T.x2[90], 90)} / ${DC(T.x2[180], 180)}`) },
+          { h: 'Add the cylinders with the same axis', e: eq(`x 90: ${G(T.x1[90])} + ${P(T.x2[90], 2)} = ${G(T[90])} &nbsp; x 180: ${G(T.x1[180])} + ${P(T.x2[180], 2)} = ${G(T[180])}`) },
+          { h: 'Back to sph/cyl (minus cyl)', say: 'For minus cyl form take the more positive power as the sphere; cyl = the other − the sphere; axis = the axis of the cyl not chosen.', e: eq(`sph ${G(sph)} · cyl ${G(T[lo])} − ${P(sph, 2)} = ${G(cyl)} · axis ${axis}`), res: `${G(sph)}DS/${G(cyl)}DC x ${axis}` },
+        ],
+        answer: [{ label: 'Sph', unit: 'DS', v: sph, dp: 2, signed: true, tol: 0.001 }, { label: 'Cyl', unit: 'DC', v: cyl, dp: 2, signed: true, tol: 0.001 }, { label: 'Axis', unit: '', v: axis, dp: 0, tol: 0.1 }],
+        traps: [{ v: e1.sph + e2.sph, msg: 'You cannot just add the spheres when the cylinders are at different axes: go through cross cylinders.' }],
+      };
+    } });
+
+  const TORIC = (sc, bc, abc, cc, acc, minusBase) => {
+    const sphere = `${G(sc)}DS`, toric = `${DC(bc, abc)}/${DC(cc, acc)}`;
+    return minusBase ? fr(sphere, toric) : fr(toric, sphere);
+  };
+  topic({ id: 'toric', group: 9, title: 'Toric transposition', blurb: 'Base curve or sphere curve given, as in your handout', weeks: [12, 15], quiz: ['u2-toric'],
+    formulas: [['Base curve given: write the Rx in the SAME sign form as the base curve · BC axis = Rx axis ± 90 · CC = BC + cyl (Rx axis) · SC = sph − BC', []],
+      ['Sphere curve given: write the Rx in the OPPOSITE sign form to the sphere curve · BC = sph − SC (axis = Rx axis ± 90) · CC = BC + cyl (Rx axis)', []],
+      ['Written front surface over back surface. Base curve = lowest numerical curve on the toric surface; minus base toric = toric on the back.', []]],
+    gen() {
+      const e = rxE(), r = Math.random();
+      if (r < 0.45) {
+        const minus = Math.random() < 0.7, bc = (minus ? -1 : 1) * pick([4, 5, 6, 7, 8]);
+        const form = minus ? (e.cyl > 0 ? S.transpose(e) : e) : (e.cyl < 0 ? S.transpose(e) : e);
+        const sc = form.sph - bc, cc = bc + form.cyl, abc = form.axis + 90, acc = form.axis;
+        return {
+          q: `Transpose <b>${S.rxS(e)}</b> into toric form with a <b>${G(bc)}DC</b> base curve.`,
+          know: [['Rx', S.rxS(e), ''], ['BC', `${G(bc)}DC`, minus ? 'minus: toric on the back' : 'plus: toric on the front']], find: 'the sphere curve, base curve and cross curve',
+          steps: [
+            { h: 'Same sign form as the base curve', say: `The base curve is ${minus ? 'minus' : 'plus'}, so write the Rx in ${minus ? 'minus' : 'plus'} cyl form${form === e ? ' (it already is)' : ' (Sum it, Swap it, Swing it)'}.`, e: eq(S.rxS(form)) },
+            { h: 'Base curve axis: Rx axis ± 90', e: eq(`BC = ${DC(bc, abc)}`) },
+            { h: 'Cross curve = base curve + cyl, at the Rx axis', e: eq(`${G(bc)} + ${P(form.cyl, 2)} = ${DC(cc, acc)}`), calc: `${Z(bc, 2)} + ${P(form.cyl, 2)} =` },
+            { h: 'Sphere curve = sph − base curve', e: eq(`${G(form.sph)} − ${P(bc, 2)} = ${G(sc)}DS`), calc: `${Z(form.sph, 2)} − ${P(bc, 2)} =` },
+            { h: 'Write it front over back', e: eq(TORIC(sc, bc, abc, cc, acc, minus)), res: `SC ${G(sc)}DS · BC ${DC(bc, abc)} · CC ${DC(cc, acc)}` },
+          ],
+          answer: [{ label: 'SC', unit: 'DS', v: sc, dp: 2, signed: true, tol: 0.001 }, { label: 'CC', unit: 'DC', v: cc, dp: 2, signed: true, tol: 0.001 }, { label: 'CC axis', unit: '', v: AX(acc), dp: 0, tol: 0.1 }],
+          traps: [{ v: e.sph - bc, msg: 'First write the Rx in the same sign form as the base curve, then SC = sph − BC.' }],
+        };
+      }
+      let sc, extra = '', fromR = r > 0.75, n, rmm;
+      if (fromR) { n = pick([1.5, 1.523, 1.6]); sc = pick([6, 8, -6, -8]); rmm = ((n - 1) / sc) * 1000; rmm = Math.round(rmm); sc = Math.round(((n - 1) / rmm) * 1000 * 4) / 4; extra = ` The sphere curve is made in a material of n = <b>${n}</b> with a radius of <b>${G(rmm, 0)} mm</b>.`; }
+      else sc = pick([6, 7, 8, -6, -7, -8]);
+      const minus = sc > 0, form = minus ? (e.cyl > 0 ? S.transpose(e) : e) : (e.cyl < 0 ? S.transpose(e) : e);
+      const bc = form.sph - sc, cc = bc + form.cyl, abc = form.axis + 90, acc = form.axis;
+      return {
+        q: `Transpose <b>${S.rxS(e)}</b> into toric form ${fromR ? 'using the sphere curve given below.' : `with a <b>${G(sc)}DS</b> sphere curve.`}${extra}`,
+        know: [['Rx', S.rxS(e), ''], ...(fromR ? [['n', String(n), ''], ['r', `${G(rmm, 0)} mm`, 'sphere curve radius']] : [['SC', `${G(sc)}DS`, '']])], find: 'the base curve and cross curve',
+        steps: [
+          ...(fromR ? [{ h: 'Sphere curve from its radius', e: eq(`SC = ${fr(`${n} − 1`, G(rmm, 0))} × 1000 = ${G(sc)}DS`), calc: `( ${n} − 1 ) ÷ ${rmm} × 1000 =` }] : []),
+          { h: 'Opposite sign form to the sphere curve', say: `The sphere curve is ${sc > 0 ? 'plus' : 'minus'}, so write the Rx in ${minus ? 'minus' : 'plus'} cyl form${form === e ? ' (it already is)' : ' (Sum it, Swap it, Swing it)'}. The toric surface will be ${minus ? 'minus: a minus base toric' : 'plus: a plus base toric'}.`, e: eq(S.rxS(form)) },
+          { h: 'Base curve = sph − sphere curve, axis = Rx axis ± 90', e: eq(`${G(form.sph)} − ${P(sc, 2)} = ${DC(bc, abc)}`), calc: `${Z(form.sph, 2)} − ${P(sc, 2)} =` },
+          { h: 'Cross curve = base curve + cyl, at the Rx axis', e: eq(`${G(bc)} + ${P(form.cyl, 2)} = ${DC(cc, acc)}`) },
+          { h: 'Write it front over back', e: eq(TORIC(sc, bc, abc, cc, acc, minus)), res: `BC ${DC(bc, abc)} · CC ${DC(cc, acc)} · SC ${G(sc)}DS` },
+        ],
+        answer: [{ label: 'BC', unit: 'DC', v: bc, dp: 2, signed: true, tol: 0.001 }, { label: 'BC axis', unit: '', v: AX(abc), dp: 0, tol: 0.1 }, { label: 'CC', unit: 'DC', v: cc, dp: 2, signed: true, tol: 0.001 }],
+        traps: [{ v: e.sph - sc, msg: 'First write the Rx in the opposite sign form to the sphere curve, then BC = sph − SC.' }],
+      };
+    } });
+
+  topic({ id: 'toric-back', group: 9, title: 'Toric back to sph/cyl', blurb: 'From the three curves to the Rx and cross cyl', weeks: [12, 15], quiz: ['u2-toric'],
+    formulas: [['Sph = SC + BC · Cyl = CC − BC · Axis = the cross curve axis', []]],
+    gen() {
+      const minus = Math.random() < 0.6, bc = (minus ? -1 : 1) * pick([2, 3, 4, 5, 6, 7, 8]), d = (minus ? -1 : 1) * qd(0.5, 3), cc = bc + d;
+      const sc = (minus ? 1 : -1) * pick([4, 5, 6, 7, 8, 9]) + Math.round(rnd(-1, 1) * 4) / 4, acc = ri(1, 36) * 5, abc = acc + 90;
+      const sph = sc + bc, cyl = cc - bc, ax = AX(acc);
+      return {
+        q: `A lens is written in toric form as ${TORIC(sc, bc, abc, cc, acc, minus)} (front over back). What is the Rx in sph/cyl form?`,
+        know: [['SC', `${G(sc)}DS`, 'sphere curve'], ['BC', DC(bc, abc), 'base curve'], ['CC', DC(cc, acc), 'cross curve']], find: 'sph, cyl and axis',
+        steps: [
+          { h: 'Sph = sphere curve + base curve', e: eq(`${G(sc)} + ${P(bc, 2)} = ${G(sph)}DS`), calc: `${Z(sc, 2)} + ${P(bc, 2)} =` },
+          { h: 'Cyl = cross curve − base curve', e: eq(`${G(cc)} − ${P(bc, 2)} = ${G(cyl)}DC`) },
+          { h: 'Axis = the cross curve axis', e: eq(`axis = ${ax}`), res: `${G(sph)}DS/${G(cyl)}DC x ${ax} (= ${S.rxS(S.transpose({ sph, cyl, axis: ax }))})` },
+        ],
+        answer: [{ label: 'Sph', unit: 'DS', v: sph, dp: 2, signed: true, tol: 0.001 }, { label: 'Cyl', unit: 'DC', v: cyl, dp: 2, signed: true, tol: 0.001 }, { label: 'Axis', unit: '', v: ax, dp: 0, tol: 0.1 }],
+        traps: [{ v: cc + sc, msg: 'The sphere uses the base curve: sph = SC + BC.' }],
       };
     } });
 
@@ -607,7 +729,7 @@
   const GROUPS = [
     ['tool', 'Maths toolkit', 'The tricks every calculation leans on'],
     [4, 'Week 4 · Surface power and lens form', ''], [5, 'Week 5 · Propagation of light', ''], [6, 'Week 6 · Errors of refraction', ''], [7, 'Week 7 · Pinhole camera and plane mirrors', ''],
-    [9, 'Weeks 9–12 · Sph-cyl lenses', ''], [10, 'Week 10 onwards · Refraction', ''], [28, 'Prisms and decentration', ''],
+    [9, 'Weeks 9–12 · Sph-cyl lenses, cross cyls and torics (Block One)', ''], [10, 'Week 10 onwards · Refraction', ''], [28, 'Prisms and decentration', ''],
   ];
 
   /* ================= storage ================= */

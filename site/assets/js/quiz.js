@@ -39,15 +39,15 @@
         rxS({ sph: e.sph, cyl: -e.cyl, axis: normAx(e.axis + 90) }),
         rxS({ sph: e.sph + e.cyl, cyl: e.cyl, axis: normAx(e.axis + 90) }),
         rxS({ sph: e.sph - e.cyl, cyl: -e.cyl, axis: normAx(e.axis + 90) }),
-      ], `<p>1. New sph = sph + cyl = ${sgn(e.sph)} + (${sgn(e.cyl)}) = ${sgn(e.sph + e.cyl)}</p><p>2. Change the cyl sign → ${sgn(-e.cyl)}</p><p>3. Axis ± 90 → ${axS(e.axis + 90)}</p>`);
+      ], `<p><b>Sum it:</b> ${sgn(e.sph)} + (${sgn(e.cyl)}) = ${sgn(e.sph + e.cyl)}</p><p><b>Swap it:</b> ${sgn(-e.cyl)}</p><p><b>Swing it:</b> axis ± 90 → ${axS(e.axis + 90)}</p>`);
     }
     const ps = principal(e);
     if (ps.some((o) => Math.abs(o.p) < 0.01)) return null; // one principal power is plano: really a single plano cylinder
-    return mcq(`Write <b>${rxS(e)}</b> as two crossed cylinders.`, `${sgn(ps[0].p)} × ${axS(ps[1].m)} / ${sgn(ps[1].p)} × ${axS(ps[0].m)}`, [
-      `${sgn(ps[0].p)} × ${axS(ps[0].m)} / ${sgn(ps[1].p)} × ${axS(ps[1].m)}`,
-      `${sgn(e.sph)} × ${axS(ps[1].m)} / ${sgn(e.cyl)} × ${axS(ps[0].m)}`,
-      `${sgn(e.sph)} × ${axS(e.axis)} / ${sgn(e.cyl)} × ${axS(e.axis + 90)}`,
-    ], `<p>Principal powers: ${sgn(ps[0].p)} along ${axS(ps[0].m)}, ${sgn(ps[1].p)} along ${axS(ps[1].m)}.</p><p>A cylinder acts at 90° to its axis, so a power along ${axS(ps[0].m)} is written × ${axS(ps[1].m)}, and vice versa.</p>`);
+    return mcq(`Write <b>${rxS(e)}</b> as two crossed cylinders.`, `${sgn(ps[0].p)}DC x ${axS(ps[1].m)} / ${sgn(ps[1].p)}DC x ${axS(ps[0].m)}`, [
+      `${sgn(ps[0].p)}DC x ${axS(ps[0].m)} / ${sgn(ps[1].p)}DC x ${axS(ps[1].m)}`,
+      `${sgn(e.sph)}DC x ${axS(ps[1].m)} / ${sgn(e.cyl)}DC x ${axS(ps[0].m)}`,
+      `${sgn(e.sph)}DC x ${axS(e.axis)} / ${sgn(e.cyl)}DC x ${axS(e.axis + 90)}`,
+    ], `<p>1st cross cyl = the sphere, with the axis turned through 90°: ${sgn(ps[0].p)}DC x ${axS(ps[1].m)}.</p><p>2nd cross cyl = sphere + cyl, at the original axis: ${sgn(e.sph)} + (${sgn(e.cyl)}) = ${sgn(ps[1].p)}DC x ${axS(ps[0].m)}.</p>`);
   };
 
   const TYPES = ['Myopia', 'Hypermetropia', 'Simple myopic astigmatism', 'Simple hypermetropic astigmatism', 'Compound myopic astigmatism', 'Compound hypermetropic astigmatism', 'Mixed astigmatism'];
@@ -121,13 +121,13 @@
     const dec = (A + DBL) / 2 - PD;
     if (Math.abs(dec) < 0.5) return null;
     if (r < 0.75) {
-      return mcq(`Boxed lens size <b>${A}</b>, DBL <b>${DBL}</b>, monocular PD <b>${PD} mm</b>. What is the horizontal decentration?`, `${num(Math.abs(dec), 1)} mm ${dec > 0 ? 'in' : 'out'}`, [
+      return mcq(`Horizontal lens size <b>${A} mm</b>, distance between lenses <b>${DBL} mm</b>, monocular PD <b>${PD} mm</b>. What is the horizontal decentration?`, `${num(Math.abs(dec), 1)} mm ${dec > 0 ? 'in' : 'out'}`, [
         `${num(Math.abs(dec), 1)} mm ${dec > 0 ? 'out' : 'in'}`, `${num(Math.abs(A + DBL - PD), 1)} mm ${dec > 0 ? 'in' : 'out'}`, `${num(Math.abs(A + DBL / 2 - PD), 1)} mm ${dec > 0 ? 'in' : 'out'}`,
-      ], `<p>${f('BCD = A + DBL')} = ${A + DBL} mm → half = ${num((A + DBL) / 2, 1)}</p><p>Decentration = ${num((A + DBL) / 2, 1)} − ${PD} = ${num(dec, 1)} mm → ${dec > 0 ? 'inwards (the PD is smaller than half the BCD)' : 'outwards'}.</p>`);
+      ], `<p>${f('Boxed centre distance = horizontal lens size + DBL')} = ${A + DBL} mm → half = ${num((A + DBL) / 2, 1)}</p><p>Decentration = ${num((A + DBL) / 2, 1)} − ${PD} = ${num(dec, 1)} mm → ${dec > 0 ? 'inwards (the PD is smaller than half the boxed centre distance)' : 'outwards'}.</p>`);
     }
     const allow = Math.random() < 0.5 ? 2 : 0;
     const msu = A + 2 * Math.abs(dec) + allow;
-    return mcq(`Round lens, horizontal size <b>${A} mm</b>, DBL <b>${DBL}</b>, mono PD <b>${PD} mm</b>, no vertical decentration, ${allow ? `<b>${allow} mm</b> glazing allowance` : '<b>no</b> allowance'}. Minimum size uncut?`, `${num(msu, 1)} mm`, [
+    return mcq(`Round lens, horizontal lens size <b>${A} mm</b>, distance between lenses <b>${DBL} mm</b>, mono PD <b>${PD} mm</b>, no vertical decentration, ${allow ? `<b>${allow} mm</b> glazing allowance` : '<b>no</b> allowance'}. Minimum size uncut?`, `${num(msu, 1)} mm`, [
       allow ? `${num(msu - allow, 1)} mm` : null, `${num(A + Math.abs(dec) + allow, 1)} mm`, `${num(A + 2 * Math.abs(A + DBL - PD) + allow, 1)} mm`, `${num(A - 2 * Math.abs(dec) + allow, 1)} mm`,
     ], `<p>Decentration = (A + DBL)/2 − PD = ${num((A + DBL) / 2, 1)} − ${PD} = ${num(Math.abs(dec), 1)} mm</p><p>${f(`MSU = lens size + 2 × decentration${allow ? ' + allowance' : ''}`)} = ${A} + 2 × ${num(Math.abs(dec), 1)}${allow ? ` + ${allow}` : ''} = <b>${num(msu, 1)} mm</b></p>`);
   };
@@ -182,7 +182,7 @@
     if (!bases.length) return null;
     const B = pick(bases);
     const sph = form.sph - B, cross = B + form.cyl, bax = axS(form.axis + 90), cax = axS(form.axis);
-    const T = (s, b, ba, c, ca) => (minus ? `${sgn(s)} DS front · ${sgn(b)} × ${ba} / ${sgn(c)} × ${ca} back` : `${sgn(b)} × ${ba} / ${sgn(c)} × ${ca} front · ${sgn(s)} DS back`);
+    const T = (s, b, ba, c, ca) => (minus ? `${sgn(s)}DS front · ${sgn(b)}DC x ${ba}/${sgn(c)}DC x ${ca} back` : `${sgn(b)}DC x ${ba}/${sgn(c)}DC x ${ca} front · ${sgn(s)}DS back`);
     return mcq(`Transpose <b>${rxS(e)}</b> into ${minus ? 'minus' : 'plus'} toric form on a <b>${sgn(B)}</b> base curve.`, T(sph, B, bax, cross, cax), [
       T(sph, B, bax, B - form.cyl, cax), T(sph, B, cax, cross, bax), T(form.sph + B, B, bax, cross, cax),
     ], `<p>1. Write the Rx with the cyl the same sign as the base: ${rxS(form)}</p><p>2. Sphere curve = sph − base = ${sgn(form.sph)} − (${sgn(B)}) = ${sgn(sph)}</p><p>3. Base curve axis = cyl axis ± 90 = ${bax}</p><p>4. Cross curve = base + cyl = ${sgn(B)} + (${sgn(form.cyl)}) = ${sgn(cross)}, axis ${cax}</p>`);
@@ -391,7 +391,8 @@
   const gMirrorsAll = mix(gMirrors, ...S1('pinhole', 'mirror-turn', 'test-room', 'mirror-images', 'mirror-length'));
   const gAmetAll = mix(gAmetropia, ...S1('far-point', 'correct-lens'));
   const gRefrAll = mix(gRefraction, ...S1('snell', 'critical', 'depth'));
-  const gTransAll = mix(gTranspose, ...S1('transpose'));
+  const gTransAll = mix(gTranspose, ...S1('transpose', 'crosscyl', 'combine'));
+  const gToricAll = () => pick([gToric, ...S1('toric', 'toric-back')])();
   const gPrenticeAll = mix(gPrentice, ...S1('prentice'));
   const gDecentreAll = mix(gDecentre, ...S1('decentre'));
 
@@ -413,7 +414,7 @@
     { id: 't-u1', unit: 1, title: 'Unit 1 theory', blurb: `${count('u1')} questions: waves, mirrors, refraction, lenses, light, colour`, gen: bankGen('u1') },
     { id: 'u2-trans', unit: 2, title: 'Transposition', blurb: 'Plus/minus cyl, crossed cylinders', gen: gTransAll },
     { id: 'u2-amet', unit: 2, title: 'Ametropia', blurb: 'Type of Rx, far points', gen: gAmetAll },
-    { id: 'u2-toric', unit: 2, title: 'Toric lenses', blurb: 'Base and cross curves', gen: gToric },
+    { id: 'u2-toric', unit: 2, title: 'Toric lenses', blurb: 'Base and cross curves', gen: gToricAll },
     { id: 'u2-prentice', unit: 2, title: "Prentice's rule", blurb: 'Prismatic effect at a point', gen: gPrenticeAll },
     { id: 'u2-decentre', unit: 2, title: 'Decentration & MSU', blurb: 'Decentring for prism, minimum size uncut', gen: gDecentreAll },
     { id: 'u2-prisms', unit: 2, title: 'Prisms', blurb: 'd = (n − 1)a, compound, resolve, split', gen: gPrisms },

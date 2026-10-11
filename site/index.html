@@ -16,12 +16,12 @@
 <link rel="preload" href="/assets/fonts/montserrat-latin-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/app.css?v=14">
 <script nonce="__CSP_NONCE__">(function(){var a=['iris.martigor.org','127.0.0.1','localhost'].indexOf(location.hostname)>=0;document.documentElement.setAttribute('data-theme',a?'abdo':'dark');if(a){document.querySelector('meta[name="theme-color"]').content='#f0f3e1';document.querySelector('meta[name="apple-mobile-web-app-title"]').content='IRIS'}})()</script>
-<script nonce="__CSP_NONCE__" src="/assets/js/app.js?v=17" defer></script>
+<script nonce="__CSP_NONCE__" src="/assets/js/app.js?v=18" defer></script>
 <script nonce="__CSP_NONCE__" src="/assets/js/bank.js?v=8" defer></script>
 <script nonce="__CSP_NONCE__" src="/assets/js/bank2.js?v=3" defer></script>
-<script nonce="__CSP_NONCE__" src="/assets/js/quiz.js?v=15" defer></script>
-<script nonce="__CSP_NONCE__" src="/assets/js/steps.js?v=4" defer></script>
-<script nonce="__CSP_NONCE__" src="/assets/js/weeks.js?v=17" defer></script>
+<script nonce="__CSP_NONCE__" src="/assets/js/quiz.js?v=16" defer></script>
+<script nonce="__CSP_NONCE__" src="/assets/js/steps.js?v=5" defer></script>
+<script nonce="__CSP_NONCE__" src="/assets/js/weeks.js?v=18" defer></script>
 <script nonce="__CSP_NONCE__" src="/assets/js/stats.js?v=2" defer></script>
 </head>
 <body>
@@ -155,7 +155,7 @@
           <div class="seg wide" data-name="tor-mode"><button data-v="base" class="on">Base curve</button><button data-v="sph">Sphere curve</button></div></div>
         <label class="field"><span id="tor-val-lbl">Base curve</span><span class="unit-in"><input id="tor-val" inputmode="decimal" value="6.00"><i>D</i></span></label>
         <div class="field span2"><span>Toric surface</span>
-          <div class="seg wide" data-name="tor-side"><button data-v="back" class="on">Minus toric (back)</button><button data-v="front">Plus toric (front)</button></div></div>
+          <div class="seg wide" data-name="tor-side"><button data-v="back" class="on">Minus base toric (back)</button><button data-v="front">Plus base toric (front)</button></div></div>
       </div>
       <div id="tr-toric"></div>
     </div>
@@ -257,14 +257,14 @@
     <div class="card">
       <div class="card-head"><h3>Centration &amp; minimum size uncut <span class="ref">Unit 4 · B1 · Unit 2 · G13</span></h3></div>
       <div class="fields four">
-        <label class="field"><span>A — horizontal size</span><span class="unit-in"><input id="fr-a" inputmode="decimal" value="50"><i>mm</i></span></label>
-        <label class="field"><span>B — vertical size</span><span class="unit-in"><input id="fr-b" inputmode="decimal" value="40"><i>mm</i></span></label>
-        <label class="field"><span>DBL</span><span class="unit-in"><input id="fr-dbl" inputmode="decimal" value="20"><i>mm</i></span></label>
+        <label class="field"><span>Horizontal lens size (A)</span><span class="unit-in"><input id="fr-a" inputmode="decimal" value="50"><i>mm</i></span></label>
+        <label class="field"><span>Vertical lens size (B)</span><span class="unit-in"><input id="fr-b" inputmode="decimal" value="40"><i>mm</i></span></label>
+        <label class="field"><span>Distance between lenses (DBL)</span><span class="unit-in"><input id="fr-dbl" inputmode="decimal" value="20"><i>mm</i></span></label>
         <label class="field"><span>Allowance <em>(if used)</em></span><span class="unit-in"><input id="fr-allow" inputmode="decimal" value="0"><i>mm</i></span></label>
         <label class="field"><span>Mono PD — R</span><span class="unit-in"><input id="fr-pdr" inputmode="decimal" value="32"><i>mm</i></span></label>
         <label class="field"><span>Mono PD — L</span><span class="unit-in"><input id="fr-pdl" inputmode="decimal" value="32"><i>mm</i></span></label>
-        <label class="field"><span>OC height — R</span><span class="unit-in"><input id="fr-hr" inputmode="decimal" value="22"><i>mm</i></span></label>
-        <label class="field"><span>OC height — L</span><span class="unit-in"><input id="fr-hl" inputmode="decimal" value="22"><i>mm</i></span></label>
+        <label class="field"><span>OC height above lower box — R</span><span class="unit-in"><input id="fr-hr" inputmode="decimal" value="22"><i>mm</i></span></label>
+        <label class="field"><span>OC height above lower box — L</span><span class="unit-in"><input id="fr-hl" inputmode="decimal" value="22"><i>mm</i></span></label>
       </div>
       <p class="hint">Heights from the lower box line. Year 1 method (round/oval lenses): MSU = horizontal size + 2 × resultant decentration.</p>
     </div>
