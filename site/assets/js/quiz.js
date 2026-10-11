@@ -331,13 +331,13 @@
       if (Math.random() < 0.6) {
         return mcq(`A <b>${num(h, 1)} m</b> tall object stands <b>${u} m</b> from a pinhole camera whose screen is <b>${v} cm</b> behind the hole. Height of the image?`, `${num(img * 10, 1)} mm, inverted`, [
           `${num(img * 10, 1)} mm, erect`, `${num((h * 1000 * u) / (v * 10), 1)} mm, inverted`, `${num(img, 2)} mm, inverted`,
-        ], `<p>Similar triangles: ${f('h′ / h = v / u')} → h′ = ${num(h * 1000, 0)} mm × ${v * 10} / ${u * 1000} = <b>${num(img * 10, 1)} mm</b></p><p>The rays cross at the hole, so the image is <b>inverted</b>.</p>`);
+        ], `<p>Similar triangles: ${f('h′ / h = l′ / l')} → h′ = ${num(h * 1000, 0)} mm × ${v * 10} / ${u * 1000} = <b>${num(img * 10, 1)} mm</b></p><p>The rays cross at the hole, so the image is <b>inverted</b>.</p>`);
       }
       const hi = pick([5, 8, 10, 12, 15, 20, 24]);
       const d = (h * v * 10) / hi; // m: h (m) × v (mm) / h′ (mm)
       return mcq(`A <b>${num(h, 1)} m</b> tall object gives a <b>${hi} mm</b> image in a pinhole camera <b>${v} cm</b> long. How far away is the object?`, `${num(d, 1)} m`, [
         `${num(d / 10, 1)} m`, `${num(d * 10, 1)} m`, `${num((hi * v * 10) / (h * 1000), 2)} m`,
-      ], `<p>${f('u / v = h / h′')} → u = v × h / h′ = ${v * 10} mm × ${num(h * 1000, 0)} / ${hi} = ${num(d * 1000, 0)} mm = <b>${num(d, 1)} m</b></p>`);
+      ], `<p>${f('l / l′ = h / h′')} → l = l′ × h / h′ = ${v * 10} mm × ${num(h * 1000, 0)} / ${hi} = ${num(d * 1000, 0)} mm = <b>${num(d, 1)} m</b></p>`);
     }
     if (r < 0.5) {
       const y = ri(20, 300), x = y + ri(20, 200); // the chart is behind the viewer, so further from the mirror
@@ -394,8 +394,9 @@
       const i = pick(pool);
       seen.add(i); roundUsed.add(`${key}${i}`);
       S.store.set(sk, JSON.stringify([...seen]));
-      const [ref, q, a, w, ex] = arr[i];
-      return mcq(q, a, w, `<p>${ex}</p><p class="q-ref">${ref}</p>`);
+      const [ref, q, a, w, ex, src] = arr[i];
+      const where = src === '-' ? ' · Not in your course books (general optics knowledge)' : src ? ` · Read it in: ${src}` : '';
+      return mcq(q, a, w, `<p>${ex}</p><p class="q-ref">${ref}${where}</p>`);
     };
   }
   const count = (k) => (BANK[k] || []).length;

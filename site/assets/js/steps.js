@@ -171,7 +171,7 @@
   topic({ id: 'thin-lens', group: 4, title: 'Thin lens power and form', blurb: 'F = F₁ + F₂, and naming the shape', weeks: [4, 8], quiz: ['u1-surf', 'ca1'],
     formulas: [[`${v('F')} = ${v('F')}<sub>1</sub> + ${v('F')}<sub>2</sub>`, [['F₁', 'front surface power', 'D'], ['F₂', 'back surface power', 'D'], ['F', 'power of the thin lens', 'D']]]],
     gen() {
-      let F1, F2, F; do { F1 = qd(-4, 10); F2 = Math.random() < 0.15 ? 0 : qd(-10, 4); F = F1 + F2; } while (Math.abs(F) < 0.25);
+      let F1, F2, F; do { F1 = qd(-4, 10); F2 = Math.random() < 0.15 ? 0 : qd(-10, 4); F = F1 + F2; } while (Math.abs(F) < 0.25 || (F1 < 0 && F2 > 0)); // concave front + convex back is not a form the course names
       const form = formOf(F1, F2);
       return {
         q: `A thin lens has a front surface of <b>${G(F1)} D</b> and a back surface of <b>${Math.abs(F2) < 0.01 ? 'plano (0.00 D)' : G(F2) + ' D'}</b>. What is its power, and what form is it?`,
@@ -179,7 +179,7 @@
         steps: [
           { h: 'Add the two surfaces', say: 'For a thin lens the powers simply add up. Keep the signs: adding a minus number takes away.', e: eq(`${v('F')} = ${G(F1)} + ${P(F2, 2)} = ${G(F)} D`), calc: `${Z(F1, 2)} + ${P(F2, 2)} =` },
           { h: 'Look at each surface', say: 'Plus surface = convex, minus surface = concave, zero = flat (plano).', e: eq(`front ${F1 > 0 ? 'convex' : 'concave'} · back ${Math.abs(F2) < 0.01 ? 'plano' : F2 > 0 ? 'convex' : 'concave'}`) },
-          { h: 'Name the form', say: Math.abs(F2) < 0.01 ? 'One flat side → <b>plano</b>-something.' : Math.sign(F1) === Math.sign(F2) ? 'Both surfaces the same sign → <b>bi</b>-convex or bi-concave (<b>equi</b> if they are equal).' : 'One convex and one concave → a <b>meniscus</b>; the total power says if it is a positive or a negative meniscus.', res: `${G(F)} D, ${form}` },
+          { h: 'Name the form', say: Math.abs(F2) < 0.01 ? 'One flat side → <b>plano</b>-something.' : Math.sign(F1) === Math.sign(F2) ? 'Both surfaces the same sign → <b>bi</b>-convex or bi-concave (<b>equi</b> if they are equal).' : 'Convex front and concave back → a <b>meniscus</b>; the total power says if it is a positive or a negative meniscus.', res: `${G(F)} D, ${form}` },
         ],
         answer: [{ label: 'Power', unit: 'D', v: F, dp: 2, signed: true }, { label: 'Form', choices: FORMS, v: form }],
         traps: [{ v: F1 - F2, msg: 'Add the surfaces with their signs (F₁ + F₂); do not subtract.' }],
@@ -314,33 +314,33 @@
 
   /* ===== Week 7: pinhole camera and plane mirrors ===== */
   topic({ id: 'pinhole', group: 7, title: 'Pinhole camera', blurb: 'Similar triangles: image size and distances', weeks: [7, 8], quiz: ['u1-mirror', 'ca1'],
-    formulas: [[`${fr(v('h′'), v('h'))} = ${fr(v('v'), v('u'))}`, [['h', 'object height', ''], ['h′', 'image height', ''], ['u', 'object to pinhole', ''], ['v', 'pinhole to screen', 'all in the same unit!']]]],
+    formulas: [[`${fr(v('h′'), v('h'))} = ${fr(v('l′'), v('l'))}`, [['h', 'object height', ''], ['h′', 'image height', ''], ['l', 'object to pinhole', ''], ['l′', 'pinhole to screen', 'all in the same unit!']]]],
     gen() {
       const h = pick([1.5, 1.8, 2, 3, 5, 8, 10, 12]), u = pick([4, 5, 6, 8, 10, 15, 20, 25]), vc = pick([10, 12, 15, 20, 25, 30]);
       const hmm = h * 1000, umm = u * 1000, vmm = vc * 10, hi = (hmm * vmm) / umm;
       if (Math.random() < 0.6) return {
         q: `A <b>${Z(h, 1)} m</b> tall object stands <b>${u} m</b> from a pinhole camera whose screen is <b>${vc} cm</b> behind the hole. How tall is the image?`,
-        know: [['h', `${Z(h, 1)} m`, 'object'], ['u', `${u} m`, 'object to hole'], ['v', `${vc} cm`, 'hole to screen']], find: 'the image height h′, in mm',
+        know: [['h', `${Z(h, 1)} m`, 'object'], ['l', `${u} m`, 'object to hole'], ['l′', `${vc} cm`, 'hole to screen']], find: 'the image height h′, in mm',
         steps: [
-          { h: 'Draw it', say: 'Rays from the top and the bottom of the object cross at the hole. That makes two triangles of the same shape, so their sides are in the same ratio.', e: eq(`${fr(v('h′'), v('h'))} = ${fr(v('v'), v('u'))}`) },
-          { h: 'Everything in millimetres', say: 'Ratios only work if all four lengths are in the same unit.', e: eq(`h = ${hmm} mm · u = ${umm} mm · v = ${vmm} mm`) },
-          { h: 'Get h′ on its own', say: `Multiply both sides by ${v('h')}.`, e: eq(`${v('h′')} = ${v('h')} × ${fr(v('v'), v('u'))}`) },
+          { h: 'Draw it', say: 'Rays from the top and the bottom of the object cross at the hole. That makes two triangles of the same shape, so their sides are in the same ratio.', e: eq(`${fr(v('h′'), v('h'))} = ${fr(v('l′'), v('l'))}`) },
+          { h: 'Everything in millimetres', say: 'Ratios only work if all four lengths are in the same unit.', e: eq(`h = ${hmm} mm · l = ${umm} mm · l′ = ${vmm} mm`) },
+          { h: 'Get h′ on its own', say: `Multiply both sides by ${v('h')}.`, e: eq(`${v('h′')} = ${v('h')} × ${fr(v('l′'), v('l'))}`) },
           { h: 'Put the numbers in', e: eq(`${v('h′')} = ${hmm} × ${fr(String(vmm), String(umm))} = ${Z(hi, 1)} mm`), calc: `${hmm} × ${vmm} ÷ ${umm} =` },
-          { h: 'Which way up?', say: 'The rays cross at the hole, so the image is <b>upside down (inverted)</b>.', res: `${Z(hi, 1)} mm, inverted` },
+          { h: 'Which way up?', say: 'The rays cross at the hole, so the image is <b>upside down (inverted)</b>. (A longer camera would give a bigger but dimmer image.)', res: `${Z(hi, 1)} mm, inverted` },
         ],
         answer: [{ label: 'Image height', unit: 'mm', v: hi, dp: 1 }],
-        traps: [{ v: (h * vc) / u, msg: 'Mixed units: put everything in mm first.' }, { v: (hmm * umm) / vmm, msg: 'Upside down ratio: h′/h = v/u (screen distance over object distance).' }],
+        traps: [{ v: (h * vc) / u, msg: 'Mixed units: put everything in mm first.' }, { v: (hmm * umm) / vmm, msg: 'Upside down ratio: h′/h = l′/l (screen distance over object distance).' }],
       };
       const him = pick([5, 8, 10, 12, 15, 20, 24]), dmm = (vmm * hmm) / him;
       return {
         q: `A <b>${Z(h, 1)} m</b> tall object gives a <b>${him} mm</b> image in a pinhole camera <b>${vc} cm</b> long. How far is the object from the hole?`,
-        know: [['h', `${Z(h, 1)} m`, 'object'], ['h′', `${him} mm`, 'image'], ['v', `${vc} cm`, 'hole to screen']], find: 'the object distance u, in m',
+        know: [['h', `${Z(h, 1)} m`, 'object'], ['h′', `${him} mm`, 'image'], ['l′', `${vc} cm`, 'hole to screen']], find: 'the object distance l, in m',
         steps: [
-          { h: 'Same triangles', e: eq(`${fr(v('u'), v('v'))} = ${fr(v('h'), v('h′'))}`) },
+          { h: 'Same triangles', e: eq(`${fr(v('l'), v('l′'))} = ${fr(v('h'), v('h′'))}`) },
           { h: 'Everything in millimetres', e: eq(`h = ${hmm} mm · h′ = ${him} mm · v = ${vmm} mm`) },
-          { h: 'Get u on its own', say: `Multiply both sides by ${v('v')}.`, e: eq(`${v('u')} = ${v('v')} × ${fr(v('h'), v('h′'))}`) },
-          { h: 'Put the numbers in', e: eq(`${v('u')} = ${vmm} × ${fr(String(hmm), String(him))} = ${Z(dmm, 0)} mm`), calc: `${vmm} × ${hmm} ÷ ${him} =` },
-          { h: 'Millimetres into metres', say: 'Divide by 1000.', res: `u = ${Z(dmm / 1000, 2)} m` },
+          { h: 'Get l on its own', say: `Multiply both sides by ${v('l′')}.`, e: eq(`${v('l')} = ${v('l′')} × ${fr(v('h'), v('h′'))}`) },
+          { h: 'Put the numbers in', e: eq(`${v('l')} = ${vmm} × ${fr(String(hmm), String(him))} = ${Z(dmm, 0)} mm`), calc: `${vmm} × ${hmm} ÷ ${him} =` },
+          { h: 'Millimetres into metres', say: 'Divide by 1000.', res: `l = ${Z(dmm / 1000, 2)} m` },
         ],
         answer: [{ label: 'Distance', unit: 'm', v: dmm / 1000, dp: 2, tol: 0.05 }],
         traps: [{ v: dmm, msg: 'That is in millimetres: ÷ 1000 for metres.' }, { v: (vc * h) / him, msg: 'Mixed units: put every length in mm before dividing.' }],
@@ -348,7 +348,7 @@
     } });
 
   topic({ id: 'mirror-turn', group: 7, title: 'Turning a mirror', blurb: 'The reflected ray turns 2θ', weeks: [7, 8], quiz: ['u1-mirror', 'ca1'],
-    formulas: [['ray turns 2θ &nbsp;·&nbsp; deviation = 180° − 2' + v('i'), [['θ', 'angle the mirror turns', '°'], ['i', 'angle of incidence (from the normal)', '°']]]],
+    formulas: [['ray turns 2θ &nbsp;·&nbsp; deviation = 180° − 2' + v('i') + ' = 2' + v('g'), [['θ', 'angle the mirror turns', '°'], ['i', 'angle of incidence (from the normal)', '°'], ['g', 'glancing angle (from the mirror surface)', '°']]]],
     gen() {
       if (Math.random() < 0.5) {
         const th = pick([2, 5, 8, 10, 12, 15, 20, 25]);
@@ -369,7 +369,7 @@
         know: [['i', `${i}°`, 'angle of incidence, from the normal']], find: 'the deviation',
         steps: [
           { h: 'Draw it', say: `The ray comes in at ${i}° to the normal and leaves at ${i}° on the other side. Between the incoming and outgoing ray there is 2 × ${i}° = ${2 * i}°.` },
-          { h: 'Deviation', say: 'If nothing were there, the ray would carry straight on (180°). The mirror bends it back, so the deviation is what is left.', e: eq(`deviation = 180° − 2 × ${i}° = ${180 - 2 * i}°`), res: `${180 - 2 * i}°` },
+          { h: 'Deviation', say: `If nothing were there, the ray would carry straight on (180°). The mirror bends it back, so the deviation is what is left. Your book works it the other way round: the glancing angle (ray to mirror surface) is 90° − ${i}° = ${90 - i}°, and the deviation is twice that.`, e: eq(`deviation = 180° − 2 × ${i}° = 2 × ${90 - i}° = ${180 - 2 * i}°`), res: `${180 - 2 * i}°` },
         ],
         answer: [{ label: 'Deviation', unit: '°', v: 180 - 2 * i, dp: 0, tol: 0.1 }],
         traps: [{ v: 2 * i, msg: 'That is the angle between the two rays; the deviation is 180° minus that.' }, { v: 180 - i, msg: 'Use 2 × i: the ray turns through the incidence and the reflection.' }],
@@ -385,7 +385,7 @@
         know: [['θ', `${th}°`, 'between the mirrors']], find: 'the number of images N',
         steps: [
           { h: 'How many times θ fits in a circle', e: eq(`${fr('360', String(th))} = ${360 / th}`), calc: `360 ÷ ${th} =` },
-          { h: 'Take one away', say: 'One of those "slots" is the object itself, not an image. (This works cleanly when 360 / θ is an even number, as here; when it is odd, the count depends on where the object sits.)', e: eq(`${v('N')} = ${360 / th} − 1 = ${N}`), res: `${N} images` },
+          { h: 'Take one away', say: 'One of those "slots" is the object itself, not an image. (The formula holds when θ divides into 360° a whole number of times, as here.)', e: eq(`${v('N')} = ${360 / th} − 1 = ${N}`), res: `${N} images` },
         ],
         answer: [{ label: 'Images', unit: '', v: N, dp: 0, tol: 0.1 }],
         traps: [{ v: N + 1, msg: 'Take one away: one of those is the object itself.' }],
@@ -430,19 +430,19 @@
     } });
 
   topic({ id: 'critical', group: 10, title: 'Critical angle', blurb: 'sin c = 1 / n', weeks: [10, 15], quiz: ['u1-refr'],
-    formulas: [[`sin ${v('c')} = ${fr(v('n′'), v('n'))}`, [['c', 'critical angle', '°'], ['n', 'denser medium (light starts here)', ''], ['n′', 'less dense medium (air = 1)', '']]]],
+    formulas: [[`sin ${v('i')}<sub>c</sub> = ${fr(v('n′'), v('n'))}`, [['i<sub>c</sub>', 'critical angle', '°'], ['n', 'denser medium (light starts here)', ''], ['n′', 'less dense medium (air = 1)', '']]]],
     gen() {
       const n = pick([1.333, 1.5, 1.523, 1.6, 1.7, 1.8]), c = asinD(1 / n);
       return {
         q: `What is the critical angle for light going from a medium of ${v('n')} = <b>${n}</b> into air?`,
-        know: [['n', String(n), 'medium'], ['n′', '1', 'air']], find: 'the critical angle c',
+        know: [['n', String(n), 'medium'], ['n′', '1', 'air']], find: 'the critical angle i<sub>c</sub>',
         steps: [
-          { h: 'The idea', say: 'At the critical angle the refracted ray just skims along the surface (90°). Put i′ = 90° in Snell\'s law: sin 90° = 1.', e: eq(`${n} × sin ${v('c')} = 1 × sin 90° = 1`) },
-          { h: 'Get sin c on its own', e: eq(`sin ${v('c')} = ${fr('1', String(n))} = ${Z(1 / n, 4)}`), calc: `1 ÷ ${n} =` },
-          { h: 'Undo the sine', e: eq(`${v('c')} = sin<sup>−1</sup>(${Z(1 / n, 4)}) = ${Z(c, 1)}°`), calc: `SHIFT sin ${Z(1 / n, 4)} =`, res: `c = ${Z(c, 1)}° (beyond it: total internal reflection)` },
+          { h: 'The idea', say: 'At the critical angle the refracted ray just skims along the surface (90°). Put i′ = 90° in Snell\'s law: sin 90° = 1.', e: eq(`${n} × sin ${v('i')}<sub>c</sub> = 1 × sin 90° = 1`) },
+          { h: 'Get sin i<sub>c</sub> on its own', e: eq(`sin ${v('i')}<sub>c</sub> = ${fr('1', String(n))} = ${Z(1 / n, 4)}`), calc: `1 ÷ ${n} =` },
+          { h: 'Undo the sine', e: eq(`${v('i')}<sub>c</sub> = sin<sup>−1</sup>(${Z(1 / n, 4)}) = ${Z(c, 1)}°`), calc: `SHIFT sin ${Z(1 / n, 4)} =`, res: `i<sub>c</sub> = ${Z(c, 1)}° (beyond it: total internal reflection)` },
         ],
-        answer: [{ label: 'c', unit: '°', v: c, dp: 1, tol: 0.3 }],
-        traps: [{ v: 1 / n, msg: 'That is sin c. Press SHIFT sin (sin⁻¹) to get the angle.' }, { v: 90 - c, msg: 'Check the calculator is in degrees, and use sin⁻¹, not cos⁻¹.' }],
+        answer: [{ label: 'Critical angle', unit: '°', v: c, dp: 1, tol: 0.3 }],
+        traps: [{ v: 1 / n, msg: 'That is sin i<sub>c</sub>. Press SHIFT sin (sin⁻¹) to get the angle.' }, { v: 90 - c, msg: 'Check the calculator is in degrees, and use sin⁻¹, not cos⁻¹.' }],
       };
     } });
 
