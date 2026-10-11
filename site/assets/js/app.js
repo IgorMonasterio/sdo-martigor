@@ -256,7 +256,7 @@
           <div><dt>Far point</dt><dd>${hasCyl(e) ? `${deg(ps[0].m)}: ${farPoint(ps[0].p)}<small>${deg(ps[1].m)}: ${farPoint(ps[1].p)}</small>` : farPoint(e.sph)}</dd></div>
         </dl>
         ${work(`ov-${eye}`, `<p><b>Principal meridians:</b> the axis meridian (${deg(ps[0].m)}) has the sphere power ${sgn(ps[0].p)}; the meridian at 90° to it (${deg(ps[1].m)}) has sph + cyl = ${sgn(ps[0].p)} + (${sgn(e.cyl)}) = ${sgn(ps[1].p)}.</p>
-          <p><b>Far point:</b> the correcting lens's second focal point coincides with the eye's far point, so far point distance = 1 / F (lens taken at the eye). Minus → real far point in front of the eye; plus → virtual, behind it.</p>`)}
+          <p><b>Far point (M<sub>R</sub>):</b> the spectacle lens's second focal point coincides with the eye's far point, so k = f<sub>sp</sub>′ = 1/F<sub>sp</sub> × 100 (cm), with the lens taken at the eye. Minus → M<sub>R</sub> in front of the eye; plus → M<sub>R</sub> behind it.</p>`)}
       </article>`;
     }
     setHTML('ov-eyes', cards);
@@ -362,7 +362,7 @@
   /* ================= PRISMS ================= */
   function prismWorking(e, c, B) {
     const fh = powerAt(e, 180), fv = powerAt(e, 90);
-    let s = `<p>${f('P = c × F')} (c in cm, F in D). Plus lens: base towards the OC. Minus lens: base away from the OC.</p>
+    let s = `<p>${f('P = C × F')} (C = decentration in cm, F in D). Plus lens: base towards the OC. Minus lens: base away from the OC.</p>
       <p>Horizontal: ${num(Math.abs(c[0]), 2)} cm × power along 180 (${sgn(fh)}) = ${num(Math.abs(c[0] * fh))}Δ</p>
       <p>Vertical: ${num(Math.abs(c[1]), 2)} cm × power along 90 (${sgn(fv)}) = ${num(Math.abs(c[1] * fv))}Δ</p>`;
     if (Math.abs(B[0]) >= 0.005 && Math.abs(B[1]) >= 0.005) s += `<p>Single resultant: ${f('√(H² + V²)')} = √(${num(Math.abs(B[0]))}² + ${num(Math.abs(B[1]))}²) = ${num(Math.hypot(B[0], B[1]))}Δ</p>`;
@@ -569,7 +569,7 @@
           ${svgOpen(W, H, 'Lens cross-section at true scale')}${inner}</svg>
           <p class="chart-cap">Cross-section${hasCyl(e) ? 's in each principal meridian' : ''} at true scale (light from the left), uncut round lens with the OC at its centre.</p>
           ${work('th', `<p>Back surface (thin lens): ${f('F₂ = F − F₁')} → ${t.mers.map((m) => `${deg(m.m)}: ${sgn(m.p)} − ${sgn(F1)} = ${sgn(m.F2)}`).join(' ; ')}</p>
-            <p>Radius: ${f('r = (n − 1) / F')} → r₁ = ${num(t.r1, 1)} mm${t.mers.map((m) => `, r₂(${deg(m.m)}) = ${Number.isFinite(m.r2) ? `${num(Math.abs(m.r2), 1)} mm` : '∞'}`).join('')}</p>
+            <p>Radii: ${f('r₁ = (n − 1) / F₁')} × 1000 and ${f('r₂ = (1 − n) / F₂')} × 1000 → r₁ = ${sgn(t.r1, 1)} mm${t.mers.map((m) => `, r₂(${deg(m.m)}) = ${Number.isFinite(m.r2) ? `${sgn(m.r2, 1)} mm` : '∞'}`).join('')}</p>
             <p>Accurate sag: ${f('s = r − √(r² − y²)')}, y = ${num(t.y, 1)} mm → s₁ = ${num(t.s1, 2)} mm${t.mers.map((m) => `, s₂(${deg(m.m)}) = ${num(Math.abs(m.s2), 2)} mm`).join('')}</p>
             <p>Approximate sag: ${f('s ≈ y² / 2r')} → s₁ ≈ ${num(ta.s1, 2)} mm${ta.mers.map((m) => `, s₂(${deg(m.m)}) ≈ ${num(Math.abs(m.s2), 2)} mm`).join('')}</p>
             <p>${plus ? f('centre = edge + s₁ − s₂') : f('edge = centre + s₂ − s₁')} → ${t.mers.map((m) => `${deg(m.m)}: edge <b>${num(m.edge, 2)} mm</b>`).join(' ; ')}, centre <b>${num(t.tc, 2)} mm</b></p>`)}

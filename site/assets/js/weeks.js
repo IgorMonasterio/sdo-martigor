@@ -36,11 +36,11 @@
       <ul>
         <li><b>Order of operations</b> (PEDMAS): brackets, then powers, then × and ÷ left to right, then + and −. <i>2 + 3 × 4 = 14</i>, not 20.</li>
         <li><b>Negative numbers</b>: subtracting a negative adds; multiplying two negatives gives a positive. Lens powers and distances carry signs, so this matters every day.</li>
-        <li><b>Reciprocals</b>: 1/x. Power in dioptres is the reciprocal of a distance in metres: <i>F = 1/f</i>. 1/0.25 m = 4.00 D; 1/(−0.50 m) = −2.00 D.</li>
+        <li><b>Reciprocals</b>: 1 ÷ the number (1 ÷ 5 = 0.20). Power is the reciprocal of a distance: <i>F = 1/f′</i>. With the distance in cm, × 100: 1/+25 × 100 = +4.00 D; 1/−50 × 100 = −2.00 D (in mm, × 1000).</li>
         <li><b>Ratios and proportions</b>: used for magnification, similar triangles (pinhole camera, mirrors) and scaling up a frame drawing.</li>
-        <li><b>Rearranging formulae</b>: do the same thing to both sides. From <i>F = (n − 1)/r</i> you get <i>r = (n − 1)/F</i>.</li>
+        <li><b>Rearranging formulae</b>: do the same thing to both sides. From <i>F<sub>1</sub> = (n − 1)/r<sub>1</sub></i> you get <i>r<sub>1</sub> = (n − 1)/F<sub>1</sub></i>.</li>
         <li><b>Standard form</b>: 5.5 × 10<sup>−7</sup> m is the wavelength of yellow light; 3 × 10<sup>8</sup> m/s is the speed of light. Count the places the point moves.</li>
-        <li><b>Units</b>: keep distances in <b>metres</b> when you want dioptres; mm ÷ 1000 = m. Prism in prism dioptres (Δ), angles in degrees.</li>
+        <li><b>Units</b>: mm ÷ 10 = cm, cm ÷ 100 = m. For dioptres either use metres, or keep the cm and × 100 (mm and × 1000), which is how your notes set it out. Prism in prism dioptres (Δ), angles in degrees.</li>
         <li><b>Rounding</b>: work with full precision, round only the final answer, and round powers to the nearest 0.25 D if you are writing a prescription.</li>
       </ul>` }),
     W(2, 'Learning on a blended programme · Standards of Practice', '2026-09-08', 'study', { unit: 3, codes: ['Unit 3 · GOC Standards'], quiz: ['t-u3'], key: `
@@ -65,47 +65,49 @@
     W(4, 'Lens surface power, lens form, spherical surfaces', '2026-09-22', 'lenses', { unit: 2, codes: ['Unit 2 · A1–A3 materials', 'Unit 2 · B lens form', 'Unit 1 · curved surfaces'], tools: ['materials', 'thick'], quiz: ['u1-surf', 'u1-lens', 'u2-thick', 't-u2', 't-w4'], key: `
       <ul>
         <li><b>A spectacle lens</b> is a transparent medium bounded by two polished surfaces, at least one of them curved. Its job is to change the <b>vergence</b> of light reaching the eye.</li>
-        <li><b>Surface power</b>: <i>F = (n′ − n) / r</i>, with r in metres. A surface is positive when its centre of curvature is on the side the light is going to (convex to the incident light), negative when concave.</li>
-        <li><b>Thin lens power</b>: <i>F = F<sub>1</sub> + F<sub>2</sub></i>. Thickness is ignored for lenses under about 5 mm thick and 50 mm wide.</li>
-        <li><b>Focal length</b>: <i>f′ = 1/F</i> (metres). A +4.00 D lens focuses parallel light 0.25 m behind it; a −4.00 D lens makes it diverge as if from 0.25 m in front.</li>
-        <li><b>Forms</b>: equi-convex / equi-concave, plano-convex / plano-concave, and <b>meniscus</b> (one convex and one concave surface), which is the form spectacle lenses actually take because it reduces oblique aberrations.</li>
+        <li><b>Surface power</b>: <i>F<sub>1</sub> = (n′ − n)/r<sub>1</sub></i> and <i>F<sub>2</sub> = (n − n′)/r<sub>2</sub></i>, where n = refractive index of air (1) and n′ = refractive index of the lens material. In air: <i>F<sub>1</sub> = (n − 1)/r<sub>1</sub></i>, <i>F<sub>2</sub> = (1 − n)/r<sub>2</sub></i> (here n is the lens). With r in cm, × 100. Convex = positive surface, concave = negative surface; radii keep their sign (Cartesian sign convention).</li>
+        <li><b>Thin lens power</b>: <i>F = F<sub>1</sub> + F<sub>2</sub></i> (F<sub>1</sub> front surface, F<sub>2</sub> back surface), so <i>F<sub>2</sub> = F − F<sub>1</sub></i>. Thin = under about 50 mm diameter and 5 mm thick, so thickness is ignored. Spherical powers are written in DS.</li>
+        <li><b>Focal length</b>: <i>f′ = 1/F</i> × 100 (cm): a +4.00 D lens has f′ = +25 cm, a −4.00 D lens f′ = −25 cm. Focal lengths are <b>not additive</b>: for lenses in contact change each to a power, add, and take the reciprocal, or use <i>f′ = f<sub>1</sub>′ × f<sub>2</sub>′ / (f<sub>1</sub>′ + f<sub>2</sub>′)</i>.</li>
+        <li><b>Forms</b>: plano-convex, plano-concave, bi-convex, bi-concave, equi-convex, equi-concave and <b>meniscus</b> (convex front, concave back; also called curved form), the form spectacle lenses actually take because it reduces oblique aberrations. A plano surface has r = ∞ and 0.00 DS.</li>
         <li><b>Deviation</b>: a lens is a stack of prisms, bases at the centre for plus and at the edge for minus. Light bends towards the thicker part.</li>
-        <li><b>Radius of curvature</b>: rearrange the surface power formula, <i>r = (n′ − n)/F</i>. For crown glass (n = 1.523) a +6.00 D surface has r = 0.523/6 = 87.2 mm.</li>
+        <li><b>Radius of curvature</b>: rearrange the surface power formulae: <i>r<sub>1</sub> = (n − 1)/F<sub>1</sub></i> and <i>r<sub>2</sub> = (1 − n)/F<sub>2</sub></i>, × 1000 for mm, keeping the sign. Crown glass (n = 1.523), F<sub>1</sub> = +6.00 DS: r<sub>1</sub> = (1.523 − 1)/+6.00 × 1000 = +87.17 mm.</li>
         <li><b>Materials</b>: refractive index (how strongly it bends light; higher n means flatter, thinner lenses), Abbe number (colour dispersion; lower means more colour fringing), density (weight) and impact resistance. CR39 1.498 · crown 1.523 · polycarbonate 1.586 · 1.6 and 1.67 resins.</li>
       </ul>` }),
     W(5, 'Propagation of light', '2026-09-29', 'optics', { unit: 1, codes: ['Unit 1 · A waves and vergence'], quiz: ['u1-waves', 't-u1', 't-w5'], key: `
       <ul>
         <li><b>Light</b> is electromagnetic radiation. The visible band runs from about <b>390 nm (violet) to 760 nm (red)</b>, the figures in your course; ultraviolet is shorter, infrared is longer.</li>
-        <li><b>Wave quantities</b>: <i>v = fλ</i>. In a medium of index n the speed drops to <i>c/n</i> and the wavelength shortens to <i>λ/n</i>; the frequency (and the colour) does not change.</li>
-        <li><b>Rays and pencils</b>: light travels in straight lines in a uniform medium. A pencil is a bundle of rays from one point: divergent (leaving a point), convergent (heading to a point) or parallel (from infinity).</li>
+        <li><b>Wave quantities</b>: <i>v = f × λ</i> (also written C = ʋ × λ): v in m/s, f in Hz, λ in m or nm; light in a vacuum travels at 3 × 10<sup>8</sup> m/s. Light waves are transverse, sound waves longitudinal. In a medium of index n the speed drops to <i>c/n</i> and the wavelength shortens to <i>λ/n</i>; the frequency (and the colour) does not change.</li>
+        <li><b>Rays and pencils</b>: light travels in straight lines in a uniform medium. A pencil is a group of rays: diverging (leaving a point), converging (heading to a point) or parallel (from infinity).</li>
         <li><b>Wavefronts</b> are at right angles to the rays: spherical for a point source, plane for parallel light.</li>
-        <li><b>Vergence</b>: <i>L = n / l</i> in dioptres, with l in metres measured from the point where the vergence is wanted. Divergent light has negative vergence, convergent positive, parallel zero. Light 0.5 m from a point source has vergence −2.00 D.</li>
-        <li><b>Sign convention</b>: light travels left to right; distances measured in the direction of the light are positive, against it negative.</li>
+        <li><b>Vergence</b>: the reciprocal of the distance from the lens to the object or the image. <i>L = 1/l</i> (object vergence, l = object distance) and <i>L′ = 1/l′</i> (image vergence, l′ = image distance), × 100 with distances in cm: l = −50 cm → L = 1/−50 × 100 = −2.00 D. Diverging light negative, converging positive, parallel zero. The paraxial equation is <i>L′ = L + F</i>.</li>
+        <li><b>Cartesian sign convention</b>: light travels left to right; distances are measured from the lens or surface, positive in the direction of the light, negative against it.</li>
         <li><b>Standard form</b> keeps the numbers readable: 555 nm = 5.55 × 10<sup>−7</sup> m.</li>
       </ul>` }),
     W(6, 'Errors of refraction and their correction · colour and radiation', '2026-10-06', 'lenses', { unit: 2, codes: ['Unit 2 · K ametropia and far points', 'Unit 1 · photometry and colour'], tools: ['rx'], quiz: ['u2-amet', 't-u2', 't-u1', 't-w6'], key: `
       <ul>
-        <li><b>Emmetropia</b>: with accommodation relaxed, parallel light focuses on the retina. The far point is at infinity.</li>
-        <li><b>Myopia</b>: the eye is too powerful or too long; parallel light focuses in front of the retina. The <b>far point</b> is a real point in front of the eye, at <i>1/F</i> from it (a −2.00 D myope's far point is 0.5 m away). Corrected with a minus lens whose second focal point sits on the far point.</li>
+        <li><b>Emmetropia</b>: with accommodation relaxed, the second focal point of the eye F′<sub>e</sub> falls on the macula M′; the far point M<sub>R</sub> is at infinity.</li>
+        <li><b>Myopia</b>: the eye is too powerful or too long; parallel light focuses in front of the retina. The <b>far point M<sub>R</sub></b> is in front of the eye, at <i>k = f<sub>sp</sub>′ = 1/F<sub>sp</sub></i> (lens taken at the eye): a −2.00 DS myope has k = 1/−2.00 × 100 = −50 cm. Corrected with a minus lens whose second focal point sits on M<sub>R</sub>.</li>
         <li><b>Hypermetropia</b>: the eye is too weak or too short; parallel light would focus behind the retina. The far point is virtual, behind the eye. Corrected with a plus lens. Young hypermetropes can hide the error by accommodating.</li>
         <li><b>Astigmatism</b>: the eye's power differs along two principal meridians, usually at right angles, so a point focuses as two line images. With-the-rule (steeper vertical meridian), against-the-rule, oblique. Simple, compound or mixed depending on where the two foci fall relative to the retina.</li>
-        <li><b>Symbols</b>: F for power (D), f for focal length (m), n for index, L and L′ for incident and emergent vergence, the eye's far point M<sub>R</sub>.</li>
+        <li><b>Symbols</b> in your notes: F<sub>e</sub> = power of the eye · M′ = macula · F′<sub>e</sub> = second focal point of the eye · M<sub>R</sub> = far point · k = far point distance · k′ = length of the eye · F<sub>sp</sub> = spectacle lens power · f<sub>sp</sub>′ = its second focal length · d = lens to eye distance · L and L′ = object and image vergence.</li>
         <li><b>Colour and radiation</b>: white light is a mixture of wavelengths; a prism or a lens edge separates them (dispersion) because n is higher for blue than for red. UV is the radiation below about 390 nm: the cornea absorbs the shortest (UVB and UVC, below about 315 nm) and the crystalline lens absorbs most UVA. That is why lenses quote a UV cut-off (often 380 nm, or 400 nm for "UV400"). IR is heat.</li>
+        <li><b>Colour terms</b>: luminosity is how bright a colour looks (luminance is the measured brightness of the object), hue is the colour itself, set by the wavelength, and saturation is how pure it is (how little white is mixed in). Primary colours of light: red, green and blue; a colour and its complementary make white. The eye is most sensitive at about 555 nm in daylight and about 505 nm in dim light.</li>
       </ul>` }),
     W(7, 'Pinhole camera and reflection at plane surfaces', '2026-10-13', 'optics', { unit: 1, codes: ['Unit 1 · B reflection and mirrors'], quiz: ['u1-mirror', 't-u1', 't-w7'], key: `
       <ul>
-        <li><b>Pinhole camera</b>: every point of the object sends one narrow pencil through the hole, so the image is inverted, sharp over a very wide range of object distances, undistorted and dim. By similar triangles <i>image size / object size = image distance / object distance</i>. A bigger hole is brighter but blurred; a smaller one is sharper until diffraction takes over. A longer box gives a bigger but dimmer image, and the shape of the hole does not matter as long as it is small.</li>
-        <li><b>Laws of reflection</b>: the angle of incidence equals the angle of reflection, measured from the normal, and the incident ray, reflected ray and normal lie in the same plane.</li>
+        <li><b>Pinhole camera</b>: every point of the object sends one narrow pencil through the hole, so the image is inverted, sharp over a very wide range of object distances, undistorted and dim. By similar triangles <i>h′/h = l′/l</i> (h = object height, h′ = image height, l = object distance, l′ = camera length). A bigger hole is brighter but blurred; a smaller one is sharper until diffraction takes over. A longer box gives a bigger but dimmer image, and the shape of the hole does not matter as long as it is small.</li>
+        <li><b>Laws of reflection</b>: (1) the incident ray, the reflected ray and the normal lie in the same plane; (2) the angle of incidence equals the angle of reflection (i = r), both measured from the normal. <b>Deviation</b>: <i>d = 180 − 2i</i> (or 180 − i − r).</li>
         <li><b>Plane mirror image</b>: virtual, erect, the same size as the object, as far behind the mirror as the object is in front, and laterally inverted.</li>
         <li><b>Rotating a mirror</b> by θ rotates the reflected ray by <b>2θ</b> (the 'optical lever' used to magnify small turns, as in the mirror galvanometer and the sextant).</li>
-        <li><b>Minimum mirror length</b> to see your whole self is half your height, whatever the distance.</li>
-        <li><b>Two mirrors</b> at an angle θ give 360/θ − 1 images (two at 90° give 3).</li>
+        <li><b>Test charts</b>: in a short room a plane mirror doubles the path: the chart's image is as far behind the mirror as the chart is in front, so patient-to-mirror + mirror-to-chart = 6 m.</li>
+        <li><i>Extra, from the textbook (not in your notes):</i> the shortest mirror to see your whole self is half your height.</li>
+        <li><i>Extra, from the textbook:</i> two mirrors at an angle θ give 360/θ − 1 images (two at 90° give 3).</li>
       </ul>` }),
     W(8, 'Consolidation Assignment 1 (formative)', '2026-10-20', 'ca', { unit: 0, codes: ['Weeks 4–7'], tools: ['materials', 'rx'], quiz: ['ca1', 'u1-surf', 'u1-waves', 'u2-amet', 'u1-mirror', 't-u1', 't-u2', 't-ca1', 't-w4', 't-w5', 't-w6', 't-w7'], key: `
       <p>Formative: it does not count towards the exams, but it is the first time the college sees how you set out a calculation. It pulls together <b>Weeks 4 to 7</b>: surface power and lens form, propagation of light and vergence, errors of refraction, and the pinhole camera and plane mirrors.</p>
       <ul>
         <li>Write the formula first, then the substitution with units, then the answer with its unit and sign. Marks come from the working, not just the number.</li>
-        <li>Keep distances in metres when you want dioptres; say which sign convention you are using.</li>
+        <li>Keep distances in metres, or keep cm and × 100 (mm and × 1000) as in your notes; say you are using the Cartesian sign convention.</li>
         <li>Draw a ray diagram for every mirror or pinhole question, even a rough one.</li>
         <li>The college suggests two passes: first answer as much as you can from memory, without your notes; then finish it with your materials, check your first answers and note the gaps to revisit.</li>
       </ul>`, note: 'Due Tuesday 20 October 2026, 13:59. Submit through the college submission box.' }),

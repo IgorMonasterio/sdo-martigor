@@ -75,9 +75,9 @@
     const F = Math.random() < 0.65 ? qd(-8, -0.5) : qd(0.5, 6);
     const d = 100 / Math.abs(F), dTxt = (x) => (x >= 100 ? `${num(x / 100, 2)} m` : `${num(x, 1)} cm`);
     const side = (neg) => (neg ? 'in front (real)' : 'behind (virtual)');
-    return mcq(`An eye is fully corrected by a <b>${sgn(F)} D</b> lens (take the lens at the eye). Where is its far point?`, `${dTxt(d)} ${side(F < 0)}`, [
+    return mcq(`An eye is fully corrected by a <b>${sgn(F)} D</b> lens (take the lens at the eye). Where is its far point MR?`, `${dTxt(d)} ${side(F < 0)}`, [
       `${dTxt(d)} ${side(F > 0)}`, `${dTxt(d * 10)} ${side(F < 0)}`, `${dTxt(d / 2)} ${side(F < 0)}`,
-    ], `<p>The lens's second focal point must coincide with the far point, so the far point is 1/F = 1/${num(Math.abs(F))} = ${dTxt(d)} from the eye.</p><p>Minus lens → myopia → real far point in front. Plus lens → hypermetropia → virtual far point behind.</p>`);
+    ], `<p>The second focal point of the spectacle lens coincides with the far point MR, so ${f('k = fsp′ = 1/Fsp')} × 100 = 1 / ${sgn(F)} × 100 = ${sgn(100 / F, 1)} cm, i.e. ${dTxt(d)} from the eye.</p><p>Minus lens → myopia → MR in front of the eye (k negative). Plus lens → hypermetropia → MR behind the eye (k positive).</p>`);
   };
 
   function lens9018() {
@@ -196,7 +196,7 @@
       if (!Number.isFinite(s)) return null;
       return mcq(`A surface of power <b>${num(F, 2)} D</b> (n = ${n}) on a <b>${dia} mm</b> lens. What is its sag (accurate formula)?`, `${num(s, 2)} mm`, [
         `${num((y * y) / (2 * rad), 2)} mm`, Number.isFinite(sagAcc(rad, dia)) ? `${num(sagAcc(rad, dia), 2)} mm` : `${num(s * 2, 2)} mm`, Number.isFinite(sagAcc((n * 1000) / F, y)) ? `${num(sagAcc((n * 1000) / F, y), 2)} mm` : `${num(s / 2, 2)} mm`,
-      ], `<p>${f('r = (n − 1) / F')} = ${num(n - 1, 3)} / ${num(F)} = ${num(rad / 1000, 4)} m = ${num(rad, 1)} mm</p><p>${f('s = r − √(r² − y²)')}, y = ${num(y, 0)} mm → ${num(rad, 1)} − √(${num(rad, 1)}² − ${num(y, 0)}²) = <b>${num(s, 2)} mm</b></p><p>(The approximate formula y²/2r gives ${num((y * y) / (2 * rad), 2)} mm.)</p>`);
+      ], `<p>${f('r₁ = (n − 1) / F₁')} × 1000 = ${num(n - 1, 3)} / ${num(F)} × 1000 = ${num(rad, 1)} mm</p><p>${f('s = r − √(r² − y²)')}, y = ${num(y, 0)} mm → ${num(rad, 1)} − √(${num(rad, 1)}² − ${num(y, 0)}²) = <b>${num(s, 2)} mm</b></p><p>(The approximate formula y²/2r gives ${num((y * y) / (2 * rad), 2)} mm.)</p>`);
     }
     if (r < 0.75) {
       const F = -step(2, 8, 0.5), F1 = step(2, 6, 1), n = pick([1.498, 1.523]), dia = step(44, 56, 2), y = dia / 2, ct = 2;
@@ -237,14 +237,14 @@
     const r = Math.random();
     if (r < 0.4) {
       const lam = pick([400, 450, 500, 550, 600, 650, 700]), fr = 3e8 / (lam * 1e-9);
-      return mcq(`Light of wavelength <b>${lam} nm</b> in air (c = 3 × 10<sup>8</sup> m/s). What is its frequency?`, `${sci(fr)} Hz`, [`${sci(fr / 1000)} Hz`, `${sci(fr * 1000)} Hz`, `${sci((lam * 1e-9) / 3e8)} Hz`],
-        `<p>${f('v = f λ')} → f = v / λ = 3 × 10<sup>8</sup> / ${lam} × 10<sup>−9</sup> = <b>${sci(fr)} Hz</b></p>`);
+      return mcq(`Light travelling in a vacuum (v = 3 × 10<sup>8</sup> m/s) has a wavelength of <b>${lam} nm</b>. What is its frequency?`, `${sci(fr)} Hz`, [`${sci(fr / 1000)} Hz`, `${sci(fr * 1000)} Hz`, `${sci((lam * 1e-9) / 3e8)} Hz`],
+        `<p>${f('v = f × λ')} → f = v / λ = 3 × 10<sup>8</sup> / ${lam} × 10<sup>−9</sup> = <b>${sci(fr)} Hz</b></p>`);
     }
     if (r < 0.75) {
       const d = pick([10, 20, 25, 33.3, 40, 50, 66.7, 100, 200]), conv = Math.random() < 0.35;
       const L = (conv ? 1 : -1) * (100 / d);
-      return mcq(`Light ${conv ? 'is converging towards a point' : 'diverges from a point source'} <b>${num(d, 1)} cm</b> away, in air. What is the vergence here?`, `${sgn(L)} D`, [`${sgn(-L)} D`, `${sgn((conv ? 1 : -1) * (d / 100))} D`, `${sgn((conv ? 1 : -1) * d)} D`, `${sgn((conv ? 1 : -1) * (10 / d))} D`],
-        `<p>${f('L = n / l')} with l in metres: 1 / ${num(d / 100, 3)} = ${num(Math.abs(L))} D. ${conv ? 'Converging light → positive' : 'Diverging light → negative'} → <b>${sgn(L)} D</b></p>`);
+      return mcq(`Light ${conv ? 'is converging towards a point' : 'diverges from a point object'} <b>${num(d, 1)} cm</b> from the lens, in air. What is the vergence at the lens?`, `${sgn(L)} D`, [`${sgn(-L)} D`, `${sgn((conv ? 1 : -1) * (d / 100))} D`, `${sgn((conv ? 1 : -1) * d)} D`, `${sgn((conv ? 1 : -1) * (10 / d))} D`],
+        `<p>${f('L = 1 / l')} × 100 (l in cm) = 1 / ${sgn((conv ? 1 : -1) * d, 1)} × 100 = <b>${sgn(L)} D</b>. ${conv ? 'Converging light → positive vergence' : 'l is measured from the lens to the object, against the light, so it is negative: diverging light → negative vergence'}.</p>`);
     }
     const n = pick([1.333, 1.5, 1.523, 1.6, 1.7]), v = 3e8 / n;
     return mcq(`What is the speed of light in a medium of refractive index <b>${n}</b>?`, `${sci(v)} m/s`, [`${sci(3e8 * n)} m/s`, `${sci(3e8)} m/s`, `${sci(3e8 / (n - 1))} m/s`],
@@ -277,49 +277,11 @@
       const L2w = -L + F;
       return mcq(`An object is <b>${-l} cm</b> to the left of a <b>${sgn(F)} D</b> thin lens. Where is the image?`, t(l2), [
         Math.abs(L2w) > 0.01 ? t(100 / L2w) : null, t(-l2), Math.abs(F - L) > 0.01 ? t(100 / (F - L) * -1) : null, t(l2 * 2),
-      ].filter(Boolean), `<p>${f("L′ = L + F")} with L = 1/l (l negative to the left): L = 1 / ${num(l / 100, 2)} = ${sgn(L)}</p><p>L′ = ${sgn(L)} + ${sgn(F)} = ${sgn(L2)} → l′ = 1 / L′ = ${num(l2 / 100, 3)} m = <b>${t(l2)}</b></p>`);
+      ].filter(Boolean), `<p>Paraxial equation ${f("L′ = L + F")}. Object vergence ${f('L = 1 / l')} × 100 = 1 / ${sgn(l, 0)} × 100 = ${sgn(L)} (l is negative: the object is to the left)</p><p>L′ = ${sgn(L)} + (${sgn(F)}) = ${sgn(L2)} → ${f('l′ = 1 / L′')} × 100 = ${sgn(l2, 1)} cm = <b>${t(l2)}</b></p>`);
     }
     const rcm = step(5, 25, 1) * pick([1, -1]), n2 = pick([1.5, 1.523, 1.6, 1.7]), F = (n2 - 1) / (rcm / 100);
-    return mcq(`A single surface separates air from glass (n′ = <b>${n2}</b>); its radius is <b>${sgn(rcm, 0)} cm</b>. Surface power?`, `${sgn(F)} D`, [`${sgn(-F)} D`, `${sgn((n2 - 1) / rcm)} D`, `${sgn(n2 / (rcm / 100))} D`],
-      `<p>${f("F = (n′ − n) / r")} with r in metres = (${n2} − 1) / ${num(rcm / 100, 2)} = <b>${sgn(F)} D</b></p>`);
-  };
-
-  // Week 4: surface power, thin lens power and form, radius, focal length
-  const gSurf = () => {
-    const r = Math.random();
-    if (r < 0.3) {
-      const F1 = qd(-4, 10), F2 = qd(-10, 4, false), F = F1 + F2;
-      if (Math.abs(F) < 0.25) return null;
-      const form = (a, b) => {
-        if (Math.abs(b) < 0.01) return a > 0 ? 'plano-convex' : 'plano-concave';
-        if (a > 0 && b > 0) return Math.abs(a - b) < 0.01 ? 'equi-convex' : 'bi-convex';
-        if (a < 0 && b < 0) return Math.abs(a - b) < 0.01 ? 'equi-concave' : 'bi-concave';
-        return `${a + b > 0 ? 'positive' : 'negative'} meniscus`;
-      };
-      const right = form(F1, F2), others = ['positive meniscus', 'negative meniscus', 'bi-convex', 'bi-concave', 'plano-convex', 'plano-concave'].filter((x) => x !== right);
-      return mcq(`A thin lens has a front surface of <b>${sgn(F1)} D</b> and a back surface of <b>${sgn(F2)} D</b>. Its power and form?`, `${sgn(F)} D, ${right}`, [
-        `${sgn(F1 - F2)} D, ${right}`, `${sgn(F)} D, ${pick(others)}`, `${sgn(-F)} D, ${right}`,
-      ], `<p>${f('F = F₁ + F₂')} = ${sgn(F1)} + (${sgn(F2)}) = <b>${sgn(F)} D</b></p><p>${Math.abs(F2) < 0.01 ? 'One surface is flat → plano.' : Math.sign(F1) === Math.sign(F2) ? 'Both surfaces have the same sign → bi-convex or bi-concave.' : 'One convex and one concave surface → meniscus; the total power gives its sign.'}</p>`);
-    }
-    if (r < 0.55) {
-      const F = step(2, 12, 0.5) * pick([1, -1]), n = pick([1.498, 1.523, 1.586, 1.6, 1.7]), rad = ((n - 1) * 1000) / F;
-      const mm = (x) => `${num(Math.abs(x), 1)} mm, ${x > 0 ? 'convex' : 'concave'}`;
-      return mcq(`A <b>${sgn(F)} D</b> surface in a material of n = <b>${n}</b> (in air). Radius of curvature?`, mm(rad), [
-        mm((n * 1000) / F), mm(1000 / F), mm(-rad),
-      ], `<p>${f('F = (n′ − n) / r')} → ${f('r = (n − 1) / F')} = ${num(n - 1, 3)} / ${num(Math.abs(F))} = ${num(Math.abs(rad) / 1000, 4)} m = <b>${num(Math.abs(rad), 1)} mm</b></p><p>${F > 0 ? 'Positive surface → convex to the incident light' : 'Negative surface → concave to the incident light'}.</p>`);
-    }
-    if (r < 0.8) {
-      const F = pick([1, 1.5, 2, 2.5, 4, 5, 8, 10]) * pick([1, -1]), fcm = 100 / F;
-      const t = (x) => `${num(Math.abs(x), 1)} cm ${x > 0 ? 'behind the lens (real focus)' : 'in front of the lens (virtual focus)'}`;
-      return mcq(`Parallel light enters a <b>${sgn(F)} D</b> thin lens in air. Where is its second principal focus?`, t(fcm), [t(-fcm), t(F * 10), t(fcm * 10)],
-        `<p>${f("f′ = 1 / F")} = 1 / ${sgn(F)} = ${num(1 / F, 3)} m = <b>${num(Math.abs(fcm), 1)} cm</b></p><p>${F > 0 ? 'Plus lens: the light converges to a real focus behind the lens.' : 'Minus lens: the light diverges as if from a virtual focus in front of the lens.'}</p>`);
-    }
-    const n = pick([1.498, 1.523, 1.6]), r1 = step(8, 30, 1), r2 = step(5, 40, 1) * pick([1, -1]);
-    const F1 = (n - 1) / (r1 / 100), F2 = (1 - n) / (r2 / 100), F = F1 + F2;
-    if (Math.abs(F) < 0.25) return null;
-    return mcq(`A thin lens (n = <b>${n}</b>) has a front radius of <b>+${r1} cm</b> and a back radius of <b>${sgn(r2, 0)} cm</b>. Its power?`, `${sgn(F)} D`, [
-      `${sgn(F1 - F2)} D`, `${sgn((n - 1) * (r1 + r2) / 100)} D`, `${sgn(-F)} D`,
-    ], `<p>Front: ${f('F₁ = (n − 1) / r₁')} = ${num(n - 1, 3)} / ${num(r1 / 100, 2)} = ${sgn(F1)}</p><p>Back (glass to air): ${f('F₂ = (1 − n) / r₂')} = ${num(1 - n, 3)} / ${num(r2 / 100, 2)} = ${sgn(F2)}</p><p>${f('F = F₁ + F₂')} = <b>${sgn(F)} D</b></p>`);
+    return mcq(`The front surface of a lens of refractive index <b>${n2}</b> (in air) has a radius of curvature r₁ = <b>${sgn(rcm, 0)} cm</b>. What is its surface power F₁?`, `${sgn(F)} DS`, [`${sgn(-F)} DS`, `${sgn((n2 - 1) / rcm)} DS`, `${sgn(n2 / (rcm / 100))} DS`],
+      `<p>${f('F₁ = (n′ − n) / r₁')}; in air ${f('F₁ = (n − 1) / r₁')} × 100 (r₁ in cm) = (${n2} − 1) / ${sgn(rcm, 0)} × 100 = <b>${sgn(F)} DS</b></p>`);
   };
 
   // Week 7: the pinhole camera and plane mirrors
@@ -424,9 +386,9 @@
   }
   const mix = (...gens) => () => pick(gens)();
   const S1 = (...ids) => ids.map(fromSteps);
-  const gSurfAll = mix(gSurf, ...S1('surf-power', 'surf-radius', 'thin-lens', 'lensmaker', 'units'));
+  const gSurfAll = mix(...S1('surf-power', 'surf-radius', 'thin-lens', 'lensmaker', 'units', 'contact')); // v17: only the Step-by-step problems, in her course's notation
   const gWavesAll = mix(gWaves, ...S1('freq', 'speed', 'vergence', 'lambda-n'));
-  const gMirrorsAll = mix(gMirrors, ...S1('pinhole', 'mirror-turn', 'mirror-images', 'mirror-length'));
+  const gMirrorsAll = mix(gMirrors, ...S1('pinhole', 'mirror-turn', 'test-room', 'mirror-images', 'mirror-length'));
   const gAmetAll = mix(gAmetropia, ...S1('far-point', 'correct-lens'));
   const gRefrAll = mix(gRefraction, ...S1('snell', 'critical', 'depth'));
   const gTransAll = mix(gTranspose, ...S1('transpose'));
