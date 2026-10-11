@@ -896,3 +896,5 @@ html:not(.ready) .side .card, html:not(.ready) .workspace > .tabs { animation: s
 .st-link { font-weight: 650; color: var(--accent); }
 :root[data-theme="abdo"] .st-n { background: #4d4667; color: var(--lime); }
 :root[data-theme="abdo"] .st-res { background: rgb(210 215 0 / .35); }
+.st-rules { margin: 8px 0 4px; padding-left: 20px; display: grid; gap: 6px; font-size: 14.5px; line-height: 1.55; color: var(--ink); }
+.st-rules li::marker { color: var(--accent); }

@@ -614,8 +614,8 @@
         steps: [
           { h: 'Lens 1 as cross cylinders', e: eq(`${DC(T.x1[90], 90)} / ${DC(T.x1[180], 180)}`) },
           { h: 'Lens 2 as cross cylinders', e: eq(`${DC(T.x2[90], 90)} / ${DC(T.x2[180], 180)}`) },
-          { h: 'Add the cylinders with the same axis', e: eq(`x 90: ${G(T.x1[90])} + ${P(T.x2[90], 2)} = ${G(T[90])} &nbsp; x 180: ${G(T.x1[180])} + ${P(T.x2[180], 2)} = ${G(T[180])}`) },
-          { h: 'Back to sph/cyl (minus cyl)', say: 'For minus cyl form take the more positive power as the sphere; cyl = the other − the sphere; axis = the axis of the cyl not chosen.', e: eq(`sph ${G(sph)} · cyl ${G(T[lo])} − ${P(sph, 2)} = ${G(cyl)} · axis ${axis}`), res: `${G(sph)}DS/${G(cyl)}DC x ${axis}` },
+          { h: 'Add the cylinders with the same axis', e: eq(`x 90: ${G(T.x1[90])} + ${P(T.x2[90], 2)} = ${G(T[90])}DC`) + eq(`x 180: ${G(T.x1[180])} + ${P(T.x2[180], 2)} = ${G(T[180])}DC`) },
+          { h: 'Back to sph/cyl (minus cyl)', say: 'For minus cyl form take the more positive power as the sphere; cyl = the other − the sphere; axis = the axis of the cyl not chosen.', e: eq(`sph = ${G(sph)}DS`) + eq(`cyl = ${G(T[lo])} − ${P(sph, 2)} = ${G(cyl)}DC`) + eq(`axis = ${axis}`), res: `${G(sph)}DS/${G(cyl)}DC x ${axis}` },
         ],
         answer: [{ label: 'Sph', unit: 'DS', v: sph, dp: 2, signed: true, tol: 0.001 }, { label: 'Cyl', unit: 'DC', v: cyl, dp: 2, signed: true, tol: 0.001 }, { label: 'Axis', unit: '', v: axis, dp: 0, tol: 0.1 }],
         traps: [{ v: e1.sph + e2.sph, msg: 'You cannot just add the spheres when the cylinders are at different axes: go through cross cylinders.' }],
@@ -764,7 +764,10 @@
     window.scrollTo({ top: 0 });
   }
 
-  const legend = (t) => t.formulas.map(([f, rows]) => `<div class="st-formula">${eq(f)}${rows.length ? `<table class="st-legend">${rows.map(([s, m, u]) => `<tr><th>${s}</th><td>${m}</td><td>${u}</td></tr>`).join('')}</table>` : ''}</div>`).join('');
+  // a worded rule ("Sum it · Swap it · Swing it") reads better as a list in normal type than as a formula
+  const isRule = (f) => !/class="fr"|<sub>|<i>/.test(f) && f.length > 45;
+  const ruleHtml = (f) => `<ul class="st-rules">${f.split(' · ').map((x) => `<li>${x}</li>`).join('')}</ul>`;
+  const legend = (t) => t.formulas.map(([f, rows]) => `<div class="st-formula">${isRule(f) ? ruleHtml(f) : eq(f)}${rows.length ? `<table class="st-legend">${rows.map(([s, m, u]) => `<tr><th>${s}</th><td>${m}</td><td>${u}</td></tr>`).join('')}</table>` : ''}</div>`).join('');
   const stepHtml = (s, i) => `<li class="st-step"><span class="st-n">${i + 1}</span><div class="st-body"><h4>${s.h}</h4>${s.say ? `<p>${s.say}</p>` : ''}${s.e || ''}
       ${s.calc ? `<p class="st-calc"><svg class="ico"><use href="#i-tools"/></svg><span>Calculator</span><code>${s.calc}</code></p>` : ''}${s.res ? `<p class="st-res">${s.res}</p>` : ''}</div></li>`;
   const field = (a, i) => a.choices
