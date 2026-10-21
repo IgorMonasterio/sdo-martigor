@@ -229,6 +229,7 @@
         <p>${st.txt}. Each week has its key points, the calculators that belong to it and the quiz topics to practise.${next ? ` Next assignment: <b>${next.title.replace(/ \(.*\)/, '')}</b>, ${fmt(next.due)}.` : ''}</p>
         <div class="wk-cta"><button class="btn" data-week="${now.n}">Open week ${now.n} →</button>${cur > 1 ? `<button class="btn ghost" data-week="${cur - 1}">Week ${cur - 1}</button>` : ''}</div></div>
         <div class="wk-side">${soonM.map(([d, a, b]) => `<div class="wk-ms"><b>${fmt(d)}</b><span>${a}</span><small>${b}</small></div>`).join('')}</div></section>
+      <div id="wk-ptt"></div>
       <h2 class="q-unit">Autumn · Weeks 1–15</h2><div class="wk-grid">${WEEKS.slice(0, 15).map(tile).join('')}</div>
       <h2 class="q-unit">Spring · Weeks 16–32</h2><div class="wk-grid">${WEEKS.slice(15).map(tile).join('')}</div>
       <div id="wk-books"></div>
@@ -240,6 +241,45 @@
       el.innerHTML = `<h2 class="q-unit">Your books · private copy</h2><div class="wk-grid">${books.map((b) => `<button class="wk bk u${b.unit}" data-book="${b.slug}">
         <span class="wk-n">Unit ${b.unit}</span><span class="wk-t">${b.title}</span><span class="wk-f"><span>${b.author}</span><i>${b.chapters} ch.</i></span></button>`).join('')}</div>`;
     });
+    ptts().then((list) => {
+      const el = $('#wk-ptt'); if (!el || !list.length || current) return;
+      el.innerHTML = `<h2 class="q-unit">Practical training · private copy</h2><div class="wk-grid">${list.map(pttTile).join('')}</div>`;
+    });
+  }
+
+  /* ---------- practical training tasks (private copy only: the college's PTT briefs, never on the public site) ---------- */
+  let pttList = null;
+  async function ptts() {
+    if (!PRIVATE) return [];
+    if (pttList) return pttList;
+    try { const r = await fetch('/assets/ptt/index.json', { cache: 'no-cache' }); pttList = r.ok ? await r.json() : []; } catch { pttList = []; }
+    return pttList;
+  }
+  function pttStatus(p) {
+    const days = Math.round((date(p.due) - today()) / DAY);
+    return days < 0 ? { s: 'past', txt: `Was due ${fmt(p.due)}` } : { s: days <= 14 ? 'now' : 'soon', txt: days === 0 ? 'Due today, 13:59' : days === 1 ? 'Due tomorrow, 13:59' : `Due in ${days} days · ${fmt(p.due)}` };
+  }
+  const pttTile = (p) => { const s = pttStatus(p);
+    return `<button class="wk ${s.s} k-care" data-ptt="${p.n}"><span class="wk-n">PTT${p.n}</span><span class="wk-t">${p.title.replace(/^PTT\d+:\s*(.)/, (_, c) => c.toUpperCase())}</span>
+      <span class="wk-f"><span>${s.s === 'now' ? '● ' : ''}${s.txt}</span><i>${p.tasks} tasks</i></span></button>`; };
+  async function openPtt(n, push = true, from = 0) {
+    const p = (await ptts()).find((x) => x.n === n);
+    if (!p) return home(push);
+    current = `ptt:${n}`;
+    const s = pttStatus(p);
+    const back = from ? `data-week="${from}" aria-label="Back to week ${from}"` : 'data-act="home" aria-label="All weeks"';
+    root().innerHTML = `<div class="q-top"><button class="btn ghost sq" ${back}><svg class="ico"><use href="#i-back"/></svg></button>
+        <div class="q-meta"><span>Practical training</span><b class="wk-st ${s.s}">${s.txt}</b></div></div>
+      <header class="wk-head k-care"><span class="hero-kicker">PTT${p.n} · brief from your college</span><h1>${p.title}</h1>
+        <p>Due <b>${fmtLong(p.due)}</b>, 13:59, on the VLE, together with the <b>Supervision tracker</b> for PTT${p.n} (your supervised hours).</p>
+        <div class="wk-cta"><a class="btn" href="${p.docx}" download>Word form to fill in</a><a class="btn ghost" href="${p.pdf}" target="_blank" rel="noopener">PDF</a></div></header>
+      <section class="card wk-sec"><div class="card-head"><h3><svg class="ico"><use href="#i-book"/></svg> The tasks</h3><span class="ref">private copy</span></div><div class="theory" id="ptt-body"><p class="embed-note">Loading…</p></div></section>`;
+    if (push) history.replaceState(null, '', `#ptt-${n}`);
+    window.scrollTo({ top: 0 });
+    let html = '';
+    try { const r = await fetch(p.html, { cache: 'no-cache' }); if (r.ok) html = await r.text(); } catch { html = ''; }
+    if (current !== `ptt:${n}`) return;
+    $('#ptt-body').innerHTML = html.includes('data-sdo-ptt') ? html : '<p class="embed-note">This brief is not available here.</p>';
   }
 
   /* ---------- e-books (private copy only: the college's licensed books, never on the public site) ---------- */
@@ -290,6 +330,7 @@
       <header class="wk-head k-${w.kind}"><span class="hero-kicker">${KIND[w.kind]}${unit ? ` · Unit ${unit}` : ''}</span><h1>${w.title}</h1>
         <p>Due <b>${fmtLong(w.due)}</b>, 13:59.${w.codes.length ? ` Syllabus: ${w.codes.map((c) => `<span class="ref">${c}</span>`).join(' ')}` : ''}</p>${w.note ? `<p class="wk-note">${w.note}</p>` : ''}</header>
       <section class="card wk-sec"><div class="card-head"><h3><svg class="ico"><use href="#i-book"/></svg> Key points</h3></div><div class="wk-key">${w.key || '<p>Key points for this week are on the way.</p>'}</div></section>
+      <section class="card wk-sec" id="wk-ptts" hidden><div class="card-head"><h3><svg class="ico"><use href="#i-book"/></svg> Practical training due this week</h3><span class="ref">private copy</span></div><div class="wk-tools" id="wk-ptt-list"></div></section>
       <section class="card wk-sec" id="wk-read" hidden><div class="card-head"><h3><svg class="ico"><use href="#i-book"/></svg> Read in your books</h3><span class="ref">private copy</span></div><div class="wk-tools" id="wk-read-list"></div></section>
       <section class="card wk-sec wk-notes" id="wk-notes" hidden><div class="card-head"><h3><svg class="ico"><use href="#i-book"/></svg> Your college notes</h3><span class="ref">private copy</span></div><div class="theory" id="wk-theory"></div></section>
       ${w.tools.length ? `<section class="card wk-sec"><div class="card-head"><h3><svg class="ico"><use href="#i-tools"/></svg> Tools for this week</h3></div><div class="wk-tools">${w.tools.map(tool).join('')}</div></section>` : ''}
@@ -299,6 +340,13 @@
     root().querySelectorAll('.qt-bar i').forEach((i) => { i.style.width = `${Math.round(Number(i.dataset.p) * 100)}%`; });
     if (push) history.replaceState(null, '', `#week-${n}`);
     window.scrollTo({ top: 0 });
+    ptts().then((list) => {
+      // a PTT belongs to the week whose due date is the first one on or after the PTT deadline
+      const mine = list.filter((p) => date(p.due) <= date(w.due) && (!prev || date(p.due) > date(prev.due)));
+      if (current !== n || !mine.length) return;
+      $('#wk-ptt-list').innerHTML = mine.map((p) => `<button class="wk-tool" data-ptt="${p.n}" data-from="${n}"><svg class="ico"><use href="#i-book"/></svg><span>PTT${p.n} brief<small class="wk-rd">Due ${fmt(p.due)}, 13:59</small></span><b>→</b></button>`).join('');
+      $('#wk-ptts').hidden = false;
+    });
     reading(n).then((list) => {
       if (current !== n || !list.length) return;
       $('#wk-read-list').innerHTML = list.map((r) => `<button class="wk-tool" data-book="${r.slug}" data-ch="${r.ch.replace(/"/g, '&quot;')}" data-from="${n}"><svg class="ico"><use href="#i-book"/></svg><span>${r.ch}<small class="wk-rd">${r.book}</small></span><b>→</b></button>`).join('');
@@ -321,15 +369,16 @@
     if (x && root().contains(x)) { goChapter(x.dataset.goch); return; }
     const sx = ev.target.closest('[data-steps]');
     if (sx && root().contains(sx)) { S.go(`steps-${sx.dataset.steps}`); return; }
-    const t = ev.target.closest('[data-week], [data-act], [data-go], [data-quiz], [data-book]');
+    const t = ev.target.closest('[data-week], [data-act], [data-go], [data-quiz], [data-book], [data-ptt]');
     if (!t || !root().contains(t)) return;
-    if (t.dataset.book) openBook(t.dataset.book, true, t.dataset.ch || '', Number(t.dataset.from) || 0);
+    if (t.dataset.ptt) openPtt(Number(t.dataset.ptt), true, Number(t.dataset.from) || 0);
+    else if (t.dataset.book) openBook(t.dataset.book, true, t.dataset.ch || '', Number(t.dataset.from) || 0);
     else if (t.dataset.week) open(Number(t.dataset.week));
     else if (t.dataset.act === 'home') home();
     else if (t.dataset.go) { const [tab, sub] = t.dataset.go.split(':'); S.go(tab, sub); }
     else if (t.dataset.quiz) { window.SDOQuiz?.start(t.dataset.quiz); S.setMode('quiz'); }
   });
 
-  window.SDOWeeks = { show() { if (typeof current === 'string') openBook(current.slice(5), false); else if (current) open(current, false); else home(false); }, open(n, push = true) { n ? open(n, push) : home(push); }, book: openBook, _weeks: WEEKS };
-  if (!$('#mode-weeks').hidden) { const m = /^#week-(\d+)$/.exec(location.hash), k = /^#book-([a-z0-9-]+)$/.exec(location.hash); k ? openBook(k[1], false) : m ? open(Number(m[1]), false) : home(false); }
+  window.SDOWeeks = { show() { if (typeof current === 'string') current.startsWith('ptt:') ? openPtt(Number(current.slice(4)), false) : openBook(current.slice(5), false); else if (current) open(current, false); else home(false); }, open(n, push = true) { n ? open(n, push) : home(push); }, book: openBook, ptt: openPtt, _weeks: WEEKS };
+  if (!$('#mode-weeks').hidden) { const m = /^#week-(\d+)$/.exec(location.hash), k = /^#book-([a-z0-9-]+)$/.exec(location.hash), t = /^#ptt-(\d+)$/.exec(location.hash); t ? openPtt(Number(t[1]), false) : k ? openBook(k[1], false) : m ? open(Number(m[1]), false) : home(false); }
 })();

@@ -628,6 +628,8 @@
     if (wk) { setMode('weeks', false); window.SDOWeeks?.open(wk[1] ? Number(wk[1]) : null, push); return; }
     const bk = /^book-([a-z0-9-]+)$/.exec(tab);
     if (bk) { setMode('weeks', false); window.SDOWeeks?.book(bk[1], push); return; }
+    const pt = /^ptt-(\d+)$/.exec(tab);
+    if (pt) { setMode('weeks', false); window.SDOWeeks?.ptt(Number(pt[1]), push); return; }
     if ($('#mode-tools').hidden) setMode('tools', false);
     if (tab === 'bino') tab = 'prism';
     if (!RENDER[tab]) tab = 'overview';
